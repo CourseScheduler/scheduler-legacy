@@ -1,0 +1,44 @@
+;This file is used to correlate professors in the RateMyProfessors.com database to the correct
+;Kettering University professors when the names on RateMyProfessors.com are incorrect
+
+;The format of this file semi-strict:
+;Semi-colons (;) are used at the end of every line to allow for comments
+;Colons (:) are used to separate the RateMyProfessors.com name from the Kettering University name
+;such that each entry has the form:
+;	RateMyProfessors.com name : Kettering University name ;
+
+;If you find any professors that do not have ratings listed for them during your use of this program
+;a correlation can be added to this file through the Options menu item. Please also notify the current maintainer
+;of the professor that is missing a rating so that the entry can be included with future releases of the application.
+
+Allen, Jerry : Allen, Gerald;
+Altshuler, Dana S. : Altshuler, Dana;
+Atkinson, Pat : Atkinson, Patrick;
+Bell, Reggie : Bell, G. Reginald;
+Davis, Greg : Davis, Gregory;
+Digiuseppe, Gianfranco : DiGiuseppe, Gianfranco;
+El-Sayed, Jacqueline Annette : El-Sayed, Jacqueline;
+El-Sayed, Mohammed : El-Sayed, Mohamed;
+Fokoue, Ernesto : Fokoue, Ernest;
+Hargrove, Jeff : Hargrove, Jeffrey;
+Homsher, Betsy : Homsher, Jane;
+Huggins, Jim : Huggins, James;
+Hynes, Eugene : Hynes, Michael;
+Kaiser, Ken : Kaiser, Kenneth;
+Kowalski (doc K), Henry : Kowalski, Henry;
+Lin, Tony : Lin, Cherng-Tarng;
+Loy, Steve : Loy, Steven;
+Ludwigsen, Dan : Ludwigsen, Daniel;  
+Mazzei, Arnaldo : Mazzei Jr., Arnaldo;
+Melton, Doug : Melton, Douglas;
+Morrison, Ken : Morrison, Kenneth;
+Park, Sunny : Park, Sung-Hee;
+Phillips, Diane : Phillips, Diana;
+Redekop, Ben : Redekop, Benjamin;
+Richard, Phil : Richard, Philip;
+Russell, Dan : Russell, Daniel;
+Svinarich, Kathyrn : Svinarich, Kathryn;
+Thompson, Mark G. : Thompson, Mark;
+Torfeh, Mohammad : Torfeh-Isfahani, Mohammad;
+Tuttle, B. Lee : Tuttle, Bruce;
+Vancura, Dan : Van Cura, Daniel;

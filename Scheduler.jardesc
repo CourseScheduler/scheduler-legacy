@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="Scheduler/jar/Scheduler-4.12-01510.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Scheduler/Scheduler.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=Scheduler/src&lt;Scheduler{Main.java[Main" manifestLocation="/Scheduler/Manifests/Scheduler.mft" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <javaElement handleIdentifier="=Scheduler/src"/>
+        <file path="/Scheduler/Scheduler.jnlp"/>
+        <file path="/Scheduler/Bug Report.txt"/>
+        <file path="/Scheduler/Scheduler.jardesc"/>
+        <file path="/Scheduler/.project"/>
+        <folder path="/Scheduler/.settings"/>
+        <file path="/Scheduler/ToDo.xml"/>
+        <file path="/Scheduler/.classpath"/>
+        <folder path="/Scheduler/Manifests"/>
+        <file path="/Scheduler/Readme.txt"/>
+        <folder path="/Scheduler/Images"/>
+        <file path="/Scheduler/Data/Profs.txt"/>
+    </selectedElements>
+</jardesc>

@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: Scheduler.Main
+Class-Path: jnlp.jar nimbus.jar
+SplashScreen-Image: Images/splash.png
+Permissions: all-permissions

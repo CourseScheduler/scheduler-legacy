@@ -1,0 +1,29 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <!-- JNLP File for Kettering Course Scheduler -->
+ <jnlp
+   spec="1.6+"
+   codebase="http://coursescheduler.sourceforge.net/"
+   href="Scheduler.jnlp">
+   <information>
+     <title>Kettering Course Scheduler</title>
+     <vendor>Mike Reinhold</vendor>
+     <description>KU Scheduler</description>
+     <icon kind="shortcut" href="logo.ico"/>
+     <icon kind="splash" href="splash.gif"/>
+     <offline-allowed/>
+     <association mime-type="application-x/sched-file" extensions="ssf" />
+     <shortcut online="false">
+       <desktop/>
+       <menu submenu="KU Scheduler"/>
+     </shortcut>
+   </information>
+   <security>
+       <all-permissions/>
+   </security>
+   <update check="always" policy="always"/>
+   <resources>
+     <j2se version="1.6+"/>
+     <jar href="Scheduler-4.12-01510.jar"/>
+   </resources>
+   <application-desc main-class="Scheduler.Main"/>
+ </jnlp>

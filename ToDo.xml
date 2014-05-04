@@ -1,0 +1,10 @@
+<ToDoList><Resize_File_Descriptor Description="Make the file descriptor panel automatically resize if necessary" Priority="Medium" Difficulty="Medium" Time_Line="Now"></Resize_File_Descriptor><Migrate_Tab Description="Add a context item to migrate a tab from one term to another and properly update" Priority="Medium-Low" Difficulty="Medium-High" Time_Line="After Delete_Schedule"></Migrate_Tab><Preserve_Tabs_On_Exit Description="Make the open tabs be saved to a history file" Priority="Medium" Difficulty="Medium" Time_Line="After Migrate Tab"></Preserve_Tabs_On_Exit><Course_Display Description="Add a Main Form tab for viewing available courses" Priority="High" Difficulty="High" Time_Line="Next Major"></Course_Display>
+	
+	
+	<Options_Expanded>
+		<Re-Organize_Gui Description="Re-organize the options gui with tabs into general tab, performance, " Priority="Medium" Difficulty="Medium" Time_Line="Prior to further options enhancements"></Re-Organize_Gui>
+		<Performance_Tab Description="Add a performance tab for modifying the number of threads in the pool, the time-out, and prestarting" Priority="Medium" Difficulty="Medium" Time_Line="After options_Gui"></Performance_Tab>
+		<Display_Color_Tab Description="Add a tab to allow the user to specify their own display schedule color scheme" Priority="Low" Difficulty="Low" Time_Line="Later"></Display_Color_Tab><Initial_Size_Option Description="Make the initial size a preference that can be changed" Priority="Low" Difficulty="Low" Time_Line="Not Yet"></Initial_Size_Option></Options_Expanded>
+	
+	<Comment_Classes Description="Leave classes open if they are not fully commented" Priority="Extremely High" Difficulty="Low" Time_Line="Always"></Comment_Classes>
+	</ToDoList>
