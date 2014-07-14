@@ -39,6 +39,7 @@ package Scheduler;									//define the package for this class
 *********************************************************/
 import java.io.Serializable;						//import Serializable class
 import java.util.ArrayList;
+import java.util.List;
 
 
 /********************************************************
@@ -85,14 +86,15 @@ public class Section implements Cloneable, Serializable, Comparable<Section>{
 	private Period secPeriod;						//secondary period
 	private String secLocation;						//secondary location
 	
+	private List<String> instructorList;			//list of instructor names, used to retrieve the actual instructor
+	
 	
 	/********************************************************
 	 * The following are public static constants in the Section
 	 * 		class
 	*********************************************************/	
-		
 	
-	
+
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
 	********************************************************/
@@ -122,6 +124,8 @@ public class Section implements Cloneable, Serializable, Comparable<Section>{
 		secondary = false;
 		secPeriod = new Period();
 		secLocation = new String();
+		
+		instructorList = new ArrayList<>();
 	}
 	
 	
@@ -148,6 +152,8 @@ public class Section implements Cloneable, Serializable, Comparable<Section>{
 		this.setSecondary(other.hasSecondary());
 		this.setSecPeriod(other.getSecPeriodPer().clone());
 		this.setSecLocation(new String(other.getSecLocation()));
+		
+		this.setInstructorList(new ArrayList<>(other.getInstructorList()));
 	}
 		
 	
@@ -173,6 +179,20 @@ public class Section implements Cloneable, Serializable, Comparable<Section>{
 				" [" + this.instructor + "]");			//return section as a string
 	}
 	
+	
+	/**
+	 * @return the instructorList
+	 */
+	public List<String> getInstructorList() {
+		return instructorList;
+	}
+
+	/**
+	 * @param instructorList the instructorList to set
+	 */
+	public void setInstructorList(List<String> instructorList) {
+		this.instructorList = instructorList;
+	}
 	
 	/*********************************************************
 	 * @purpose Returns if the section is closed

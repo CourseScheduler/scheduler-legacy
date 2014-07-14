@@ -37,11 +37,13 @@ package Scheduler;									//declare as a member of scheduler package
 import java.io.Serializable;						//import serializable interface
 import java.util.Arrays;							//import array util class
 import java.util.Calendar;							//import java calendar utility
+import java.util.List;
 import java.util.TreeMap;							//import tree map for database
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;					//import the progress bar
+
 import java.util.ArrayList;							//import the arrayList utility
 
 
@@ -135,6 +137,20 @@ public class Database implements Serializable, Cloneable{
 				check.addSection(newSection);		//else add to course
 			}
 		}
+		
+		//TODO handle section instructor lists
+		List<String> instructorList = newSection.getInstructorList();
+		ProfDatabase profDB = this.getProfs();
+		for(String instructor: instructorList){
+			Prof prof = profDB.get(instructor);
+			if(prof == null) { 
+				prof = new Prof();
+				prof.setName(instructor);
+				profDB.addIfNew(prof);
+			}
+			newSection.setInstructor(prof);
+		}
+		
 		setDatabaseFlags(newSection);
 	}
 	

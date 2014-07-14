@@ -532,7 +532,10 @@ public enum Parser {
 		section.setSection(sectionId);
 		section.setCredit(credits);
 		section.setTitle(title);
-		//TODO professor
+		
+		if(instructorList.size()>0){
+			section.setInstructorList(instructorList.get(0));
+		}
 		
 		//TODO update for more than 2 entries
 		section.setSecondary(daysList.size() > 1);
