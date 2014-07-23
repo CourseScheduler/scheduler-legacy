@@ -1,48 +1,75 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>io.devyse.scheduler-legacy</groupId>
-  <artifactId>scheduler-legacy</artifactId>
-  <version>4.12.1-SNAPSHOT</version>
-  <name>Kettering Course Scheduler</name>
-  <url>http://coursescheduler.io</url>
-  <description>Kettering Course Scheduler is an operating system independent schedule designer for Kettering University. Courses are selected from a list of available courses based on the registration term and possible schedules are generated.</description>
-  <organization>
-  	<name>Devyse IO</name>
-  	<url>http://devyse.io</url>
-  </organization>
-  <inceptionYear>2009</inceptionYear>
-  <properties>
-  	<!-- Source Code and Target JVM version -->
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.devyse.scheduler-legacy</groupId>
+	<artifactId>scheduler-legacy</artifactId>
+	<version>4.12.1-SNAPSHOT</version>
+	<name>Kettering Course Scheduler</name>
+	<url>http://coursescheduler.io</url>
+	<description>Kettering Course Scheduler is an operating system independent schedule designer for Kettering University. Courses are selected from a list of available courses based on the registration term and possible schedules are generated.</description>
+	<organization>
+		<name>Devyse IO</name>
+		<url>http://devyse.io</url>
+	</organization>
+	<inceptionYear>2009</inceptionYear>
+	<properties>
+		<!-- Source Code and Target JVM version -->
 		<maven.compiler.source>1.7</maven.compiler.source>
- 		<maven.compiler.target>1.7</maven.compiler.target>
- 		<maven.compiler.compilerArgument>-Xlint:all</maven.compiler.compilerArgument>
- 		
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.compilerArgument>-Xlint:all</maven.compiler.compilerArgument>
+
 		<!-- Source file encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <scm>
-  	<url>https://github.com/CourseScheduler/scheduler-legacy</url>
-  	<connection>scm:git@github.com:CourseScheduler/scheduler-legacy.git</connection>
-  </scm>
-  <issueManagement>
-  	<url>https://github.com/CourseScheduler/scheduler-legacy/issues</url>
-  	<system>GitHub Issues</system>
-  </issueManagement>
-  <dependencies>
-  	<dependency>
-  		<groupId>javax.jnlp</groupId>
-  		<artifactId>jnlp-api</artifactId>
-  		<scope>system</scope>
-  		<systemPath>${java.home}/lib/javaws.jar</systemPath>
-  	</dependency>
-  </dependencies>
-  <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>javax.jnlp</groupId>
-  			<artifactId>jnlp-api</artifactId>
-  			<version>7.0</version>
-  		</dependency>
-  	</dependencies>
-  </dependencyManagement>
+	</properties>
+	<scm>
+		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
+		<connection>scm:git@github.com:CourseScheduler/scheduler-legacy.git</connection>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/CourseScheduler/scheduler-legacy/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+	<dependencies>
+		<dependency>
+			<groupId>javax.jnlp</groupId>
+			<artifactId>jnlp-api</artifactId>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/javaws.jar</systemPath>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax.jnlp</groupId>
+				<artifactId>jnlp-api</artifactId>
+				<version>7.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<!-- <index>true</index> -->
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<mainClass>Scheduler.Main</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Class-Path>javaws.jar</Class-Path>
+							<Url>${project.url}</Url>
+							<SplashScreen-Image>Images/splash.png</SplashScreen-Image>
+							<Permissions>all-permissions</Permissions>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
