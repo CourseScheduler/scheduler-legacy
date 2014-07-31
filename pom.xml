@@ -27,7 +27,7 @@
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
-		<connection>scm:git:https://github.com:CourseScheduler/scheduler-legacy.git</connection>
+		<connection>scm:git:https://github.com/CourseScheduler/scheduler-legacy.git</connection>
 	</scm>
 	<issueManagement>
 		<url>https://github.com/CourseScheduler/scheduler-legacy/issues</url>
