@@ -1,0 +1,37 @@
+ <?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="${j2seVersion}" codebase="${codebase}" href="${targetFileName}">
+
+	<information>
+		<title>${project.Name}</title>
+		<vendor>${project.Organization.Name}</vendor>
+		<description>${project.Description}</description>
+		<homepage href="${project.Url}" />
+
+		<icon kind="shortcut" href="logo.ico" />
+		<icon kind="splash" href="splash.gif" />
+
+		#if(${offlineAllowed})
+		<offline-allowed />
+		#end
+
+		<association mime-type="application-x/sched-file" extensions="ssf" />
+		<shortcut online="false">
+			<desktop />
+			<menu submenu="KU Scheduler" />
+		</shortcut>
+	</information>
+	
+	#if(${allPermissions})
+	<security>
+		<all-permissions />
+	</security>
+	#end
+	
+	<update check="always" policy="always" />
+	<resources>
+		<j2se version="${j2seVersion}" java-vm-args="${javaVmArgs}" />
+		${dependencies}
+	</resources>
+	
+	<application-desc main-class="${mainClass}" />
+</jnlp>

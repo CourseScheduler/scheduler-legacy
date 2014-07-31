@@ -21,6 +21,9 @@
 
 		<!-- Source file encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Runnable JAR and JNLP Main Class -->
+		<Scheduler.mainClass>Scheduler.Main</Scheduler.mainClass>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -102,6 +105,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.4</version>
 				</plugin>
@@ -155,6 +163,11 @@
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.jfrog.maven.plugins</groupId>
+					<artifactId>jfrog-javafx-plugin</artifactId>
+					<version>1.3.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -169,7 +182,7 @@
 							<addClasspath>true</addClasspath>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							<mainClass>Scheduler.Main</mainClass>
+							<mainClass>${Scheduler.mainClass}</mainClass>
 						</manifest>
 						<manifestEntries>
 							<Class-Path>javaws.jar</Class-Path>
@@ -211,6 +224,32 @@
 						<argument>-tsa</argument>
 						<argument>https://timestamp.geotrust.com/tsa</argument>
 					</arguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jfrog.maven.plugins</groupId>
+				<artifactId>jfrog-javafx-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jnlp</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<templateFileName>template.jnlp</templateFileName>
+					<mavenStyleResourceLinks>false</mavenStyleResourceLinks>
+					<attach>true</attach>
+					<generateJavaFxJnlp>false</generateJavaFxJnlp>
+					<targetFileName>Scheduler.jnlp</targetFileName>
+					
+					<codebase>http://coursescheduler.sourceforge.net/</codebase>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<mainClass>${Scheduler.mainClass}</mainClass>
+					<j2seVersion>1.7+</j2seVersion>
+					<allPermissions>true</allPermissions>
+					<offlineAllowed>true</offlineAllowed>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -286,4 +325,23 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jfrog-plugins-releases</id>
+			<name>The jfrog repository for plugins releases</name>
+			<url>http://repo.jfrog.org/artifactory/plugins-releases-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>jfrog-third-party-releases</id>
+			<name>The jfrog repository for libs releases</name>
+			<url>http://repo.jfrog.org/artifactory/libs-releases-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
