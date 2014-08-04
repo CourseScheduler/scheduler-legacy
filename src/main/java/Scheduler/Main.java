@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.TreeMap;
@@ -34,7 +35,7 @@ public class Main {
 	protected static final String maintain = new String("Mike Reinhold");
 	protected static final String email = new String("kuscheduler@gmail.com");
 	protected static final String contributers = new String(
-		"Phil DeMonaco, Alex Thomson, Ryan Murphy, Vlad Patryshev, Rob MacGrogan");
+		"Aaron Simmons, Phil DeMonaco, Alex Thomson, Ryan Murphy, Vlad Patryshev, Rob MacGrogan");
 	
 	protected static final String folderName = new String(System.getProperty("user.home") + "/Scheduler");
 	protected static final String dataName = new String("Data");
@@ -86,6 +87,8 @@ public class Main {
 	
 	
 	public static void main(String[] args){ 
+		//Make sure the majority of SSL/TLS protocols are enabled
+		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
 		try {
 			try {
