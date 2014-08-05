@@ -28,7 +28,7 @@ public class Main {
 	********************************************************/
 	protected static final long versionID = 2013010921152L;//object id
 	protected static final long buildNumber = 1515L;//build number
-	protected static final String version = new String("4.12.1");
+	protected static final String version = new String("4.12.2");
 	
 	
 	protected static final String author = new String("Mike Reinhold");
