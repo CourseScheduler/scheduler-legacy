@@ -1,7 +1,7 @@
 Course Scheduler
 Open Source
 
-Source is available on request via email to kuscheduler@gmail.com
+Source is available on request via email to licensing@coursescheduler.io
 Redistribution in source and binary forms, with or without modification
 is permitted, however, we respectfully request that any redistributions
 state that it is an unofficial redistribution. Also, we request that any
@@ -10,9 +10,9 @@ in future releases.
  
  
  Installation Notes:
- 	The new deployment method for the Kettering Course Scheduler is to use the Java Web Start runtime. It is installed as part of Java SE 6 and should register .jnlp files to be run by javaws.
+ 	The new deployment method for the Kettering Course Scheduler is to use the Java Web Start runtime. WebStart is installed as part of Java SE 7 and should register .jnlp files to be run by javaws.
  	This allows the user to download a small .jnlp file from the hosting website, which will then be launched by Java Web Start. Java Web Start will download any application files needed
- 	and will install desktop and start menu shortcuts. It also registers the program's associated file types with the operating system.
+ 	and will install desktop and menu shortcuts. It also registers the program's associated file types with the operating system.
  	
  	IMPORTANT -- If you have a previous version of the Scheduler that utilizes the BitRock installer file, you MUST uninstall that version first.
  	
@@ -24,6 +24,12 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.1
+	-Signed JAR with new code signing SSL certificate (issue #1)
+	-Fixed issue that prevented instructor names from being included in course data (issue #2)
+	-Fixed issue caused by changes to default enabled HTTPS protocol versions (issue #6)
+	-Fixed JNLP issue causing the Scheduler not to start on some machines with JRE 6
+
 4.12 Build 01510
 	-New course retrieval process for the updated version of BannerWeb (8.5.1)
 	-Can only handle up to 2 meeting times per section
