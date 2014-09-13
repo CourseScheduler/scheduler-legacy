@@ -271,7 +271,7 @@ public class Course implements Cloneable, Serializable, Comparable<Course>{
 	 * 		in this course
 	*********************************************************/
 	protected Section[] getSectionsSObj(){
-		return this.sections.toArray(new Section[0]);	//return the Arraylist as a Section[]
+		return this.sections.toArray(new Section[sections.size()]);	//return the Arraylist as a Section[]
 	}
 	
 	

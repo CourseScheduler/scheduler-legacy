@@ -36,6 +36,7 @@ package Scheduler;								//declare as member of scheduler package
 ********************************************************/
 import java.io.Serializable;					//to declare as serializeable
 import java.util.Calendar;						//to get date information
+import java.util.UUID;
 
 
 /*********************************************************
@@ -87,7 +88,9 @@ public class Preferences implements Serializable {
 	
 	private transient String currentTerm;		//current term identifier, non-serializable
 	
-	
+	private UUID identifier;					//unique identifier
+	private boolean analyticsOptOut;			//opt out flag for analytics
+
 	/*********************************************************
 	 * (Constructor)
 	 * 
@@ -122,6 +125,9 @@ public class Preferences implements Serializable {
 		colors = new CourseColor();				//make new course colors
 		
 		greyCodeLimit = 250;					//make the default limit 200
+		
+		identifier = null;						//no default value
+		analyticsOptOut = false;				//opted out by default
 	}
 
 
@@ -657,5 +663,35 @@ public class Preferences implements Serializable {
 	********************************************************/
 	public void setDownloadUGrad(boolean downloadUGrad) {
 		this.downloadUGrad = downloadUGrad;		//set if should download
+	}
+
+	
+	/**
+	 * @return the identifier
+	 */
+	public UUID getIdentifier() {
+		return identifier;
+	}
+
+
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(UUID identifier) {
+		this.identifier = identifier;
+	}
+	
+	/**
+	 * @return if the user has opted out of analytics
+	 */
+	public boolean isAnalyticsOptOut(){
+		return analyticsOptOut;
+	}
+	
+	/**
+	 * @param optOut change the analytics opt out status
+	 */
+	public void setAnalyticsOptOut(boolean optOut){
+		this.analyticsOptOut = optOut;
 	}
 }
