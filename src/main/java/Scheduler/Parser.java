@@ -105,43 +105,6 @@ public enum Parser {
 	
 	
 	/********************************************************
-	 * The following are private static constants in the
-	 * 		class for parsing KU courses
-	*********************************************************/
-	private final static String tdClass = "<TD CLASS=\"dddefault\">";//used to help parse
-	private final static String tdNoWrap = "<TD NOWRAP CLASS=\"dddefault\">";//ditto above
-	private final static String termStr = "validterm";	//part of post structure
-	private final static String subjCode = "subjcode";	//part of post structure
-	private final static String onlyOpen = "openclasses";//part of post structure
-	private final static String allSubj = "%";			//subjCode value to post
-	private final static String allowClosed = "N";		//onlyOpen value to post
-	private final static int beginIndex = 0;			//used for substrings
-	private final static int endIndex1 = 22;			//used for substrings
-	private final static int endIndex2 = 29;			//used for substring
-	private final static String slashSmall = "</SMALL>";//used for parsing
-	private final static String small = "<SMALL>";		//used for parsing
-	private final static String redFont = "<br><font color=#ff0000>";//used for parsing
-	private final static String slashFont = "</font>";	//used for parsing
-	private final static String emptyTag = "&nbsp";		//used for determining section days
-	
-	private final static int crn = 0;					//ku position of the crn
-	private final static int section = 1;				//ku position of course id and section id
-	private final static int credit = 2;				//ku position of credit
-	private final static int title = 3;					//ku position of title and notes
-	private final static int prof = 4;					//ku position of instructor
-	private final static int mon = 5;					//ku position of monday bool
-	private final static int tue = 6;					//ku position of tuesday bool
-	private final static int wed = 7;					//ku position of wednesday bool
-	private final static int thu = 8;					//ku position of thursday bool
-	private final static int fri = 9;					//ku position of friday bool
-	private final static int per = 10;					//ku position of time period
-	private final static int loc = 11;					//ku position of location
-	private final static int seats = 12;				//ku position of open seats
-	private final static int bldg = 0;					//ku grad loc position of building
-	private final static int reset = -1;				//reset value for pre incremented indexes
-	
-	
-	/********************************************************
 	 * @purpose Parses KU courses and returns a new database
 	 * 
 	 * @throws IOException
@@ -307,12 +270,12 @@ public enum Parser {
 					
 					break;
 				}
-				case 54:{	//Meeting Times Exist indicator
+				case 52:{	//Meeting Times Exist indicator
 					hasMeetingTimes = (entry.compareTo("") != 0);
 					
 					break;
 				}
-				case 90:{	//Meeting Time Table
+				case 82:{	//Meeting Time Table
 					if(hasMeetingTimes){
 						int meetingIndex = 0;
 						int meetingPosition = 0;
@@ -548,25 +511,37 @@ public enum Parser {
 			section.setNotes(notes);
 		}
 		
-		section.setPeriod(periodList.get(0));
-		if(periodList.size() > 1){
-			section.setSecPeriod(periodList.get(1));
+		if(periodList.size() > 0){
+			section.setPeriod(periodList.get(0));
+			if(periodList.size() > 1){
+				section.setSecPeriod(periodList.get(1));
+			}else{
+				section.setSecPeriod("");
+			}
 		}else{
-			section.setSecPeriod("");
+			section.setPeriod("");
 		}
 		
-		section.setDays(daysList.get(0));
-		if(daysList.size() > 1){
-			section.setSecDays(daysList.get(1));
+		if(daysList.size() > 0){
+			section.setDays(daysList.get(0));
+			if(daysList.size() > 1){
+				section.setSecDays(daysList.get(1));
+			}else{
+				section.setSecDays(new boolean[Day.values().length]);
+			}
 		}else{
-			section.setSecDays(new boolean[Day.values().length]);
+			section.setDays(new boolean[Day.values().length]);
 		}
 		
-		section.setLocation(locationList.get(0));
-		if(locationList.size() > 1){
-			section.setLocation(locationList.get(1));
+		if(locationList.size() > 0){
+			section.setLocation(locationList.get(0));
+			if(locationList.size() > 1){
+				section.setLocation(locationList.get(1));
+			}else{
+				section.setSecLocation("");
+			}
 		}else{
-			section.setSecLocation("");
+			section.setLocation("");
 		}
 		
 		section.setSeats(seats);
