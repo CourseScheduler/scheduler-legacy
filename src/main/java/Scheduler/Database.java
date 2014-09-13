@@ -37,7 +37,9 @@ package Scheduler;									//declare as a member of scheduler package
 import java.io.Serializable;						//import serializable interface
 import java.util.Arrays;							//import array util class
 import java.util.Calendar;							//import java calendar utility
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;							//import tree map for database
 import java.util.Vector;
 
@@ -354,10 +356,58 @@ public class Database implements Serializable, Cloneable{
 		
 		Schedule[] temp = result.toArray(new Schedule[0]);//get the schedule[]
 		Arrays.sort(temp);							//sort it
+		
+		registerScheduleEvent(allowClosed, useMin, reportingEnabled, classes, primary, sectionsAllowed, numberSelected, sync, temp);
+				
 		sync.updateWatch("Updating List", -1);		//set new note
 		return temp;								//return the results
 	}
 	
+	private void registerScheduleEvent(boolean allowClosed, int useMin, boolean reportingEnabled, String[] classes, List<String> primary, boolean[][] sectionsAllowed, int[] numberSelected, ThreadSynch sync, Schedule[] temp){
+		try{
+			if(!Main.prefs.isAnalyticsOptOut()){
+				Map<String, Object> event = new HashMap<>();
+				Main.mapifyEntry(event, "university.name", "Kettering University");
+				Main.mapifyEntry(event, "university.term", this.getTerm());
+				Main.mapifyEntry(event, "parameters.closed", allowClosed);
+				Main.mapifyEntry(event, "parameters.use.min", useMin);
+				Main.mapifyEntry(event, "parameters.use.all", sync.getOwner().useAll.isSelected());
+				Main.mapifyEntry(event, "parameters.reporting", reportingEnabled);
+				Main.mapifyEntry(event, "parameters.classes", classes);
+				Main.mapifyEntry(event, "parameters.primary", primary);
+				Main.mapifyEntry(event, "results.schedules.found", temp.length);
+				Main.mapifyEntry(event, "results.schedules.conflicts", sync.getConflicts().size());
+				
+				buildAllowed(event, classes, sectionsAllowed);
+				buildSelected(event, classes, numberSelected);
+				buildLinked(event, sync);
+				
+				Main.registerEvent(Main.KEEN_SCHEDULE, event);
+			}
+		}catch(Exception e){
+			e.printStackTrace(System.err);
+		}
+	}
+	
+	private void buildSelected(Map<String, Object> event, String[] classes, int[] numberSelected){
+		for(int classPos = 0; classPos < classes.length; classPos++){
+			Main.mapifyEntry(event, "parameters.selected."+classes[classPos],numberSelected[classPos]);
+		}
+	}
+	
+	private void buildAllowed(Map<String, Object> event, String[] classes, boolean[][] sectionsAllowed){
+		for(int classPos = 0; classPos < classes.length; classPos++){
+			Course course = this.getCourse(classes[classPos]);
+			Section[] sections = course.getSectionsSObj();
+			for(int sectionPos = 0; sectionPos < sections.length; sectionPos++){
+				Main.mapifyEntry(event, "parameters.allowed."+classes[classPos]+"."+sections[sectionPos].getSection(), sectionsAllowed[classPos][sectionPos]);
+			}
+		}
+	}
+	
+	private void buildLinked(Map<String, Object> event, ThreadSynch sync){
+		Main.mapifyEntry(event, "parameters.links", sync.getOwner().dependancy);
+	}
 	
 	
 	/********************************************************

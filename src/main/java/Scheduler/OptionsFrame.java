@@ -42,6 +42,7 @@ import java.awt.event.ActionEvent;				//for use in the action listener
 import java.awt.event.WindowEvent;				//for the window events
 import java.awt.event.FocusListener;			//for listening for focus events
 import java.awt.event.FocusEvent;				//for detecting focus changes
+
 import javax.swing.BorderFactory;				//for creating frame and panel borders
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;						//extended by this class
@@ -56,7 +57,10 @@ import javax.swing.JRadioButton;				//used for specific options
 import javax.swing.JButton;						//used for the apply and cancel buttons
 import javax.swing.JOptionPane;					//used for pop-up error messages
 import javax.swing.text.NumberFormatter;		//used for number filtering
+
 import java.text.DecimalFormat;					//used for number filtering
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;						//used to parse strings
 import java.io.File;							//used for file manipulation
 import java.io.FilenameFilter;					//used for finding the files	
@@ -112,6 +116,7 @@ public class OptionsFrame extends JFrame {
 	protected JTextField newDistURL;		//to input new URL
 	protected JTextField newCampus;			//to input new on campus course download url
 	protected JTextField newDist;			//to input new distance course download url
+	protected JCheckBox analyticsOptOut;	//to option out of the analytics reporting
 	
 	
 	/*********************************************************
@@ -239,6 +244,11 @@ public class OptionsFrame extends JFrame {
 		overrideSID.setToolTipText("Set if the default School ID should be overridden" +
 			" with the specified School ID.");	//set the tool tip
 		
+		analyticsOptOut = new JCheckBox("Opt out of anonymous data collection");
+		analyticsOptOut.addActionListener(chkBox);
+		analyticsOptOut.setMnemonic('a');
+		analyticsOptOut.setToolTipText("Do not perform anonymous data collection");
+		
 		newURL = new JTextField(20);			//create the text field with min size
 		newSID = new JTextField(20);			//create the text field with min size
 		newCampus = new JTextField(20);			//create text field with min size
@@ -293,6 +303,11 @@ public class OptionsFrame extends JFrame {
 				.addComponent(newSID)			//add the sid input field
 				.addGap(2 * horizSpace)			//add space to ensure gap on the right
 			)
+			.addGroup(generalTabLayout.createSequentialGroup()
+				.addGap(2 * horizSpace)
+				.addComponent(analyticsOptOut)
+				.addGap(2*horizSpace)
+			)
 			//.addGroup(generalTabLayout.createSequentialGroup()//create sequential group
 			//	.addGap(2 * horizSpace)			//add gap in front of component
 			//	.addComponent(enableCampusGrad)	//add enable checkbox
@@ -330,6 +345,8 @@ public class OptionsFrame extends JFrame {
 				.addComponent(overrideURL)//add the override url check box
 				.addComponent(newURL)//add the url input field
 			)
+			.addGap(2 * horizSpace)
+			.addComponent(analyticsOptOut)
 			//.addGap(2 * horizSpace)				//add gap
 			.addGap(36 * horizSpace)				//add space
 			//.addComponent(enableCampusGrad)		//add enable checkbox
@@ -424,6 +441,7 @@ public class OptionsFrame extends JFrame {
 		newCampus.setEnabled(prefs.isOverrideGrad());//set the url enable
 		newDist.setText(prefs.getGradDistURL());//set the url text
 		newDist.setEnabled(prefs.isOverrideGradDist());//set the url enable
+		analyticsOptOut.setSelected(prefs.isAnalyticsOptOut());
 		
 		enableRatings.setSelected(prefs.isRatingsEnabled());//set if ratings enabled
 		enableRatings(prefs.isRatingsEnabled());//set the ratings panel's enabled state
@@ -681,6 +699,37 @@ public class OptionsFrame extends JFrame {
 			.addComponent(enableRMPRatings)		//add single item row
 		);
 	}
+
+	private void registerConfigEvent(){
+		Map<String, Object> configEvent = new HashMap<>();
+		Main.mapifyEntry(configEvent, "config.analytics.enabled", Main.prefs.isAnalyticsOptOut());
+		Main.mapifyEntry(configEvent, "config.term.current", Main.prefs.getCurrentTerm());
+		Main.mapifyEntry(configEvent, "config.course.graduate.distance.url", Main.prefs.getGradDistURL());
+		Main.mapifyEntry(configEvent, "config.course.graduate.campus.url", Main.prefs.getGradURL());
+		Main.mapifyEntry(configEvent, "config.course.undergraduate.url", Main.prefs.getURL());
+		Main.mapifyEntry(configEvent, "config.course.graduate.enabled", Main.prefs.isDownloadGrad());
+		Main.mapifyEntry(configEvent, "config.course.graduate.distance.enabled", Main.prefs.isDownloadGradDist());
+		Main.mapifyEntry(configEvent, "config.course.graduate.campus.enabled", Main.prefs.isDownloadGrad());
+		Main.mapifyEntry(configEvent, "config.course.undergraduate.enabled", Main.prefs.isDownloadUGrad());
+		Main.mapifyEntry(configEvent, "config.schedule.limit", Main.prefs.getGreyCodeLimit());
+		Main.mapifyEntry(configEvent, "config.course.graduate.campus.override", Main.prefs.isOverrideGrad());
+		Main.mapifyEntry(configEvent, "config.course.graduate.distance.override", Main.prefs.isOverrideGradDist());
+		Main.mapifyEntry(configEvent, "config.course.undergraduate.override", Main.prefs.isOverRideURL());
+		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.override", Main.prefs.isOverRideSID());
+		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.enabled", Main.prefs.isRateMyProfessorEnabled());
+		Main.mapifyEntry(configEvent, "config.rating.enabled", Main.prefs.isRatingsEnabled());
+		Main.mapifyEntry(configEvent, "config.rating.schedule.break.max", Main.prefs.getLongestBreak());
+		Main.mapifyEntry(configEvent, "config.rating.schedule.break.min", Main.prefs.getShortestBreak());
+		Main.mapifyEntry(configEvent, "config.rating.schedule.days.enabled", Main.prefs.hasDayOff());
+		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.sid", Main.prefs.getSID());
+		Main.mapifyEntry(configEvent, "config.course.staleness.max", Main.prefs.getUpdateMin());
+		
+		for(Day day : Day.values()){
+			Main.mapifyEntry(configEvent, "config.rating.schedule.days." + day.toString(), Main.prefs.getDaysOff()[day.ordinal()]);
+		}
+		
+		Main.registerEvent(Main.KEEN_CONFIG, configEvent);
+	}
 	
 	
 	/*********************************************************
@@ -690,7 +739,7 @@ public class OptionsFrame extends JFrame {
 	 * @see ActionListener
 	********************************************************/
 	private class enableListener implements ActionListener{
-		
+			
 		
 		/*********************************************************
 		 * @pupose To enable or disable the appropriate sections
@@ -895,6 +944,7 @@ public class OptionsFrame extends JFrame {
 					prefs.setOverrideGradDist(enableOverrideDist.isSelected());//set the override
 					prefs.setGradURL(newCampus.getText());//set the url
 					prefs.setGradDistURL(newDist.getText());//set the url
+					prefs.setAnalyticsOptOut(analyticsOptOut.isSelected());
 					
 					prefs.setShortestBreak(min);	//set the shortest break
 					prefs.setLongestBreak(max);		//set the longest break
@@ -909,6 +959,8 @@ public class OptionsFrame extends JFrame {
 							"Success", JOptionPane.INFORMATION_MESSAGE);
 						Main.master.mainMenu.optionsFrame.setVisible(false);//make frame invisible
 						isHidden = true;			//set hidden indicator to true
+						
+						registerConfigEvent();
 						
 						if (updateRMP){				//check if rmp values need to be updated
 							Main.master.setEnabled(false);//disable the main frame

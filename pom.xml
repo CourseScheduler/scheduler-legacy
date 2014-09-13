@@ -24,6 +24,12 @@
 
 		<!-- Runnable JAR and JNLP Main Class -->
 		<Scheduler.mainClass>Scheduler.Main</Scheduler.mainClass>
+		<!-- JNLP root codebase -->
+		<Scheduler.jnlp.server>http://coursescheduler.sourceforge.net</Scheduler.jnlp.server>
+
+		<!-- private resource location -->
+		<Scheduler.resources.dir>/private/coursescheduler</Scheduler.resources.dir>
+
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -40,6 +46,10 @@
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/javaws.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>io.keen</groupId>
+			<artifactId>keen-client-api-java</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -48,8 +58,123 @@
 				<artifactId>jnlp-api</artifactId>
 				<version>7.0</version>
 			</dependency>
+			<dependency>
+				<groupId>io.keen</groupId>
+				<artifactId>keen-client-api-java</artifactId>
+				<version>2.0.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>production</id>
+
+			<properties>
+				<!-- Adjust the JNLP codebase for production -->
+				<Scheduler.jnlp.codebase>${Scheduler.jnlp.server}/</Scheduler.jnlp.codebase>
+			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/classes/config</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${Scheduler.resources.dir}/config/production</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>development</id>
+
+			<properties>
+				<!-- Adjust the JNLP codebase for development -->
+				<Scheduler.jnlp.codebase>${Scheduler.jnlp.server}/snapshots</Scheduler.jnlp.codebase>
+			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/classes/config</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${Scheduler.resources.dir}/config/development</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jarsigner-plugin</artifactId>
+
+						<executions>
+							<execution>
+								<id>sign</id>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>verify</id>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+
+						<configuration>
+							<archiveDirectory>${project.build.directory}</archiveDirectory>
+							<keystore>${Scheduler.resources.dir}/ssl/scheduler.jks</keystore>
+							<alias>coursescheduler</alias>
+							<storepass>{4tXMw/HEX+wH1omHNdWTTipAbgi+1NBtAUj6A//HoIGalRabWjR3mSgeDl5q8B5fFGwql1Q6EB/NQVL/JUJTpDEVGbo7x1wxoMIzeMHqk+IsX7afE8hbuq3DOxDidoP7}</storepass>
+							<keypass>{CeV7SACXJBAHDVMQHVbfeeTG8mwmUgRNaUx0ccF90Iew1FKd8vlCN6g/7fffUUWxfXm/VDPUzObbGgXVzCKGcd2e4SMpa32BpxA7MVkf07tUsRyNs54muAtsPVW1Cwcw}</keypass>
+							<arguments>
+								<argument>-tsa</argument>
+								<argument>https://timestamp.geotrust.com/tsa</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -194,39 +319,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jarsigner-plugin</artifactId>
-
-				<executions>
-					<execution>
-						<id>sign</id>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>verify</id>
-						<goals>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-
-				<configuration>
-					<includes>
-						<include>*.jar</include>
-					</includes>
-					<keystore>/private/coursescheduler/ssl/scheduler.jks</keystore>
-					<alias>coursescheduler</alias>
-					<storepass>{4tXMw/HEX+wH1omHNdWTTipAbgi+1NBtAUj6A//HoIGalRabWjR3mSgeDl5q8B5fFGwql1Q6EB/NQVL/JUJTpDEVGbo7x1wxoMIzeMHqk+IsX7afE8hbuq3DOxDidoP7}</storepass>
-					<keypass>{CeV7SACXJBAHDVMQHVbfeeTG8mwmUgRNaUx0ccF90Iew1FKd8vlCN6g/7fffUUWxfXm/VDPUzObbGgXVzCKGcd2e4SMpa32BpxA7MVkf07tUsRyNs54muAtsPVW1Cwcw}</keypass>
-					<arguments>
-						<argument>-tsa</argument>
-						<argument>https://timestamp.geotrust.com/tsa</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.jfrog.maven.plugins</groupId>
 				<artifactId>jfrog-javafx-plugin</artifactId>
 				<executions>
@@ -242,8 +334,8 @@
 					<attach>true</attach>
 					<generateJavaFxJnlp>false</generateJavaFxJnlp>
 					<targetFileName>Scheduler.jnlp</targetFileName>
-					
-					<codebase>http://coursescheduler.sourceforge.net/</codebase>
+
+					<codebase>${Scheduler.jnlp.codebase}</codebase>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
 					<mainClass>${Scheduler.mainClass}</mainClass>
@@ -251,6 +343,21 @@
 					<allPermissions>true</allPermissions>
 					<offlineAllowed>true</offlineAllowed>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

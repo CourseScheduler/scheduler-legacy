@@ -47,9 +47,12 @@ import java.io.File;							//import File class
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;						//import scanner
+
 import javax.swing.JOptionPane;					//Import message pane
 
 import com.pollicitus.scheduler.retrieval.BannerDynamicCourseRetrieval;
@@ -169,7 +172,27 @@ public enum Parser {
 		sync.updateWatch(null, sync.getWatch().getMaximum());//set progress finished
 		items.setTerm(term);							//set database term
 		
+		registerDownloadEvent(url, term, items, downloadRatings);
+		
 		return items;									//return database
+	}
+	
+	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings){
+		if(!Main.prefs.isAnalyticsOptOut()){
+
+			Map<String, Object> event = new HashMap<>();
+			Main.mapifyEntry(event, "university.name", "Kettering University");
+			Main.mapifyEntry(event, "university.url", url);
+			Main.mapifyEntry(event, "universit.term", term);
+			Main.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
+			Main.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
+			Main.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
+			Main.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
+			Main.mapifyEntry(event, "results.professors.count", items.getProfs().size());
+			Main.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
+			
+			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
+		}
 	}
 	
 	/**
