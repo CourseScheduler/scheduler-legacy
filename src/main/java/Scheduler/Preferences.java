@@ -90,6 +90,8 @@ public class Preferences implements Serializable {
 	
 	private UUID identifier;					//unique identifier
 	private boolean analyticsOptOut;			//opt out flag for analytics
+	
+	private int policyVersion;					//policy version accepted
 
 	/*********************************************************
 	 * (Constructor)
@@ -128,6 +130,8 @@ public class Preferences implements Serializable {
 		
 		identifier = null;						//no default value
 		analyticsOptOut = false;				//opted out by default
+		
+		policyVersion = 0;						//last accepted policy version
 	}
 
 
@@ -693,5 +697,19 @@ public class Preferences implements Serializable {
 	 */
 	public void setAnalyticsOptOut(boolean optOut){
 		this.analyticsOptOut = optOut;
+	}
+
+	/**
+	 * @return the policyVersion
+	 */
+	public int getPolicyVersion() {
+		return policyVersion;
+	}
+
+	/**
+	 * @param policyVersion the policyVersion to set
+	 */
+	public void setPolicyVersion(int policyVersion) {
+		this.policyVersion = policyVersion;
 	}
 }
