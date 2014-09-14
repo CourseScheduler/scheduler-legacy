@@ -35,6 +35,7 @@ package Scheduler;							//define as member of shceduler package
  * Import the classes necessary to build and use the GUI
  * 		too many to list their purposes
 *********************************************************/
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;					//this extends JFrame
 import javax.swing.JPanel;					//Uses numerous panels
 import javax.swing.JLabel;					//uses numerous labels
@@ -42,9 +43,16 @@ import javax.swing.JTabbedPane;				//uses a tab pane
 import javax.swing.JScrollPane;				//uses a scroll pane
 import javax.swing.GroupLayout;				//uses a couple group layouts
 import javax.swing.JButton;					//uses a button
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;					//for finding the year
 import java.awt.BorderLayout;				//border layout is used
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;					//for defining the frame min size
 import java.util.Scanner;					//for parsing the version
 import java.awt.event.ActionListener;		//listens for actions
@@ -109,6 +117,7 @@ public class HelpAboutFrame extends JFrame {
 	protected int vertInc = Version.values().length/24 * 10;//the vertical increment
 	protected Dimension dim = new Dimension(550,450);//the frame dimensions
 	protected JLabel jvm;					//label to display the jvm version
+	protected JEditorPane policyPanel;
 	
 	
 	/********************************************************
@@ -292,9 +301,43 @@ public class HelpAboutFrame extends JFrame {
 		aboutScroller.setWheelScrollingEnabled(true);//allow mouse wheel scrolling
 		aboutScroller.getVerticalScrollBar().setUnitIncrement(vertInc);//set the vertical increment
 		
+		policyPanel = new JEditorPane();
+		policyPanel.setEditable(false);
+		URL policy = null;
+		
+		try{
+			policy = Main.loader.getResource("Privacy.html");
+		}catch(Exception e){
+			e.printStackTrace(System.err);
+		}
+		try {
+			policyPanel.setContentType("text/html");
+			policyPanel.setPage(policy);
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}		
+		
+		policyPanel.addHyperlinkListener(new HyperlinkListener() {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent hle) {
+                if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+                    System.out.println(hle.getURL());
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(hle.getURL().toURI());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+		
+		JScrollPane privacyPanel = new JScrollPane(policyPanel);
+		
 		helpTabMain = new JTabbedPane();	//create the tab control structure
 		helpTabMain.addTab("General", mainPanel);//add the main panel as the General tab
 		helpTabMain.addTab("Classes", aboutScroller);//add the scroll pane (on the filePanel) as the Classes tab
+		helpTabMain.addTab("Privacy", privacyPanel);
 		
 		helpTabMain.setMnemonicAt(0, KeyEvent.VK_G);//set the mnemonic for the general tab
 		helpTabMain.setMnemonicAt(1, KeyEvent.VK_C);//set the menemonic for the classes tab
