@@ -217,21 +217,21 @@ public class Main {
 		
 		Database database = terms.get(current);
 		
-		//if(prefs.getPolicyVersion() < policyVersion){
+		master.setVisible(true);
+		master.createBufferStrategy(buffers);
+		
+		if(prefs.getPolicyVersion() < policyVersion){
 			
-			//TODO display the policy
+			//display the policy
 			master.mainMenu.aboutHelpFrame.setVisible(true);
 			master.mainMenu.aboutHelpFrame.helpTabMain.setSelectedIndex(2);
 			
-			JOptionPane.showMessageDialog(master.mainMenu.aboutHelpFrame, "The Course Scheduler has an update privacy policy! You can view the policy in the About section of the Help menu.", "Updated Privacy Policy", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(master.mainMenu.aboutHelpFrame, "The Course Scheduler has an updated privacy policy! You can view the policy in the About section of the Help menu.", "Updated Privacy Policy", JOptionPane.INFORMATION_MESSAGE);
 			
 			//update the policy version
 			prefs.setPolicyVersion(policyVersion);			
 			prefs.save();
-		//}
-		
-		master.setVisible(true);
-		master.createBufferStrategy(buffers);
+		}
 		
 		if (database == null){
 			int hresult = JOptionPane.showConfirmDialog(Main.master,

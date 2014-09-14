@@ -381,6 +381,7 @@ public class HelpAboutFrame extends JFrame {
 		********************************************************/
 		public void actionPerformed(ActionEvent event){
 			Main.master.mainMenu.aboutHelpFrame.setVisible(false);//make frame invisible
+			HelpAboutFrame.this.helpTabMain.setSelectedIndex(0);	//reset the tab index
 		}
 	}
 	
