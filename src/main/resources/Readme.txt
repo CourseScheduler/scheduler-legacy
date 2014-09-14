@@ -24,6 +24,11 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.2
+	-Updated BannerWeb parsing to accommodate latest changes to website (sssue #7)
+	-Integrated anonymous data collection and updated privacy policy
+	-Updated branding to the new Course Schedule brand assests
+	
 4.12.1
 	-Signed JAR with new code signing SSL certificate (issue #1)
 	-Fixed issue that prevented instructor names from being included in course data (issue #2)
