@@ -8,7 +8,7 @@
 		<homepage href="${project.Url}" />
 
 		<icon kind="shortcut" href="logo.ico" />
-		<icon kind="splash" href="splash.gif" />
+		<icon kind="splash" href="banner.gif" />
 
 		#if(${offlineAllowed})
 		<offline-allowed />
