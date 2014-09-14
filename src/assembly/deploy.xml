@@ -1,0 +1,37 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>deploy</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}/target/lib/</directory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/target/classes/Images/</directory>
+			<includes>
+				<include>logo.ico</include>
+				<include>banner.gif</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/target/jnlp/</directory>
+			<includes>
+				<include>*.jnlp</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<!-- TODO files in the root of the zip are unsigned - how to fix? -->
+			<useProjectArtifact>true</useProjectArtifact>
+			<useProjectAttachments>true</useProjectAttachments>
+		</dependencySet>
+	</dependencySets>
+</assembly>
