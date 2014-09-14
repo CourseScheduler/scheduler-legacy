@@ -24,8 +24,11 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.3
+	-Resolved parsing issue (#11) with the course detail page preventing proper open/closed course detection
+	 
 4.12.2
-	-Updated BannerWeb parsing to accommodate latest changes to website (sssue #7)
+	-Updated BannerWeb parsing to accommodate latest changes to website (issue #7)
 	-Integrated anonymous data collection and updated privacy policy
 	-Updated branding to the new Course Schedule brand assests
 	

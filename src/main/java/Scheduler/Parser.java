@@ -490,7 +490,8 @@ public enum Parser {
 					}
 					break;
 				}
-				case 199:{	//Seats
+				case 142:	//Seats can also be at 142
+				case 183:{	//or at 183
 					
 					if(entryScanner.hasNextInt()){
 						seats = entryScanner.nextInt();
