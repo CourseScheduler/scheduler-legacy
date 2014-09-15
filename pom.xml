@@ -365,7 +365,7 @@
 				<executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>install</phase> <!-- bind to the packaging phase -->
+						<phase>install</phase> <!-- bind to the install phase - may not happen early enough if in package phase -->
 						<goals>
 							<goal>single</goal>
 						</goals>

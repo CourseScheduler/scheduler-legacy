@@ -8,9 +8,9 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>${basedir}/target/lib/</directory>
+			<directory>${basedir}/target/</directory>
 			<includes>
-				<include>*.jar</include>
+				<include>**/*.jar</include>
 			</includes>
 		</fileSet>
 		<fileSet>
@@ -27,11 +27,4 @@
 			</includes>
 		</fileSet>
 	</fileSets>
-	<dependencySets>
-		<dependencySet>
-			<!-- TODO files in the root of the zip are unsigned - how to fix? -->
-			<useProjectArtifact>true</useProjectArtifact>
-			<useProjectAttachments>true</useProjectAttachments>
-		</dependencySet>
-	</dependencySets>
 </assembly>
