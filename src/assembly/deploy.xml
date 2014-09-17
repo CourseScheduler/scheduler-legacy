@@ -9,12 +9,21 @@
 	<fileSets>
 		<fileSet>
 			<directory>${basedir}/target/</directory>
+			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>**/*.jar</include>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${basedir}/target/lib/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>*.jar</include>
 			</includes>
 		</fileSet>
 		<fileSet>
 			<directory>${basedir}/target/classes/Images/</directory>
+			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>logo.ico</include>
 				<include>banner.gif</include>
@@ -22,6 +31,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>${basedir}/target/jnlp/</directory>
+			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.jnlp</include>
 			</includes>
