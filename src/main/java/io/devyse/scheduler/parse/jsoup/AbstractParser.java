@@ -12,6 +12,11 @@ import org.jsoup.nodes.Document;
  *
  */
 public abstract class AbstractParser<V> extends ForkJoinTask<V> {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * The document which will be parsed by this task class

@@ -15,6 +15,7 @@ import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
 
 /**
@@ -22,6 +23,11 @@ import org.jsoup.select.Elements;
  *
  */
 public class TermSelectionParser extends FormParser {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 
@@ -49,12 +55,12 @@ public class TermSelectionParser extends FormParser {
 	 * @throws IOException
 	 */
 	private void parseTermSelectForm(Document document) throws IOException{
-		Element form = document.select("form").first();
+		FormElement form = (FormElement)document.select("form").first();
 		Connection connection = processForm(form);
 
 		Collection<Connection.KeyVal> data = new ArrayList<>();
 		
-		processFormHiddenInputs(form, data);
+		//processFormHiddenInputs(form, data);
 		
 		//TODO handle other form inputs
 		

@@ -8,15 +8,11 @@ import io.devyse.scheduler.parse.jsoup.AbstractParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ForkJoinTask;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,6 +22,11 @@ import org.jsoup.select.Elements;
  *
  */
 public class CourseResultsParser extends AbstractParser<Void> {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param document

@@ -7,23 +7,12 @@ import io.devyse.scheduler.parse.jsoup.banner.CourseResultsParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
 
 import javax.swing.JOptionPane;
 
-import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.HttpConnection;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.select.Elements;
 
 /**
  * @author Mike Reinhold

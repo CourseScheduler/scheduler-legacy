@@ -8,11 +8,10 @@ import java.util.Collection;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.KeyVal;
-import org.jsoup.Jsoup;
-import org.jsoup.Connection.Method;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
 
 /**
@@ -20,6 +19,11 @@ import org.jsoup.select.Elements;
  *
  */
 public abstract class FormParser extends AbstractParser<Document> {
+
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The document resulting from submitting the form
@@ -59,20 +63,21 @@ public abstract class FormParser extends AbstractParser<Document> {
 	 * @param form
 	 * @return
 	 */
-	protected Connection processForm(Element form){
+	protected Connection processForm(FormElement form){
 		String action = form.absUrl("action");
 		String method = form.attr("method");
 
 		System.out.println("Form submits to " + action + " via " + method);
 		
-		return Jsoup.connect(action).method(Method.valueOf(method));
+		return form.submit();
+		//return Jsoup.connect(action).method(Method.valueOf(method));
 	}
 	
 	/**
 	 * @param form
 	 * @param data
 	 */
-	protected void processFormHiddenInputs(Element form, Collection<Connection.KeyVal> data){
+	protected void processFormHiddenInputs(FormElement form, Collection<Connection.KeyVal> data){
 		Elements parameters = form.select("input[name][type=hidden]");
 
 		for(Element parameter: parameters){
