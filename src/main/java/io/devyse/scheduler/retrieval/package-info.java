@@ -22,10 +22,10 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
- * course search results and course detail pages
+ * General interfaces and base classes that are independent of the technology used
+ * to retrieve the course data from the course data source.
  * 
- * @author Mike Reinhold
+ * @author mreinhold
  *
  */
-package io.devyse.scheduler.parse.jsoup.banner;
+package io.devyse.scheduler.retrieval;

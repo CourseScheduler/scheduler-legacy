@@ -1,5 +1,5 @@
 /**
- * @(#)
+ * @(#) JOptionPaneSelector.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,11 +21,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package io.devyse.scheduler.retrieval;
+
+import io.devyse.scheduler.model.Term;
+
+import java.util.Collection;
+
+import javax.swing.JOptionPane;
+
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
- * course search results and course detail pages
+ * Term selector that prompts the user to select the term via a JOptionPane.
  * 
  * @author Mike Reinhold
  *
  */
-package io.devyse.scheduler.parse.jsoup.banner;
+public class JOptionPaneSelector implements TermSelector {
+
+	/**
+	 * Build a new JOptionPaneSelector to prompt the user for a term selection.
+	 */
+	public JOptionPaneSelector() {
+		super();
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.retrieval.TermSelection#selectTerm(java.util.Map)
+	 */
+	@Override
+	public Term selectTerm(Collection<Term> options) {
+		Object[] optionsArr = options.toArray();
+		
+		Term term = (Term) JOptionPane.showInputDialog(
+			null, 
+			"For which term would you like to download data?", 
+			"Select download term", 
+			JOptionPane.QUESTION_MESSAGE, 
+			null, 
+			optionsArr,
+			optionsArr[0]
+		);
+		
+		return term;
+	}
+}

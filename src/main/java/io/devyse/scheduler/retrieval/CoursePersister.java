@@ -1,5 +1,5 @@
 /**
- * @(#)
+ * @(#) CoursePersistor.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,11 +21,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package io.devyse.scheduler.retrieval;
+
+import java.util.Map;
+
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
- * course search results and course detail pages
+ * Interface for classes that persist course data into a data model
  * 
  * @author Mike Reinhold
  *
  */
-package io.devyse.scheduler.parse.jsoup.banner;
+public interface CoursePersister {
+
+	/**
+	 * Converts the parsed data fields into the corresponding data model
+	 * 
+	 * @param data parsed course data
+	 */
+	public void persist(Map<String, String> data);
+}

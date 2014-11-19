@@ -1,0 +1,120 @@
+/**
+ * @(#) CourseSearchParser.java
+ *
+ * This file is part of the Course Scheduler, an open source, cross platform
+ * course scheduling tool, configurable for most universities.
+ *
+ * Copyright (C) 2010-2014 Devyse.io; All rights reserved.
+ *
+ * @license GNU General Public License version 3 (GPLv3)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
+package io.devyse.scheduler.parse.jsoup.banner;
+
+import io.devyse.scheduler.parse.jsoup.AbstractParser;
+import io.devyse.scheduler.retrieval.CoursePersister;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ * Process the course search results page into separate sub-documents for each course
+ * 
+ * @author Mike Reinhold
+ *
+ */
+public class CourseSearchParser extends AbstractParser<Void> {
+	
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * The course data persister which will store the course into the data model
+	 */
+	private CoursePersister persister;
+	
+	/**
+	 * @param document
+	 */
+	public CourseSearchParser(Document document, CoursePersister persister){
+		super(document);
+		
+		this.persister = persister;
+	}
+
+	//TODO combine parser common methods
+	
+	/* (non-Javadoc)
+	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 */
+	@Override
+	protected boolean exec() {
+		try {
+			parse(this.getSource());
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * Parse the specified document to split it into separate documents for each course
+	 * 
+	 * @param document the course search results page from Banner
+	 */
+	private void parse(Document document){
+		//TODO remove debugging statements and switch to logging
+		Set<CourseParser> courseParsers = new HashSet<>();
+		System.out.println("\n=== Section Listing ==============================");
+		Elements sectionRows = document.select("table.datadisplaytable > tbody > tr:has(th.ddtitle, td.dddefault span)");
+		
+		System.out.println("Found " + sectionRows.size()/2 + " Sections (" + sectionRows.size() + " Rows)");
+		
+		for(Element row = sectionRows.first(); row != null; row = row.nextElementSibling()){
+			// Section info is 2 table rows - 1 "header" table row and 1 "detail" table row, each with sub info			
+			Element section = row.clone();
+			row = row.nextElementSibling();
+			Element sectionDetail = row.clone();
+			
+			Document sectionDocument = new Document(document.baseUri());
+			sectionDocument.appendChild(section);
+			sectionDocument.appendChild(sectionDetail);
+			
+			CourseParser courseParser = new CourseParser(sectionDocument);
+			courseParsers.add(courseParser);
+			courseParser.fork();
+		}
+		
+		//TODO evaluate moving this into the CourseParser instead of here
+		//may improve performance a bit since we don't have to wait for threads to join,
+		//but may limit our ability to track progress
+		int section = 0;
+		for(CourseParser parser : courseParsers){
+			Map<String, String> result = parser.join();
+
+			System.out.println("\n---- Section " + ++section);
+			persister.persist(result);
+		}
+	}
+}

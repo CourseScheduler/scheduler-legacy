@@ -1,5 +1,5 @@
 /**
- * @(#)
+ * @(#) TermSelector.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,11 +21,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package io.devyse.scheduler.retrieval;
+
+import io.devyse.scheduler.model.Term;
+
+import java.util.Collection;
+
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
- * course search results and course detail pages
+ * Interface for classes that perform term selection during data retrieval
  * 
  * @author Mike Reinhold
  *
  */
-package io.devyse.scheduler.parse.jsoup.banner;
+public interface TermSelector {
+
+	/**
+	 * Select a term from the specified list of term options. This may be an automated 
+	 * selection or prompt the user for input.
+	 * 
+	 * Implementations must be thread safe and cleanly utilize the EDT
+	 * 
+	 * @param options list of term codes to term names
+	 * @return the selected term
+	 */
+	public Term selectTerm(Collection<Term> options);
+}

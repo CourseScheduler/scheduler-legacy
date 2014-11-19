@@ -1,5 +1,5 @@
 /**
- * @(#)
+ * @(#) PreferencesSelector.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,11 +21,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+package Scheduler;
+
+import io.devyse.scheduler.retrieval.TermSelector;
+
+import java.util.Collection;
+
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
- * course search results and course detail pages
+ * Term selector that uses the currentTerm value in the user Preferences
  * 
  * @author Mike Reinhold
  *
  */
-package io.devyse.scheduler.parse.jsoup.banner;
+public class PreferencesSelector implements TermSelector {
+
+	/**
+	 * Build a new PreferencesSelector
+	 */
+	public PreferencesSelector() {
+		super();
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
+	 */
+	@Override
+	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
+		String termString = Main.prefs.getCurrentTerm();
+		
+		for(io.devyse.scheduler.model.Term term: options){
+			if(term.getId().equals(termString)){
+				return term;
+			}
+		}
+		
+		//TODO log some kind of warning, maybe return a custom value instead
+		return null;
+	}
+}

@@ -1,15 +1,37 @@
 /**
- * 
+ * @(#) TermSelectionParser.java
+ *
+ * This file is part of the Course Scheduler, an open source, cross platform
+ * course scheduling tool, configurable for most universities.
+ *
+ * Copyright (C) 2010-2014 Devyse.io; All rights reserved.
+ *
+ * @license GNU General Public License version 3 (GPLv3)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 package io.devyse.scheduler.parse.jsoup.banner;
 
+import io.devyse.scheduler.model.BasicTerm;
+import io.devyse.scheduler.model.Term;
 import io.devyse.scheduler.parse.jsoup.FormParser;
+import io.devyse.scheduler.retrieval.TermSelector;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
@@ -19,7 +41,11 @@ import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
 
 /**
- * @author mreinhold
+ * JSoup Parser which parser the Banner term selection page, selects a term 
+ * (either by prompting the user or via another mechanism), and submits the 
+ * term selection form to the server.
+ * 
+ * @author Mike Reinhold
  *
  */
 public class TermSelectionParser extends FormParser {
@@ -30,10 +56,22 @@ public class TermSelectionParser extends FormParser {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * 
+	 * Selector mechanism which will be used to select term code during download
 	 */
-	public TermSelectionParser(Document document) {
+	private TermSelector selector;
+	
+	/**
+	 * Create a new TermSelectionParser for the specified TermSelection document. Use
+	 * the specified TermSelector mechanism to determine which term should be submitted
+	 * in the TermSelection form.
+	 * 
+	 * @param document the term selection document which contains the available terms
+	 * @param selector the term selection mechanism for deciding among available terms
+	 */
+	public TermSelectionParser(Document document, TermSelector selector) {
 		super(document);
+		
+		this.selector = selector;
 	}
 
 	/* (non-Javadoc)
@@ -42,7 +80,7 @@ public class TermSelectionParser extends FormParser {
 	@Override
 	protected boolean exec() {
 		try{
-			parseTermSelectForm(this.getDocument());
+			parseTermSelectForm(this.getSource());
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -51,48 +89,51 @@ public class TermSelectionParser extends FormParser {
 	}
 	
 	/**
-	 * @param document
-	 * @throws IOException
+	 * Parse the Term Selection Form contained within the document
+	 * 
+	 * @param document the document containing the Term Selection form
+	 * @throws IOException if there is an issue submitting the selection form
 	 */
+	//TODO convert the static strings to configurations
 	private void parseTermSelectForm(Document document) throws IOException{
+		//find the form within the document and prepare to submit the form
 		FormElement form = (FormElement)document.select("form").first();
 		Connection connection = processForm(form);
 
 		Collection<Connection.KeyVal> data = new ArrayList<>();
+				
+		//TODO handle other form inputs?
 		
-		//processFormHiddenInputs(form, data);
-		
-		//TODO handle other form inputs
-		
+		//find the form element which will hold the term selection and get the name
 		Element termSelect = document.select("form select#term_input_id").first();
+		String termParameter = termSelect.attr("name");		
+		
+		//find the form element which contains the available terms
 		Elements terms = document.select("form select#term_input_id option");
 		
-		//show term select
-		String termParameter = termSelect.attr("name");
-		
-		Map<String, String> termOptions = new HashMap<>();
+		//extract the available term codes and names from the form field
+		List<Term> termOptions = new ArrayList<>();
 		System.out.println(termParameter + " selected from:");
 		for(Element term: terms){
-			termOptions.put(term.text(), term.attr("value"));
-			System.out.println(term.attr("value") + ": " + term.text());
+			String code = term.attr("value");
+			if(code.compareTo("") != 0){
+				Term found = new BasicTerm(code, term.text());
+				termOptions.add(found);
+				
+				//TODO stop this debug printing
+				System.out.println(found.getId() + ": " + found.getName());
+			} else {
+				
+				//TODO stop debug printing
+				//TODO log info
+				System.out.println("Ignored empty entry: " + code);
+			}
 		}
 		
-		/*
-		String term = (String) JOptionPane.showInputDialog(
-				null, 
-				"For which term would you like to download data?", 
-				"Select download term", 
-				JOptionPane.QUESTION_MESSAGE, 
-				null, 
-				termOptions.keySet().toArray(),
-				terms.first().nextSibling().attr("value")
-				);
-		data.put(termParameter, termOptions.get(term));
-		*/
+		//select the term to download using the term selector and add it to the HTTP connection parameters
+		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getId()));
 		
-		//TODO determine how to handle term selection in the UI - should be different than this...
-		data.add(HttpConnection.KeyVal.create(termParameter, terms.first().nextSibling().attr("value")));
-		
+		//submit the form and parse the resulting document as the result of the task
 		this.setRawResult(connection.data(data).execute().parse());
 	}
 }
