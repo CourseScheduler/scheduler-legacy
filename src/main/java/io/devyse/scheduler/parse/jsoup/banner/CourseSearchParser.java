@@ -64,26 +64,9 @@ public class CourseSearchParser extends AbstractParser<Void> {
 	//TODO combine parser common methods
 	
 	/* (non-Javadoc)
-	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
 	 */
-	@Override
-	protected boolean exec() {
-		try {
-			parse(this.getSource());
-			return true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	/**
-	 * Parse the specified document to split it into separate documents for each course
-	 * 
-	 * @param document the course search results page from Banner
-	 */
-	private void parse(Document document){
+	protected void parse(Document document){
 		//TODO remove debugging statements and switch to logging
 		Set<CourseParser> courseParsers = new HashSet<>();
 		System.out.println("\n=== Section Listing ==============================");

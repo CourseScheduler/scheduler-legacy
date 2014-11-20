@@ -25,11 +25,11 @@ package io.devyse.scheduler.parse.jsoup.banner;
 
 import io.devyse.scheduler.parse.jsoup.FormParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jsoup.Connection;
+import org.jsoup.Connection.KeyVal;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,37 +59,12 @@ public class CourseSelectionParser extends FormParser {
 		super(document);
 	}
 
-	//TODO refactor FormParser to use additional common methods
-	
 	/* (non-Javadoc)
-	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 * @see io.devyse.scheduler.parse.jsoup.FormParser#buildFormParameters(org.jsoup.nodes.FormElement, org.jsoup.Connection)
 	 */
 	@Override
-	protected boolean exec() {
-		try{
-			parseCourseSelectionForm(this.getSource());
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	/**
-	 * Process the Course Selection Form from the document to build the connection and extract
-	 * form fields for use as key-value pair parameters
-	 * 
-	 * @param document the document containing the course selection form
-	 * @throws IOException if there are issues executing the form submission
-	 */
-	private void parseCourseSelectionForm(Document document) throws IOException{
-		//TODO remove debugging statements and log instead
-		System.out.println("=== Subject Selection");
-		FormElement form = (FormElement)document.select("form").first();
-		Connection connection = processForm(form);
-		
-		Collection<Connection.KeyVal> data = new ArrayList<>();
+	protected Collection<KeyVal> buildFormParameters(FormElement form, Connection connection){
+		Collection<KeyVal> data = new ArrayList<>();
 
 		//for some reason the jsoup prepare builds out the sel_day fields when the web form does not when using a browser
 		//unless this is run wide open it only seems to match a small set of courses, possibly due to "AND"-like behavior
@@ -117,7 +92,7 @@ public class CourseSelectionParser extends FormParser {
 		data.add(HttpConnection.KeyVal.create("end_hh", "0"));
 		data.add(HttpConnection.KeyVal.create("end_mi", "0"));
 		data.add(HttpConnection.KeyVal.create("end_ap", "a"));
-		
-		this.setRawResult(connection.data(data).execute().parse());
+
+		return data;
 	}
 }

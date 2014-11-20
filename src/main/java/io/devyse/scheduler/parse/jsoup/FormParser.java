@@ -28,11 +28,8 @@ import java.util.Collection;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.KeyVal;
-import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
-import org.jsoup.select.Elements;
 
 /**
  * Abstract FormParser to provide basic functionality for processing documents containing
@@ -48,6 +45,11 @@ public abstract class FormParser extends AbstractParser<Document> {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Default form selector - very simple. Just find form tags
+	 */
+	public static final String DEFAULT_FORM_SELECTOR = "form";
+	
 	/**
 	 * The document resulting from submitting the form
 	 */
@@ -79,25 +81,59 @@ public abstract class FormParser extends AbstractParser<Document> {
 		this.result = value;
 	}
 
-	/**
-	 * Submit the form using the connection previously prepared from the form along
-	 * with the specified key-value pair parameters
-	 * 
-	 * @param connection the connection previously prepared for the form referencing the target URL and submission method
-	 * @param data the collection of key-value parameters that are the form contents being submitted
-	 * @throws IOException if there are issues executing the form submission
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
 	 */
-	protected void submitForm(Connection connection, Collection<KeyVal> data) throws IOException{
-		connection.data(data).execute().parse();
+	@Override
+	protected void parse(Document document) throws IOException {
+		//parse the form from the document
+		FormElement form = parseForm(document);
+		
+		//prepare a connection from the form
+		Connection connection = prepareForm(form);
+		
+		//build the form parameters
+		Collection<KeyVal> data = buildFormParameters(form, connection);
+		
+		//submit the form and store the resulting document
+		submitForm(connection, data);
 	}
 	
 	/**
-	 * Process the form to determine the target URL and the submission method specified in the form.
+	 * Parse the first form from the document and return it for further processing.
+	 * 
+	 * This method is called by the {@link #parse(Document)} method.
+	 * 
+	 * @param document the document containing the form
+	 * @return the first form found in the document 
+	 */
+	protected FormElement parseForm(Document document){
+		return parseForm(document, DEFAULT_FORM_SELECTOR); 
+	}
+	
+	/**
+	 * Parse the first form found in the document matching the specified selector and return it for further processing.
+	 * 
+	 * This method is called by {@link #parseForm(Document)} using the following selector:
+	 * {@value #DEFAULT_FORM_SELECTOR}
+	 * 
+	 * @param document the document containing the form
+	 * @param selector the css selector for finding the form
+	 * @return the first form found in the document matching the selector
+	 */
+	protected FormElement parseForm(Document document, String selector){
+		FormElement form = (FormElement)document.select(selector).first();
+		return form;
+	}
+	
+	/**
+	 * Process the form to determine the target URL and the submission method specified in the form. Prepare
+	 * a connection for performing the form action.
 	 * 
 	 * @param form the form element from which the connection will be built
 	 * @return a prepared connection based on the form action and method
 	 */
-	protected Connection processForm(FormElement form){
+	protected Connection prepareForm(FormElement form){
 		String action = form.absUrl("action");
 		String method = form.attr("method");
 
@@ -107,22 +143,27 @@ public abstract class FormParser extends AbstractParser<Document> {
 		return form.submit();
 	}
 	
-	//TODO is this used or even necessary anymore?
 	/**
-	 * Process the form hidden inputs and build corresponding key-value pair parameters
+	 * Build the Key-value pair parameters from the form content for use in executing the form submission.
 	 * 
-	 * @param form the form element from which the hidden inputs should be converted into submission parameters
-	 * @param data the current set of key-value parameters
-	 * @return the updated collection of key-value parameters
+	 * FormParser implementations should implement this method in order to ensure the form request parameters 
+	 * are properly formed.
+	 * 
+	 * @param form the form element which the parameters should be built from and for
+	 * @param connection the prepared connection for the form
+	 * @return the collection of key-value pairs which are input into the form
 	 */
-	protected Collection<KeyVal> processFormHiddenInputs(FormElement form, Collection<Connection.KeyVal> data){
-		Elements parameters = form.select("input[name][type=hidden]");
-
-		for(Element parameter: parameters){
-			System.out.println(parameter.attr("name") + ": " + parameter.attr("value"));
-			data.add(HttpConnection.KeyVal.create(parameter.attr("name"), parameter.attr("value")));
-		}
-		
-		return data;
+	protected abstract Collection<KeyVal> buildFormParameters(FormElement form, Connection connection);
+	
+	/**
+	 * Submit the form using the connection previously prepared from the form along
+	 * with the specified key-value pair parameters
+	 * 
+	 * @param connection the connection previously prepared for the form referencing the target URL and submission method
+	 * @param data the collection of key-value parameters that are the form contents being submitted
+	 * @throws IOException if there are issues executing the form submission
+	 */
+	protected void submitForm(Connection connection, Collection<KeyVal> data) throws IOException{
+		this.setRawResult(connection.data(data).execute().parse());
 	}
 }

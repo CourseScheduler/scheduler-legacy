@@ -94,4 +94,30 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 	private void setSource(Document source) {
 		this.source = source;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 */
+	@Override
+	protected boolean exec() {
+		try {
+			parse(this.getSource());
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block - improve this with logging
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * Parse the specified document and process the data contained within as appropriate.
+	 * 
+	 * Abstract parser implementations should implement this method as necessary to handle the 
+	 * document form and contents.
+	 * 
+	 * @param document the document which should be parsed by the AbstractParser
+	 * @throws Exception in the event there is an issue parsing the document
+	 */
+	protected abstract void parse(Document document) throws Exception;
 }

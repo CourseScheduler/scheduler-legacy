@@ -28,12 +28,12 @@ import io.devyse.scheduler.model.Term;
 import io.devyse.scheduler.parse.jsoup.FormParser;
 import io.devyse.scheduler.retrieval.TermSelector;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.jsoup.Connection;
+import org.jsoup.Connection.KeyVal;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -73,43 +73,22 @@ public class TermSelectionParser extends FormParser {
 		
 		this.selector = selector;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 * @see io.devyse.scheduler.parse.jsoup.FormParser#buildFormParameters(org.jsoup.nodes.FormElement, org.jsoup.Connection)
 	 */
 	@Override
-	protected boolean exec() {
-		try{
-			parseTermSelectForm(this.getSource());
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	/**
-	 * Parse the Term Selection Form contained within the document
-	 * 
-	 * @param document the document containing the Term Selection form
-	 * @throws IOException if there is an issue submitting the selection form
-	 */
-	//TODO convert the static strings to configurations
-	private void parseTermSelectForm(Document document) throws IOException{
-		//find the form within the document and prepare to submit the form
-		FormElement form = (FormElement)document.select("form").first();
-		Connection connection = processForm(form);
-
-		Collection<Connection.KeyVal> data = new ArrayList<>();
+	protected Collection<KeyVal> buildFormParameters(FormElement form, Connection connection){
+		Collection<KeyVal> data = new ArrayList<>();
 				
 		//TODO handle other form inputs?
 		
 		//find the form element which will hold the term selection and get the name
-		Element termSelect = document.select("form select#term_input_id").first();
+		Element termSelect = form.select("select#term_input_id").first();
 		String termParameter = termSelect.attr("name");		
 		
 		//find the form element which contains the available terms
-		Elements terms = document.select("form select#term_input_id option");
+		Elements terms = form.select("select#term_input_id option");
 		
 		//extract the available term codes and names from the form field
 		List<Term> termOptions = new ArrayList<>();
@@ -133,7 +112,6 @@ public class TermSelectionParser extends FormParser {
 		//select the term to download using the term selector and add it to the HTTP connection parameters
 		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getId()));
 		
-		//submit the form and parse the resulting document as the result of the task
-		this.setRawResult(connection.data(data).execute().parse());
+		return data;
 	}
 }

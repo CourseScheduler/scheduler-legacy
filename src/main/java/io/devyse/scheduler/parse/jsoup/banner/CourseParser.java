@@ -65,27 +65,9 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 	}
 
 	/* (non-Javadoc)
-	 * @see java.util.concurrent.ForkJoinTask#exec()
+	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
 	 */
-	@Override
-	protected boolean exec() {
-		try {
-			parseCourse(this.getSource());
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block - improve this with logging
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	/**
-	 * Parse a Course sub-document out of the main course search result page
-	 * 
-	 * @param document the Course sub document
-	 * @throws IOException when trying to open the Catalog Entry or Course Detail pages
-	 */
-	private void parseCourse(Document document) throws IOException{
+	protected void parse(Document document) throws IOException{
 		Map<String, String> values = new HashMap<>();
 		Element sectionHeaderElement = document.select("tr > th.ddtitle > a[href]").first();
 		
