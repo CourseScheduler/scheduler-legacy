@@ -42,6 +42,12 @@ package Scheduler;								//define as member of Scheduler package
  * Import Progress Monitor generic for monitoring downloads
  * Import JOption Pane for gui messages
 *********************************************************/
+import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
+import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
+import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
+import io.devyse.scheduler.retrieval.StaticSelector;
+import io.devyse.scheduler.retrieval.TermSelector;
+
 import java.io.IOException;						//import IOExceptions
 import java.io.File;							//import File class
 import java.net.MalformedURLException;
@@ -52,8 +58,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;						//import scanner
+import java.util.concurrent.ForkJoinPool;
 
 import javax.swing.JOptionPane;					//Import message pane
+
+import org.jsoup.Jsoup;
+import org.jsoup.Connection.Method;
 
 import com.pollicitus.scheduler.retrieval.BannerDynamicCourseRetrieval;
 
@@ -129,7 +139,10 @@ public enum Parser {
 		
 		
 		
-		parseNew(items, sync, url, term, false, true);
+//		parseNew(items, sync, url, term, false, true);
+		jsoupParse(items, sync, url, term);
+		
+		
 		if(sync.isCanceled()){
 			return null;
 		}
@@ -142,13 +155,42 @@ public enum Parser {
 		return items;									//return database
 	}
 	
+	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
+		String startURL = "https://jweb.kettering.edu/cku1/xhwschedule.P_SelectSubject";
+		
+		url = startURL;
+		
+		ForkJoinPool pool = new ForkJoinPool();
+				
+		try {
+			TermSelector selector = new StaticSelector(term);
+			sync.updateWatch("Checking available terms in Banner", sync.finished + 1);
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
+			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
+			items.setTerm(selector.getTerm().getId());
+
+			sync.updateWatch("Querying course data from Banner", sync.finished + 1);
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
+
+			sync.updateWatch("Processing courses retrieved from Banner", sync.finished + 1);
+			pool.invoke(courseParse);
+			
+			sync.updateWatch("Finished processing courses from Banner", sync.finished + 1);
+			return items;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings){
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
 			Main.mapifyEntry(event, "university.name", "Kettering University");
 			Main.mapifyEntry(event, "university.url", url);
-			Main.mapifyEntry(event, "universit.term", term);
+			Main.mapifyEntry(event, "university.term", term);
 			Main.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
 			Main.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
 			Main.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());

@@ -83,8 +83,11 @@ public class Period implements Cloneable, Serializable, Comparable<Period> {
 	public Period(){
 		startTime = new Time();								//initializes and sets the  
 		endTime = new Time();								//fields to default values
-		period = new String("");							//for the new Period
-		duration = new String("");	
+		period = (startTime.toString() + "-" + 
+					endTime.toString() + (
+						endTime.getAm() ? "am" : "pm")
+		);													//for the new Period
+		duration = startTime.timeDifference(endTime).toString();	
 		nullTime.setAm(true);
 		nullTime.setHour(12);
 		nullTime.setMinute(0);
