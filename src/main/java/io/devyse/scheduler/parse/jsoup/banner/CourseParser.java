@@ -120,6 +120,7 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 			Elements meetingValues = meetingRow.select("td");
 			
 			int index=0;
+			values.put("meeting."+row, Boolean.TRUE.toString());
 			for(Element meetingValue: meetingValues){
 				values.put("meeting."+row+"."+headers.get(index), meetingValue.text());
 				index++;

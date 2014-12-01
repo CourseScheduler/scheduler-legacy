@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
  * @author Mike Reinhold
  *
  */
-public class JOptionPaneSelector implements TermSelector {
+public class JOptionPaneSelector extends AbstractTermSelector {
 
 	/**
 	 * Build a new JOptionPaneSelector to prompt the user for a term selection.
@@ -51,7 +51,7 @@ public class JOptionPaneSelector implements TermSelector {
 	public Term selectTerm(Collection<Term> options) {
 		Object[] optionsArr = options.toArray();
 		
-		Term term = (Term) JOptionPane.showInputDialog(
+		setTerm((Term) JOptionPane.showInputDialog(
 			null, 
 			"For which term would you like to download data?", 
 			"Select download term", 
@@ -59,8 +59,8 @@ public class JOptionPaneSelector implements TermSelector {
 			null, 
 			optionsArr,
 			optionsArr[0]
-		);
+		));
 		
-		return term;
+		return getTerm();
 	}
 }

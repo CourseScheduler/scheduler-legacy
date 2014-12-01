@@ -23,7 +23,7 @@
  */
 package Scheduler;
 
-import io.devyse.scheduler.retrieval.TermSelector;
+import io.devyse.scheduler.retrieval.AbstractTermSelector;
 
 import java.util.Collection;
 
@@ -33,7 +33,7 @@ import java.util.Collection;
  * @author Mike Reinhold
  *
  */
-public class PreferencesSelector implements TermSelector {
+public class PreferencesSelector extends AbstractTermSelector {
 
 	/**
 	 * Build a new PreferencesSelector
@@ -51,11 +51,11 @@ public class PreferencesSelector implements TermSelector {
 		
 		for(io.devyse.scheduler.model.Term term: options){
 			if(term.getId().equals(termString)){
-				return term;
+				setTerm(term);		//set and return current preferences term
+				return getTerm();	
 			}
 		}
 		
-		//TODO log some kind of warning, maybe return a custom value instead
-		return null;
+		return getTerm();	//return default value
 	}
 }

@@ -37,12 +37,22 @@ public interface TermSelector {
 
 	/**
 	 * Select a term from the specified list of term options. This may be an automated 
-	 * selection or prompt the user for input.
+	 * selection or prompt the user for input. TermSelectors are intended to be only used
+	 * once.
 	 * 
-	 * Implementations must be thread safe and cleanly utilize the EDT
+	 * Implementations must be thread safe and cleanly utilize the EDT. 
 	 * 
 	 * @param options list of term codes to term names
 	 * @return the selected term
 	 */
 	public Term selectTerm(Collection<Term> options);
+	
+	/**
+	 * Return the term previously selected by the {@link #selectTerm(Collection)} method. If the
+	 * {@link #selectTerm(Collection)} method has not yet been called on this term selector, this method
+	 * will return null.
+	 * 
+	 * @return the previously selected term, which may be null.
+	 */
+	public Term getTerm();
 }

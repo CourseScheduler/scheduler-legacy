@@ -27,13 +27,17 @@ import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
 import io.devyse.scheduler.retrieval.JOptionPaneSelector;
+import io.devyse.scheduler.retrieval.StaticSelector;
+import io.devyse.scheduler.retrieval.TermSelector;
 
+import java.util.Calendar;
 import java.util.concurrent.ForkJoinPool;
 
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 
-import Scheduler.LegacyDataModelPersistor;
+import Scheduler.Database;
+import Scheduler.LegacyDataModelPersister;
 
 /**
  * @author Mike Reinhold
@@ -51,15 +55,28 @@ public class JsoupParserTest {
 		
 		ForkJoinPool pool = new ForkJoinPool();
 		
+		Database latest = new Database(true);
+		
 		try {
-			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(startURL).method(Method.GET).execute().parse(), new JOptionPaneSelector());
+			TermSelector selector = new StaticSelector("201501");
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(startURL).method(Method.GET).execute().parse(), selector);
 			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
-			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersistor());
+			latest.setTerm(selector.getTerm().getId());
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(latest));
 			
 			pool.invoke(courseParse);
+			
+			Calendar cal = latest.getCreation();
+			cal.getTime();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if(latest == null){
+				System.out.println("Null database returned!!");
+			}else{
+				System.out.println("Retrieved new database: " + latest);
+			}
 		}
 	}
 		

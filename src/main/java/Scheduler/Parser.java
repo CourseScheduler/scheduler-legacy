@@ -127,6 +127,8 @@ public enum Parser {
 			return null;								//if so, return invalid value
 		}
 		
+		
+		
 		parseNew(items, sync, url, term, false, true);
 		if(sync.isCanceled()){
 			return null;
@@ -513,19 +515,19 @@ public enum Parser {
 		}
 		
 		Section section = new Section();
-		section.setType(courseType);
-		section.setCRN(crn.intValue());
-		section.setCourseID(courseId);
-		section.setSection(sectionId);
-		section.setCredit(credits);
-		section.setTitle(title);
+		section.setType(courseType);	//--done
+		section.setCRN(crn.intValue());	//--done
+		section.setCourseID(courseId);	//--done
+		section.setSection(sectionId);	//--done
+		section.setCredit(credits);		//--done
+		section.setTitle(title);		//--done
 		
 		if(instructorList.size()>0){
-			section.setInstructorList(instructorList.get(0));
+			section.setInstructorList(instructorList.get(0));	//--done
 		}
 		
 		//TODO update for more than 2 entries
-		section.setSecondary(daysList.size() > 1);
+		section.setSecondary(daysList.size() > 1);	//--done
 		
 		//make a note if there are unrecognized meeting times
 		if(daysList.size() > 2) {
@@ -535,7 +537,7 @@ public enum Parser {
 			section.setNotes(notes);
 		}
 		
-		if(periodList.size() > 0){
+		if(periodList.size() > 0){		//--done
 			section.setPeriod(periodList.get(0));
 			if(periodList.size() > 1){
 				section.setSecPeriod(periodList.get(1));
@@ -546,7 +548,7 @@ public enum Parser {
 			section.setPeriod("");
 		}
 		
-		if(daysList.size() > 0){
+		if(daysList.size() > 0){		//--done
 			section.setDays(daysList.get(0));
 			if(daysList.size() > 1){
 				section.setSecDays(daysList.get(1));
@@ -557,7 +559,7 @@ public enum Parser {
 			section.setDays(new boolean[Day.values().length]);
 		}
 		
-		if(locationList.size() > 0){
+		if(locationList.size() > 0){	//--done
 			section.setLocation(locationList.get(0));
 			if(locationList.size() > 1){
 				section.setLocation(locationList.get(1));
@@ -568,7 +570,7 @@ public enum Parser {
 			section.setLocation("");
 		}
 		
-		section.setSeats(seats);
+		section.setSeats(seats);		//--done
 		
 		return section;
 	}

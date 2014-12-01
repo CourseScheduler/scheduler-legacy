@@ -60,8 +60,6 @@ public class CourseSearchParser extends AbstractParser<Void> {
 		
 		this.persister = persister;
 	}
-
-	//TODO combine parser common methods
 	
 	/* (non-Javadoc)
 	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
