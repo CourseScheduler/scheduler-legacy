@@ -36,8 +36,8 @@ public class Main {
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
 	********************************************************/
-	protected static final long versionID = 2013010921152L;//object id
-	protected static final long buildNumber = 1520L;//build number
+	protected static final long versionID = 2014120117530L;//object id
+	protected static final long buildNumber = 1567L;//build number
 	protected static final String version = new String("4.12.4");
 	protected static final int policyVersion = 1;
 	
