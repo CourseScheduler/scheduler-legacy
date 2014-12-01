@@ -164,18 +164,49 @@ public enum Parser {
 				
 		try {
 			TermSelector selector = new StaticSelector(term);
-			sync.updateWatch("Checking available terms in Banner", sync.finished + 1);
+			sync.updateWatch("Checking available terms in Banner", sync.finished++);
 			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
+
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
+			
 			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
 			items.setTerm(selector.getTerm().getId());
 
-			sync.updateWatch("Querying course data from Banner", sync.finished + 1);
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
+			
+			sync.updateWatch("Querying course data from Banner", sync.finished++);
 			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
 
-			sync.updateWatch("Processing courses retrieved from Banner", sync.finished + 1);
-			pool.invoke(courseParse);
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
 			
-			sync.updateWatch("Finished processing courses from Banner", sync.finished + 1);
+			sync.updateWatch("Processing courses retrieved from Banner", sync.finished++);
+			pool.execute(courseParse);
+			
+			//simple progress updating
+			long last = pool.getQueuedTaskCount();
+			while(!courseParse.isDone()){
+				Thread.sleep(100);
+				long queued = pool.getQueuedTaskCount();
+				sync.finished = (int)(sync.finished + Long.max((last-queued),1));
+				sync.updateWatch("Waiting for " + queued + " processing tasks to complete", sync.finished);
+				last = queued;
+
+				if(sync.isCanceled()){
+					pool.shutdownNow();
+					return null;
+				}
+			}
+			
+			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
 			return items;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -748,9 +779,13 @@ public enum Parser {
 					
 					old.setName(ku);					//set the ku name to the prof rating
 					profs.put(old.getName(), old);		//put the prof back in the list
+					
+					second.close();
+					first.close();
 				}
 				catch(Exception ex){}					//catch bad line input, but do nothing
 			}
+			file.close();
 		}
 		catch(Exception ex1){ex1.printStackTrace(); System.err.println(ex1.getLocalizedMessage());}							//catch file not found but do nothing
 	}
