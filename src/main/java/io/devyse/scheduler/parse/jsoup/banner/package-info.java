@@ -21,11 +21,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+
 /**
- * Classes for parsing BannerWeb term selection and course search forms as well as
+ * Jsoup classes for parsing BannerWeb term selection and course search forms as well as
  * course search results and course detail pages
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 package io.devyse.scheduler.parse.jsoup.banner;

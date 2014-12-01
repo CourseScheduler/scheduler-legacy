@@ -29,10 +29,10 @@ import java.util.Collection;
 
 /**
  * Selects from the list of available terms statically based on the provided termId during
- * constructior
+ * construction
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class StaticSelector extends AbstractTermSelector {
 

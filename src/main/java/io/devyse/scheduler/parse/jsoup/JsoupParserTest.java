@@ -39,21 +39,20 @@ import Scheduler.Database;
 import Scheduler.LegacyDataModelPersister;
 
 /**
+ * Testing harness for developing and debugging the JSoup parser classes separate from the
+ * rest of the scheduler
+ * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class JsoupParserTest {
 
 	public static void main(String[] args){
-
 		//Make sure the majority of SSL/TLS protocols are enabled
 		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
-		
 		String startURL = "https://jweb.kettering.edu/cku1/xhwschedule.P_SelectSubject";
-		
 		ForkJoinPool pool = new ForkJoinPool();
-		
 		Database latest = new Database(true);
 		
 		try {

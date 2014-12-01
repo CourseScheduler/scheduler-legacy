@@ -42,7 +42,7 @@ import org.jsoup.select.Elements;
  * to the inputs into the course selection form.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class CourseSelectionParser extends FormParser {
 

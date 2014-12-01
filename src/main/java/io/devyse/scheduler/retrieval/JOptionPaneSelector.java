@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
  * Term selector that prompts the user to select the term via a JOptionPane.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class JOptionPaneSelector extends AbstractTermSelector {
 

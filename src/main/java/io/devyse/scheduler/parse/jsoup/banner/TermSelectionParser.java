@@ -46,7 +46,7 @@ import org.jsoup.select.Elements;
  * term selection form to the server.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class TermSelectionParser extends FormParser {
 

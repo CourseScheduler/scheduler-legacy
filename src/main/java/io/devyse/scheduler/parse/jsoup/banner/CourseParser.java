@@ -45,7 +45,7 @@ import org.jsoup.select.Elements;
  * in order to find the course data.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class CourseParser extends AbstractParser<Map<String, String>>{
 
@@ -205,6 +205,5 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 		} catch(Exception e){
 			//Not all courses will have prerequisites and this element is only present if prerequisites exist
 		}
-		
 	}
 }

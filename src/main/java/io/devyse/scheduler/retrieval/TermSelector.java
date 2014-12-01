@@ -31,7 +31,7 @@ import java.util.Collection;
  * Interface for classes that perform term selection during data retrieval
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public interface TermSelector {
 

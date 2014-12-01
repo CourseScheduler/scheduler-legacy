@@ -36,7 +36,7 @@ import org.jsoup.nodes.FormElement;
  * a form.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public abstract class FormParser extends AbstractParser<Document> {
 

@@ -21,11 +21,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+
 /**
  * JSoup parser classes and supporting elements. Provides base classes and interfaces
  * independent of the source information system.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 package io.devyse.scheduler.parse.jsoup;

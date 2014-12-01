@@ -35,7 +35,7 @@ import org.jsoup.nodes.Document;
  * The AbstractParser may spawn additional ForkJoinTasks as necessary.
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 

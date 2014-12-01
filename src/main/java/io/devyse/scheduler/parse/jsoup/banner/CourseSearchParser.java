@@ -38,7 +38,7 @@ import org.jsoup.select.Elements;
  * Process the course search results page into separate sub-documents for each course
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public class CourseSearchParser extends AbstractParser<Void> {
 	

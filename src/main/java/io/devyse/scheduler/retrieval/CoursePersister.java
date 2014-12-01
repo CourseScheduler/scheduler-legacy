@@ -29,7 +29,7 @@ import java.util.Map;
  * Interface for classes that persist course data into a data model
  * 
  * @author Mike Reinhold
- *
+ * @since 4.12.4
  */
 public interface CoursePersister {
 

@@ -21,11 +21,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
+
 /**
  * General interfaces and base classes that are independent of the technology used
  * to retrieve the course data from the course data source.
  * 
  * @author mreinhold
- *
+ * @since 4.12.4
  */
 package io.devyse.scheduler.retrieval;
