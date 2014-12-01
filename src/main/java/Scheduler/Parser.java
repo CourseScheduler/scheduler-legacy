@@ -137,11 +137,9 @@ public enum Parser {
 			return null;								//if so, return invalid value
 		}
 		
-		
-		
-//		parseNew(items, sync, url, term, false, true);
+		long start = System.currentTimeMillis();
 		jsoupParse(items, sync, url, term);
-		
+		long end = System.currentTimeMillis();		
 		
 		if(sync.isCanceled()){
 			return null;
@@ -150,7 +148,7 @@ public enum Parser {
 		sync.updateWatch(null, sync.getWatch().getMaximum());//set progress finished
 		items.setTerm(term);							//set database term
 		
-		registerDownloadEvent(url, term, items, downloadRatings);
+		registerDownloadEvent(url, term, items, downloadRatings, end - start);
 		
 		return items;									//return database
 	}
@@ -215,7 +213,7 @@ public enum Parser {
 		}
 	}
 	
-	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings){
+	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings, long runtime){
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
@@ -228,6 +226,7 @@ public enum Parser {
 			Main.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
 			Main.mapifyEntry(event, "results.professors.count", items.getProfs().size());
 			Main.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
+			Main.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
 			
 			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
 		}
