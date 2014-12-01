@@ -18,12 +18,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -71,9 +67,7 @@ public class Main {
 	
 	private static final int buffers = 1;
 	
-	protected static String defURL = new String("https://jweb.kettering.edu/cku1/bwckschd.p_get_crse_unsec");
-	protected static String defGradCampURL = new String("https://jweb.kettering.edu/cku1/xhwschedule_grad07.P_ViewSchedule");
-	protected static String defGradDistURL = new String("https://jweb.kettering.edu/cku1/xhwschedule_grad08.P_ViewSchedule");
+	protected static String defURL = new String("https://jweb.kettering.edu/cku1/xhwschedule.P_SelectSubject");
 	protected static String defSID = new String("366");
 	
 	protected static ClassLoader loader;

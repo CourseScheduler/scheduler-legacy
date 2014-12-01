@@ -154,10 +154,6 @@ public enum Parser {
 	}
 	
 	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
-		String startURL = "https://jweb.kettering.edu/cku1/xhwschedule.P_SelectSubject";
-		
-		url = startURL;
-		
 		ForkJoinPool pool = new ForkJoinPool();
 				
 		try {

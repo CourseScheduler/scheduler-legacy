@@ -26,7 +26,6 @@ package io.devyse.scheduler.parse.jsoup;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
-import io.devyse.scheduler.retrieval.JOptionPaneSelector;
 import io.devyse.scheduler.retrieval.StaticSelector;
 import io.devyse.scheduler.retrieval.TermSelector;
 
