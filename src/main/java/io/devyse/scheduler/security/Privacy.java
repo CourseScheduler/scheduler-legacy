@@ -28,24 +28,33 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * Methods and utilities for ensuring that user private data remains private.
+ * 
  * @author Mike Reinhold
  * @since 4.12.5
  */
 public class Privacy {
 
-
+	/**
+	 * Map of private data values to placeholders for use during private data redaction.
+	 */
 	private static Map<String, String> redactValues;
-	
+
+	/**
+	 * Initialization of the redacted values map
+	 */
 	static {
 		redactValues = new HashMap<>();
 		
 		redactValues.put(System.getProperty("user.name"), "{user.name}");
-		
 	}
 	
 	/**
-	 * @param string
-	 * @return
+	 * Redact private information out of the provided string and replace it with
+	 * a placeholder. The redacted string is returned.
+	 * 
+	 * @param string the string from which to redact private information
+	 * @return the redacted form of the input string
 	 */
 	public static String redactPrivateInformation(String string){
 		String result = string;
