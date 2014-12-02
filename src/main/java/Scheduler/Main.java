@@ -1,5 +1,6 @@
 package Scheduler;
 
+import io.devyse.scheduler.analytics.keen.KeenUtils;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
 import io.keen.client.java.KeenProject;
@@ -38,7 +39,7 @@ public class Main {
 	********************************************************/
 	protected static final long versionID = 2014120117530L;//object id
 	protected static final long buildNumber = 1567L;//build number
-	protected static final String version = new String("4.12.4");
+	protected static final String version = new String("4.12.5");
 	protected static final int policyVersion = 1;
 	
 	
@@ -252,7 +253,7 @@ public class Main {
 	private static void registerStartupEvent(){
 		if(!Main.prefs.isAnalyticsOptOut()){
 			Map<String, Object> startupEvent = new HashMap<>();
-			Main.mapifyEntry(startupEvent, "startup.type", "end user");
+			KeenUtils.mapifyEntry(startupEvent, "startup.type", "end user");
 			Main.registerEvent(KEEN_STARTUP, startupEvent);
 		}
 	}
@@ -263,23 +264,6 @@ public class Main {
 		}catch(Exception e){
 			//nothing
 		}
-	}
-
-	private static Map<String, String> redactValues;
-	
-	static {
-		redactValues = new HashMap<>();
-		
-		redactValues.put(System.getProperty("user.name"), "{user.name}");
-		
-	}
-	
-	public static String redactUserInfo(String string){
-		String result = string;
-		for(Entry<String, String> item: redactValues.entrySet()){
-			result = result.replaceAll(item.getKey(), item.getValue());
-		}
-		return result;
 	}
 	
 	private static void setupKeen() {
@@ -323,13 +307,13 @@ public class Main {
 			//TODO exclude user sensitive attributes?
 			Map<String, Object> system = new HashMap<>();
 			for(Object key: System.getProperties().keySet()){
-				mapifyEntry(system, key.toString(), System.getProperty(key.toString()));
+				KeenUtils.mapifyEntry(system, key.toString(), System.getProperty(key.toString()));
 			}
 			global.put("system", system);
 			
 			//application details map
-			Main.mapifyEntry(global, "scheduler.version", Main.version);
-			Main.mapifyEntry(global, "scheduler.home", Main.folderName);
+			KeenUtils.mapifyEntry(global, "scheduler.version", Main.version);
+			KeenUtils.mapifyEntry(global, "scheduler.home", Main.folderName);
 			
 			//TODO generate or find some unique identifier
 			
@@ -340,39 +324,11 @@ public class Main {
 				Main.prefs.save();
 			}
 			
-			Main.mapifyEntry(global, "user.id", identifier);
+			KeenUtils.mapifyEntry(global, "user.id", identifier);
 			
 			keen.setGlobalProperties(global);
 		}catch(Exception e){
 			System.out.println("Unable to initialize Keen IO Analytics: " + e);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void mapifyEntry(Map<String, Object> map, String key, Object value){
-		if(key.contains(".")){
-			int left = key.indexOf(".");
-			String parent = key.substring(0, left);
-			String child = key.substring(left+1, key.length());
-			
-			Map<String, Object> subMap;
-			
-			try{
-				subMap = (Map<String,Object>)map.get(parent);
-			}catch(ClassCastException e){
-				Object current = map.remove(parent);
-				subMap = new HashMap<String,Object>();
-				map.put(parent, subMap);
-				subMap.put("@", redactUserInfo(current.toString()));
-			}
-			if(subMap == null){
-				subMap = new HashMap<String, Object>();
-				map.put(parent, subMap);
-			}
-			
-			mapifyEntry(subMap, child, value);
-		}else{
-			map.put(key, redactUserInfo(value.toString()));
 		}
 	}
 	

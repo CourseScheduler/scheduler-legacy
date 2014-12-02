@@ -34,6 +34,8 @@ package Scheduler;								//define as member of scheduler package
 /*********************************************************
  * The following are the necessary imports for correct function
 ********************************************************/
+import io.devyse.scheduler.analytics.keen.KeenUtils;
+
 import java.awt.BorderLayout;					//for main frame
 import java.awt.Dimension;						//for frame min dimensions
 import java.awt.FlowLayout;						//for flow layout creation
@@ -702,30 +704,30 @@ public class OptionsFrame extends JFrame {
 
 	private void registerConfigEvent(){
 		Map<String, Object> configEvent = new HashMap<>();
-		Main.mapifyEntry(configEvent, "config.analytics.enabled", Main.prefs.isAnalyticsOptOut());
-		Main.mapifyEntry(configEvent, "config.term.current", Main.prefs.getCurrentTerm());
-		Main.mapifyEntry(configEvent, "config.course.graduate.distance.url", Main.prefs.getGradDistURL());
-		Main.mapifyEntry(configEvent, "config.course.graduate.campus.url", Main.prefs.getGradURL());
-		Main.mapifyEntry(configEvent, "config.course.undergraduate.url", Main.prefs.getURL());
-		Main.mapifyEntry(configEvent, "config.course.graduate.enabled", Main.prefs.isDownloadGrad());
-		Main.mapifyEntry(configEvent, "config.course.graduate.distance.enabled", Main.prefs.isDownloadGradDist());
-		Main.mapifyEntry(configEvent, "config.course.graduate.campus.enabled", Main.prefs.isDownloadGrad());
-		Main.mapifyEntry(configEvent, "config.course.undergraduate.enabled", Main.prefs.isDownloadUGrad());
-		Main.mapifyEntry(configEvent, "config.schedule.limit", Main.prefs.getGreyCodeLimit());
-		Main.mapifyEntry(configEvent, "config.course.graduate.campus.override", Main.prefs.isOverrideGrad());
-		Main.mapifyEntry(configEvent, "config.course.graduate.distance.override", Main.prefs.isOverrideGradDist());
-		Main.mapifyEntry(configEvent, "config.course.undergraduate.override", Main.prefs.isOverRideURL());
-		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.override", Main.prefs.isOverRideSID());
-		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.enabled", Main.prefs.isRateMyProfessorEnabled());
-		Main.mapifyEntry(configEvent, "config.rating.enabled", Main.prefs.isRatingsEnabled());
-		Main.mapifyEntry(configEvent, "config.rating.schedule.break.max", Main.prefs.getLongestBreak());
-		Main.mapifyEntry(configEvent, "config.rating.schedule.break.min", Main.prefs.getShortestBreak());
-		Main.mapifyEntry(configEvent, "config.rating.schedule.days.enabled", Main.prefs.hasDayOff());
-		Main.mapifyEntry(configEvent, "config.rating.ratemyprofessor.sid", Main.prefs.getSID());
-		Main.mapifyEntry(configEvent, "config.course.staleness.max", Main.prefs.getUpdateMin());
+		KeenUtils.mapifyEntry(configEvent, "config.analytics.enabled", Main.prefs.isAnalyticsOptOut());
+		KeenUtils.mapifyEntry(configEvent, "config.term.current", Main.prefs.getCurrentTerm());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.distance.url", Main.prefs.getGradDistURL());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.campus.url", Main.prefs.getGradURL());
+		KeenUtils.mapifyEntry(configEvent, "config.course.undergraduate.url", Main.prefs.getURL());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.enabled", Main.prefs.isDownloadGrad());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.distance.enabled", Main.prefs.isDownloadGradDist());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.campus.enabled", Main.prefs.isDownloadGrad());
+		KeenUtils.mapifyEntry(configEvent, "config.course.undergraduate.enabled", Main.prefs.isDownloadUGrad());
+		KeenUtils.mapifyEntry(configEvent, "config.schedule.limit", Main.prefs.getGreyCodeLimit());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.campus.override", Main.prefs.isOverrideGrad());
+		KeenUtils.mapifyEntry(configEvent, "config.course.graduate.distance.override", Main.prefs.isOverrideGradDist());
+		KeenUtils.mapifyEntry(configEvent, "config.course.undergraduate.override", Main.prefs.isOverRideURL());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.ratemyprofessor.override", Main.prefs.isOverRideSID());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.ratemyprofessor.enabled", Main.prefs.isRateMyProfessorEnabled());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.enabled", Main.prefs.isRatingsEnabled());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.schedule.break.max", Main.prefs.getLongestBreak());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.schedule.break.min", Main.prefs.getShortestBreak());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.schedule.days.enabled", Main.prefs.hasDayOff());
+		KeenUtils.mapifyEntry(configEvent, "config.rating.ratemyprofessor.sid", Main.prefs.getSID());
+		KeenUtils.mapifyEntry(configEvent, "config.course.staleness.max", Main.prefs.getUpdateMin());
 		
 		for(Day day : Day.values()){
-			Main.mapifyEntry(configEvent, "config.rating.schedule.days." + day.toString(), Main.prefs.getDaysOff()[day.ordinal()]);
+			KeenUtils.mapifyEntry(configEvent, "config.rating.schedule.days." + day.toString(), Main.prefs.getDaysOff()[day.ordinal()]);
 		}
 		
 		Main.registerEvent(Main.KEEN_CONFIG, configEvent);

@@ -42,6 +42,7 @@ package Scheduler;								//define as member of Scheduler package
  * Import Progress Monitor generic for monitoring downloads
  * Import JOption Pane for gui messages
 *********************************************************/
+import io.devyse.scheduler.analytics.keen.KeenUtils;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
@@ -206,16 +207,16 @@ public enum Parser {
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
-			Main.mapifyEntry(event, "university.name", "Kettering University");
-			Main.mapifyEntry(event, "university.url", url);
-			Main.mapifyEntry(event, "university.term", term);
-			Main.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
-			Main.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
-			Main.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
-			Main.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
-			Main.mapifyEntry(event, "results.professors.count", items.getProfs().size());
-			Main.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
-			Main.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
+			KeenUtils.mapifyEntry(event, "university.name", "Kettering University");
+			KeenUtils.mapifyEntry(event, "university.url", url);
+			KeenUtils.mapifyEntry(event, "university.term", term);
+			KeenUtils.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
+			KeenUtils.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
+			KeenUtils.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
+			KeenUtils.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
+			KeenUtils.mapifyEntry(event, "results.professors.count", items.getProfs().size());
+			KeenUtils.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
+			KeenUtils.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
 			
 			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
 		}
