@@ -116,11 +116,11 @@ public class Preferences implements Serializable {
 		
 		downloadGrad = true;					//on campus grad courses enabled
 		overrideGrad = false;					//override on campus courses disabled
-		gradURL = new String(Main.defGradCampURL);//default override value
+		gradURL = new String(Main.defURL);//default override value
 		
 		downloadGradDist = true;				//off campus grad courses enabled
 		overrideGradDist = false;				//override off campus grad courses disabled
-		gradDistURL = new String(Main.defGradDistURL);//default override value
+		gradDistURL = new String(Main.defURL);//default override value
 		
 		updateMin = 2;							//update time is set to two days
 		

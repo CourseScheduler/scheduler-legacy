@@ -34,13 +34,9 @@ package Scheduler;								//declare as member of scheduler package
  * The following imports are necessary for this class
 *********************************************************/
 import java.util.ArrayList;						//for storing lists
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;						//for the worker thread list
 import javax.swing.SwingWorker;					//the worker threads are SwingWorkers
 import javax.swing.ProgressMonitor;				//for monitoring the progress
-
-import com.pollicitus.scheduler.retrieval.BannerDynamicCourseRetrieval;
 
 
 /*********************************************************
@@ -48,7 +44,7 @@ import com.pollicitus.scheduler.retrieval.BannerDynamicCourseRetrieval;
  * 
  * @purpose To help synchronize shared objects between threads
 *********************************************************/
-public class ThreadSynch implements Observer {
+public class ThreadSynch {
 	
 	
 	/*********************************************************
@@ -317,21 +313,5 @@ public class ThreadSynch implements Observer {
 	
 	public void addConflict(Conflict toAdd){
 		conflicts.add(toAdd);
-	}
-
-
-	/* (non-Javadoc)
-	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		if(o instanceof BannerDynamicCourseRetrieval){
-			try{
-				String message = (String)arg;
-				updateWatch(message, finished++);
-			}catch(Exception e){
-				
-			}
-		}
 	}
 }

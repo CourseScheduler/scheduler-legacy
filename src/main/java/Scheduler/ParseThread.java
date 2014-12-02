@@ -83,7 +83,7 @@ public class ParseThread extends SwingWorker<Database, Void> {
 		sync.finished = 0;								//set finished to none
 		
 		ProgressMonitor watch = new ProgressMonitor(Main.master, "Downloading: " + Term.getTermString(term) 
-			, "", 0, 800);								//create progress monitor
+			, "", 0, 500);								//create progress monitor
 		watch.setMillisToDecideToPopup(0);				//set to decide to popup right away
 		watch.setMillisToPopup(0);						//set to popup right away
 		
@@ -129,6 +129,7 @@ public class ParseThread extends SwingWorker<Database, Void> {
 								Scanner parse = new Scanner(title);//make a parser
 								parse.useDelimiter(" - ");//set delimiter
 								title = parse.next().trim();//get term title
+								parse.close();
 							}
 							
 							String term = Term.getTermString(local.getTerm());//get term string
@@ -169,6 +170,7 @@ public class ParseThread extends SwingWorker<Database, Void> {
 							Scanner parse = new Scanner(title);//make a parser
 							parse.useDelimiter(" - ");//set delimiter
 							title = parse.next().trim();//get term title
+							parse.close();
 						}
 						
 						if(title.compareTo(term) == Compare.equal.value()){//check if equal

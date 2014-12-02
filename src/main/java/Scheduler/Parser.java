@@ -42,20 +42,23 @@ package Scheduler;								//define as member of Scheduler package
  * Import Progress Monitor generic for monitoring downloads
  * Import JOption Pane for gui messages
 *********************************************************/
+import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
+import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
+import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
+import io.devyse.scheduler.retrieval.StaticSelector;
+import io.devyse.scheduler.retrieval.TermSelector;
+
 import java.io.IOException;						//import IOExceptions
 import java.io.File;							//import File class
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;						//import scanner
+import java.util.concurrent.ForkJoinPool;
 
 import javax.swing.JOptionPane;					//Import message pane
 
-import com.pollicitus.scheduler.retrieval.BannerDynamicCourseRetrieval;
+import org.jsoup.Jsoup;
+import org.jsoup.Connection.Method;
 
 
 /********************************************************
@@ -127,7 +130,10 @@ public enum Parser {
 			return null;								//if so, return invalid value
 		}
 		
-		parseNew(items, sync, url, term, false, true);
+		long start = System.currentTimeMillis();
+		jsoupParse(items, sync, url, term);
+		long end = System.currentTimeMillis();		
+		
 		if(sync.isCanceled()){
 			return null;
 		}
@@ -135,442 +141,84 @@ public enum Parser {
 		sync.updateWatch(null, sync.getWatch().getMaximum());//set progress finished
 		items.setTerm(term);							//set database term
 		
-		registerDownloadEvent(url, term, items, downloadRatings);
+		registerDownloadEvent(url, term, items, downloadRatings, end - start);
 		
 		return items;									//return database
 	}
 	
-	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings){
+	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
+		ForkJoinPool pool = new ForkJoinPool();
+				
+		try {
+			TermSelector selector = new StaticSelector(term);
+			sync.updateWatch("Checking available terms in Banner", sync.finished++);
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
+
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
+			
+			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
+			items.setTerm(selector.getTerm().getId());
+
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
+			
+			sync.updateWatch("Querying course data from Banner", sync.finished++);
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
+
+			if(sync.isCanceled()){
+				pool.shutdownNow();
+				return null;
+			}
+			
+			sync.updateWatch("Processing courses retrieved from Banner", sync.finished++);
+			pool.execute(courseParse);
+			
+			//simple progress updating
+			long last = pool.getQueuedTaskCount();
+			while(!courseParse.isDone()){
+				Thread.sleep(100);
+				long queued = pool.getQueuedTaskCount();
+				sync.finished = (int)(sync.finished + Long.max((last-queued),1));
+				sync.updateWatch("Waiting for " + queued + " processing tasks to complete", sync.finished);
+				last = queued;
+
+				if(sync.isCanceled()){
+					pool.shutdownNow();
+					return null;
+				}
+			}
+			
+			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
+			return items;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static void registerDownloadEvent(String url, String term, Database items, boolean downloadRatings, long runtime){
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
 			Main.mapifyEntry(event, "university.name", "Kettering University");
 			Main.mapifyEntry(event, "university.url", url);
-			Main.mapifyEntry(event, "universit.term", term);
+			Main.mapifyEntry(event, "university.term", term);
 			Main.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
 			Main.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
 			Main.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
 			Main.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
 			Main.mapifyEntry(event, "results.professors.count", items.getProfs().size());
 			Main.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
+			Main.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
 			
 			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
 		}
-	}
-	
-	/**
-	 * TODO Describe this method
-	 *
-	 * @param items
-	 * @param sync
-	 * @param url
-	 * @param term
-	 * @param grad
-	 * @param campus
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
-	public static void parseNew(Database items, ThreadSynch sync, String url, String term, boolean grad, boolean campus) throws MalformedURLException, IOException{
-		sync.updateWatch("Download Course Information from Banner", sync.finished + 1);//set the course info note
-		BannerDynamicCourseRetrieval bdcr = new BannerDynamicCourseRetrieval();
-		
-		//register progress monitor
-		bdcr.addObserver(sync);
-		
-		Collection<List<String>> courseQueues = bdcr.retrieveCourses(url, term);
-		int queueID = 0;
-				
-		//process each course
-		for(List<String> dataSet: courseQueues){
-			try{
-				Section section = translateCourseData(dataSet, queueID);
-				sync.updateWatch("Process Course Information: " + section.getCourseID() + " " + section.getSection(), sync.finished++);//set the course info note
-				items.addSection(section);
-			}catch(Exception e){
-				System.err.println("Error processing course data queue " + queueID);
-				e.printStackTrace();
-			}
-			queueID++;
-		}
-	}
-	
-	/**
-	 * TODO Describe this method
-	 *
-	 * @param dataSet
-	 * @param queueID
-	 * @return
-	 */
-	private static Section translateCourseData(List<String> dataSet, int queueID){
-		Iterator<String> entryIterator = dataSet.iterator();
-		int position = 0;
-		String title = null;
-		Integer crn = null;
-		String courseId = null;
-		String sectionId = null;
-		String notes = null;	
-		String credits = null;
-		List<String> periodList = new ArrayList<String>();
-		List<String> locationList = new ArrayList<String>();
-		List<boolean[]> daysList = new ArrayList<boolean[]>();
-		List<List<String>> instructorList = new ArrayList<List<String>>();
-		List<String> dateList = new ArrayList<String>();
-		List<String> scheduleTypeList = new ArrayList<String>();
-		CourseType courseType = null;
-		int seats = 0;
-		boolean hasMeetingTimes = false;
-		boolean graduate = false;
-		
-		//process each data line
-		while(entryIterator.hasNext()){
-			String entry = entryIterator.next();
-			
-			//TODO remove the temporary tracing output
-			System.out.println("#" + queueID + ":" + position + ": " + entry);
-			
-			Scanner entryScanner = new Scanner(entry);
-			
-			switch(position){
-				case 4:{	//Course title, CRN, Course ID, Section ID
-					entryScanner.useDelimiter(" - ");
-					title = entryScanner.next();
-					
-					while(!entryScanner.hasNextInt() && entryScanner.hasNext()){
-						title += " - " + entryScanner.next();
-					}
-					crn = entryScanner.nextInt();
-					courseId = entryScanner.next();
-					sectionId = entryScanner.next();
-					
-					//TODO remove temporary tracing output
-					System.out.println("Title: " + title);
-					System.out.println("CRN: " + crn);
-					System.out.println("Course ID: " + courseId);
-					System.out.println("Section ID: " + sectionId);
-					
-					break;
-				}
-				case 10:{	//Special Notes
-					if(entryScanner.hasNext()){
-						notes = entryScanner.nextLine();
-						entryIterator.next();
-						entryIterator.next();
-					}else{
-						notes = new String();
-					}
-					
-					//TODO remove temporary tracing output
-					System.out.println("Notes: " + notes);
-					
-					break;
-				}
-				case 26:{	//Degree levels
-					entryScanner.useDelimiter(", ");
-					
-					while(entryScanner.hasNext()){
-						if(entryScanner.next().compareTo("Graduate") == 0){
-							graduate = true;
-							break;
-						}
-					}
-					
-					//TODO remove temporary tracing output
-					System.out.println("Graduate Course: " + graduate);
-					
-					break;
-				}
-				case 32:{	//Lecture Type
-					
-					//TODO
-					
-					break;
-				}
-				case 34:{	//Credits
-					credits = entryScanner.next();
-
-					//TODO remove temporary tracing output
-					System.out.println("Credits: " + credits);
-					
-					break;
-				}
-				case 52:{	//Meeting Times Exist indicator
-					hasMeetingTimes = (entry.compareTo("") != 0);
-					
-					break;
-				}
-				case 82:{	//Meeting Time Table
-					if(hasMeetingTimes){
-						int meetingIndex = 0;
-						int meetingPosition = 0;
-						boolean tableEnd = false;
-						
-						while(entryIterator.hasNext() && !tableEnd){
-							entry = entryIterator.next();
-							entryScanner = new Scanner(entry);
-							
-							//TODO remove tracing output
-							System.out.println("#" + queueID + ":" + position + ":" + meetingIndex + ":" + meetingPosition + ": " + entry);
-							
-							switch(meetingPosition){
-								case 0:{	//Start of meeting time
-									//TODO remove temporary tracing output
-									System.out.println("Start of meeting time");
-									
-									break;
-								}
-								case 5:{	//Meeting Time
-									String period;
-									
-									//entry is present directly if not TBA
-									if(entryScanner.hasNextLine()){
-										period = entryScanner.nextLine();
-									}else{
-										entryIterator.next();
-										period = entryIterator.next();
-										entryIterator.next();
-										entryIterator.next();
-									}
-									
-									periodList.add(meetingIndex, period);
-									
-									//TODO remove temporary tracing output
-									System.out.println("Period: " + period);
-									
-									break;
-								}
-								case 9:{	//Meeting Days
-									boolean[] days = new boolean[Day.values().length];
-									
-									//TODO remove temporary tracing output
-									System.out.print("Days:");
-									
-									String dayString = entryScanner.next();
-									if(dayString.compareTo("&nbsp;") != 0){
-										for(char dayCode: dayString.toCharArray()){
-											Day day = Day.getDay(new Character(dayCode).toString());
-											days[day.value()] = true;
-											
-											//TODO remove temporary tracing output
-											System.out.print(" " + day);
-										}
-									}
-									
-									daysList.add(meetingIndex, days);
-									
-									//TODO remove temporary tracing output
-									System.out.println();
-									
-									break;
-								}
-								case 13:{	//Meeting Location
-									String location;
-									
-									//entry is present directly if not TBA
-									if(entryScanner.hasNextLine()){
-										location = entryScanner.nextLine();
-									}else{
-										entryIterator.next();
-										location = entryIterator.next();
-										entryIterator.next();
-										entryIterator.next();
-									}
-									
-									if(graduate){
-										if(entry.compareTo("Distance Learning Center") == 0){
-											courseType = CourseType.distanceGrad;
-										}else{
-											courseType = CourseType.campusGrad;
-										}
-									}else{
-										courseType = CourseType.undergrad;
-									}
-
-									locationList.add(meetingIndex, location);
-									
-									//TODO remove temporary tracing output
-									System.out.println("Course Type: " + courseType);
-									System.out.println("Location: " + location);
-									
-									break;
-								}
-								case 17:{	//Meeting Course Dates
-									
-									break;
-								}
-								case 21:{	//Meeting Schedule Type
-									
-									break;
-								}
-								case 24:{	//Meeting Instructor
-									List<String> instructors = new ArrayList<String>();
-									int instructorPosition = 0;
-									
-									//TODO handle the multiple instructor scenario
-									String startTag = entryScanner.next();
-									
-									while(entryIterator.hasNext()){
-										entry = entryIterator.next();
-										entryScanner = new Scanner(entry);
-										String beginning = "";
-										
-										if(entryScanner.hasNext()){
-											beginning = entryScanner.next();
-										}
-										
-										//TODO remove tracing output
-										System.out.println("#" + queueID + ":" + position + ":" + meetingIndex + ":" + meetingPosition + ":" + instructorPosition + ": " + entry);
-										
-										String instructor;
-										
-										if(entry.startsWith("/" + startTag)){
-											break;
-										}else{
-											if(entry.compareTo("") == 0) {
-												//skip
-											}else if(beginning.compareTo("ABBR") == 0 || beginning.compareTo("A") == 0){
-												while(!entry.startsWith("/" + beginning)){
-													entry = entryIterator.next();
-													
-													if(entry.compareTo("TBA") == 0){
-														instructor = entry;
-														instructors.add(instructor);
-													}
-												}
-											}else if(entry.startsWith(")")){
-												//skip
-											}else if(beginning.compareTo("TD") == 0){
-												//skip
-											}else{
-												instructor = entry;
-												if(entry.endsWith("(")){
-													instructor = instructor.substring(0, entry.length()-2);
-												}
-												if(instructor.startsWith(", ")){
-													instructor = instructor.substring(2, entry.length()-1);
-												}
-												
-												instructors.add(instructor);
-											}
-											
-										}
-										instructorPosition++;
-									}
-									
-									instructorList.add(meetingIndex, instructors);
-									
-									//TODO remove temporary tracing output
-									System.out.print("Instructor List:");
-									for(String instructorEntry: instructors){
-										System.out.print(" " + instructorEntry);
-									}
-									System.out.println("");
-									
-									break;
-								}
-								case 26:{	//End of Meeting
-									meetingIndex++;
-									meetingPosition = -1;
-									
-									//TODO remove temporary tracing output
-									System.out.println("End of Meeting");
-									
-									entryIterator.next();
-									entry = entryIterator.next();
-									if(entry.compareTo("/TABLE") == 0){
-										tableEnd = true;
-									}else{
-										entryIterator.next();
-									}
-									
-									break;
-								}
-							}
-							meetingPosition++;
-						}
-					}
-					break;
-				}
-				case 142:	//Seats can also be at 142
-				case 183:{	//or at 183
-					
-					if(entryScanner.hasNextInt()){
-						seats = entryScanner.nextInt();
-						
-						if(seats < 0) {
-							seats = 0;
-						}
-						
-						//TODO remove temporary tracing output
-						System.out.println("Open Seats: " + seats);
-					}
-					
-					break;
-				}
-			}
-			
-			entryScanner.close();
-			position++;
-		}
-		
-		Section section = new Section();
-		section.setType(courseType);
-		section.setCRN(crn.intValue());
-		section.setCourseID(courseId);
-		section.setSection(sectionId);
-		section.setCredit(credits);
-		section.setTitle(title);
-		
-		if(instructorList.size()>0){
-			section.setInstructorList(instructorList.get(0));
-		}
-		
-		//TODO update for more than 2 entries
-		section.setSecondary(daysList.size() > 1);
-		
-		//make a note if there are unrecognized meeting times
-		if(daysList.size() > 2) {
-			notes += "\nThis course has more than 2 meeting times. /nPlease confirm that the additional meeting times do not impact your schedule.";
-			section.setNotes(notes);
-		}else{
-			section.setNotes(notes);
-		}
-		
-		if(periodList.size() > 0){
-			section.setPeriod(periodList.get(0));
-			if(periodList.size() > 1){
-				section.setSecPeriod(periodList.get(1));
-			}else{
-				section.setSecPeriod("");
-			}
-		}else{
-			section.setPeriod("");
-		}
-		
-		if(daysList.size() > 0){
-			section.setDays(daysList.get(0));
-			if(daysList.size() > 1){
-				section.setSecDays(daysList.get(1));
-			}else{
-				section.setSecDays(new boolean[Day.values().length]);
-			}
-		}else{
-			section.setDays(new boolean[Day.values().length]);
-		}
-		
-		if(locationList.size() > 0){
-			section.setLocation(locationList.get(0));
-			if(locationList.size() > 1){
-				section.setLocation(locationList.get(1));
-			}else{
-				section.setSecLocation("");
-			}
-		}else{
-			section.setLocation("");
-		}
-		
-		section.setSeats(seats);
-		
-		return section;
 	}
 	
 	
@@ -704,9 +352,13 @@ public enum Parser {
 					
 					old.setName(ku);					//set the ku name to the prof rating
 					profs.put(old.getName(), old);		//put the prof back in the list
+					
+					second.close();
+					first.close();
 				}
 				catch(Exception ex){}					//catch bad line input, but do nothing
 			}
+			file.close();
 		}
 		catch(Exception ex1){ex1.printStackTrace(); System.err.println(ex1.getLocalizedMessage());}							//catch file not found but do nothing
 	}

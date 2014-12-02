@@ -202,7 +202,8 @@ public enum Term{
 		
 		term = Term.getNextTerm(calendar);		//get the next term for the calendar date
 		
-		if (term == Term.winter){				//if term is winter
+		if (term == Term.winter ||
+			term == Term.spring && calendar.get(Calendar.MONTH) > Calendar.MAY){	//if term is winter, or spring
 			year++;								//then increment the current year
 		}
 		
