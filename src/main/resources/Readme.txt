@@ -24,6 +24,11 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.4
+	-New JSoup-based parser with multi-threaded parsing for faster, more reliable parsing.
+	-Fixed issue with next Term calculation
+	-Fixed issue with Period initialization
+	
 4.12.3
 	-Resolved parsing issue (#11) with the course detail page preventing proper open/closed course detection
 	 
