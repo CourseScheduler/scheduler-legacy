@@ -207,16 +207,16 @@ public enum Parser {
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
-			KeenUtils.mapifyEntry(event, "university.name", "Kettering University");
-			KeenUtils.mapifyEntry(event, "university.url", url);
-			KeenUtils.mapifyEntry(event, "university.term", term);
-			KeenUtils.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
-			KeenUtils.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
-			KeenUtils.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
-			KeenUtils.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
-			KeenUtils.mapifyEntry(event, "results.professors.count", items.getProfs().size());
-			KeenUtils.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
-			KeenUtils.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
+			KeenUtils.addNestedMapEntry(event, "university.name", "Kettering University");
+			KeenUtils.addNestedMapEntry(event, "university.url", url);
+			KeenUtils.addNestedMapEntry(event, "university.term", term);
+			KeenUtils.addNestedMapEntry(event, "results.courses.count", items.getDatabase().size());
+			KeenUtils.addNestedMapEntry(event, "results.courses.undergrad", items.isUndergrad());
+			KeenUtils.addNestedMapEntry(event, "results.courses.graduate_distance", items.isGradDist());
+			KeenUtils.addNestedMapEntry(event, "results.courses.graduate_campus", items.isGradCampus());
+			KeenUtils.addNestedMapEntry(event, "results.professors.count", items.getProfs().size());
+			KeenUtils.addNestedMapEntry(event, "results.professors.rate_my_prof", downloadRatings);
+			KeenUtils.addNestedMapEntry(event, "results.runtime", Long.valueOf(runtime));
 			
 			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
 		}

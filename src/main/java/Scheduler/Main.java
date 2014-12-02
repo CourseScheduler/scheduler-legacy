@@ -253,7 +253,7 @@ public class Main {
 	private static void registerStartupEvent(){
 		if(!Main.prefs.isAnalyticsOptOut()){
 			Map<String, Object> startupEvent = new HashMap<>();
-			KeenUtils.mapifyEntry(startupEvent, "startup.type", "end user");
+			KeenUtils.addNestedMapEntry(startupEvent, "startup.type", "end user");
 			Main.registerEvent(KEEN_STARTUP, startupEvent);
 		}
 	}
@@ -307,13 +307,13 @@ public class Main {
 			//TODO exclude user sensitive attributes?
 			Map<String, Object> system = new HashMap<>();
 			for(Object key: System.getProperties().keySet()){
-				KeenUtils.mapifyEntry(system, key.toString(), System.getProperty(key.toString()));
+				KeenUtils.addNestedMapEntry(system, key.toString(), System.getProperty(key.toString()));
 			}
 			global.put("system", system);
 			
 			//application details map
-			KeenUtils.mapifyEntry(global, "scheduler.version", Main.version);
-			KeenUtils.mapifyEntry(global, "scheduler.home", Main.folderName);
+			KeenUtils.addNestedMapEntry(global, "scheduler.version", Main.version);
+			KeenUtils.addNestedMapEntry(global, "scheduler.home", Main.folderName);
 			
 			//TODO generate or find some unique identifier
 			
@@ -324,7 +324,7 @@ public class Main {
 				Main.prefs.save();
 			}
 			
-			KeenUtils.mapifyEntry(global, "user.id", identifier);
+			KeenUtils.addNestedMapEntry(global, "user.id", identifier);
 			
 			keen.setGlobalProperties(global);
 		}catch(Exception e){

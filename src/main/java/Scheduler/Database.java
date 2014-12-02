@@ -369,16 +369,16 @@ public class Database implements Serializable, Cloneable{
 		try{
 			if(!Main.prefs.isAnalyticsOptOut()){
 				Map<String, Object> event = new HashMap<>();
-				KeenUtils.mapifyEntry(event, "university.name", "Kettering University");
-				KeenUtils.mapifyEntry(event, "university.term", this.getTerm());
-				KeenUtils.mapifyEntry(event, "parameters.closed", allowClosed);
-				KeenUtils.mapifyEntry(event, "parameters.use.min", useMin);
-				KeenUtils.mapifyEntry(event, "parameters.use.all", sync.getOwner().useAll.isSelected());
-				KeenUtils.mapifyEntry(event, "parameters.reporting", reportingEnabled);
-				KeenUtils.mapifyEntry(event, "parameters.classes", classes);
-				KeenUtils.mapifyEntry(event, "parameters.primary", primary);
-				KeenUtils.mapifyEntry(event, "results.schedules.found", temp.length);
-				KeenUtils.mapifyEntry(event, "results.schedules.conflicts", sync.getConflicts().size());
+				KeenUtils.addNestedMapEntry(event, "university.name", "Kettering University");
+				KeenUtils.addNestedMapEntry(event, "university.term", this.getTerm());
+				KeenUtils.addNestedMapEntry(event, "parameters.closed", allowClosed);
+				KeenUtils.addNestedMapEntry(event, "parameters.use.min", useMin);
+				KeenUtils.addNestedMapEntry(event, "parameters.use.all", sync.getOwner().useAll.isSelected());
+				KeenUtils.addNestedMapEntry(event, "parameters.reporting", reportingEnabled);
+				KeenUtils.addNestedMapEntry(event, "parameters.classes", classes);
+				KeenUtils.addNestedMapEntry(event, "parameters.primary", primary);
+				KeenUtils.addNestedMapEntry(event, "results.schedules.found", temp.length);
+				KeenUtils.addNestedMapEntry(event, "results.schedules.conflicts", sync.getConflicts().size());
 				
 				buildAllowed(event, classes, sectionsAllowed);
 				buildSelected(event, classes, numberSelected);
@@ -393,7 +393,7 @@ public class Database implements Serializable, Cloneable{
 	
 	private void buildSelected(Map<String, Object> event, String[] classes, int[] numberSelected){
 		for(int classPos = 0; classPos < classes.length; classPos++){
-			KeenUtils.mapifyEntry(event, "parameters.selected."+classes[classPos],numberSelected[classPos]);
+			KeenUtils.addNestedMapEntry(event, "parameters.selected."+classes[classPos],numberSelected[classPos]);
 		}
 	}
 	
@@ -402,13 +402,13 @@ public class Database implements Serializable, Cloneable{
 			Course course = this.getCourse(classes[classPos]);
 			Section[] sections = course.getSectionsSObj();
 			for(int sectionPos = 0; sectionPos < sections.length; sectionPos++){
-				KeenUtils.mapifyEntry(event, "parameters.allowed."+classes[classPos]+"."+sections[sectionPos].getSection(), sectionsAllowed[classPos][sectionPos]);
+				KeenUtils.addNestedMapEntry(event, "parameters.allowed."+classes[classPos]+"."+sections[sectionPos].getSection(), sectionsAllowed[classPos][sectionPos]);
 			}
 		}
 	}
 	
 	private void buildLinked(Map<String, Object> event, ThreadSynch sync){
-		KeenUtils.mapifyEntry(event, "parameters.links", sync.getOwner().dependancy);
+		KeenUtils.addNestedMapEntry(event, "parameters.links", sync.getOwner().dependancy);
 	}
 	
 	
