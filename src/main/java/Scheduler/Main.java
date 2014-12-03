@@ -1,9 +1,6 @@
 package Scheduler;
 
-import io.devyse.scheduler.analytics.keen.KeenUtils;
-import io.keen.client.java.JavaKeenClientBuilder;
-import io.keen.client.java.KeenClient;
-import io.keen.client.java.KeenProject;
+import io.devyse.scheduler.analytics.keen.KeenEngine;
 
 import java.awt.Component;
 
@@ -18,15 +15,11 @@ import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.Properties;
@@ -37,8 +30,8 @@ public class Main {
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
 	********************************************************/
-	protected static final long versionID = 2014120117530L;//object id
-	protected static final long buildNumber = 1567L;//build number
+	protected static final long versionID = 201412032345L;//object id
+	protected static final long buildNumber = 1568L;//build number
 	protected static final String version = new String("4.12.5");
 	protected static final int policyVersion = 1;
 	
@@ -95,14 +88,11 @@ public class Main {
 	protected static boolean nimbus = false;
 	protected static boolean conflictDebugEnabled = false;
 	
-	public static KeenClient keen;
-	public static KeenProject keenProject;
 	public static final String KEEN_STARTUP = "start";
 	public static final String KEEN_DOWNLOAD = "download";
 	public static final String KEEN_SCHEDULE = "compute";
 	public static final String KEEN_CONFIG = "config";
 	
-	private static final String KEEN_CONFIGURATION_FILE = "config/keen.properties";
 	
 	public static void main(String[] args) throws Exception{ 
 		//Make sure the majority of SSL/TLS protocols are enabled
@@ -170,7 +160,6 @@ public class Main {
 		terms = new TreeMap<String, Database>();
 		terms.put(current, Database.load(current));
 
-		setupKeen();
 		registerStartupEvent();
 		
 		try {
@@ -253,84 +242,11 @@ public class Main {
 	private static void registerStartupEvent(){
 		if(!Main.prefs.isAnalyticsOptOut()){
 			Map<String, Object> startupEvent = new HashMap<>();
-			KeenUtils.addNestedMapEntry(startupEvent, "startup.type", "end user");
-			Main.registerEvent(KEEN_STARTUP, startupEvent);
+			startupEvent.put("startup.type", "end user");
+			KeenEngine.getDefaultKeenEngine().registerEvent(KEEN_STARTUP, startupEvent);
 		}
 	}
 	
-	public static void registerEvent(String collection, Map<String, Object> event){
-		try{
-			keen.addEventAsync(collection, event);
-		}catch(Exception e){
-			//nothing
-		}
-	}
-	
-	private static void setupKeen() {
-		try{
-			keen = new JavaKeenClientBuilder().build();
-			keen.setDebugMode(true);
-			
-			//TODO change the resource to be passed in as a parameter to the program or via an env variable
-			Properties keenProperties = new Properties();
-			try{
-				keenProperties.load(loader.getResourceAsStream(KEEN_CONFIGURATION_FILE));
-			}catch(Exception e){
-				keenProperties.load(new FileInputStream(KEEN_CONFIGURATION_FILE));
-			}
-			
-			keenProject = new KeenProject(
-					keenProperties.getProperty("keen.project.id"),
-					keenProperties.getProperty("keen.project.write"),
-					null					// "keen.project.read"
-			);
-			
-			keen.setDefaultProject(keenProject);
-			
-			Runtime.getRuntime().addShutdownHook(new Thread(){
-				@Override
-				public void run(){
-					ExecutorService keenExecutor = (ExecutorService)keen.getPublishExecutor();
-					keenExecutor.shutdown();
-					try {
-						keenExecutor.awaitTermination(15L, TimeUnit.SECONDS);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-			
-			//global properties map
-			Map<String, Object> global = new HashMap<>();
-			
-			//java system properties map
-			//TODO exclude user sensitive attributes?
-			Map<String, Object> system = new HashMap<>();
-			for(Object key: System.getProperties().keySet()){
-				KeenUtils.addNestedMapEntry(system, key.toString(), System.getProperty(key.toString()));
-			}
-			global.put("system", system);
-			
-			//application details map
-			KeenUtils.addNestedMapEntry(global, "scheduler.version", Main.version);
-			KeenUtils.addNestedMapEntry(global, "scheduler.home", Main.folderName);
-			
-			//TODO generate or find some unique identifier
-			
-			UUID identifier = Main.prefs.getIdentifier();
-			if(identifier == null){
-				identifier = UUID.randomUUID();
-				Main.prefs.setIdentifier(identifier);
-				Main.prefs.save();
-			}
-			
-			KeenUtils.addNestedMapEntry(global, "user.id", identifier);
-			
-			keen.setGlobalProperties(global);
-		}catch(Exception e){
-			System.out.println("Unable to initialize Keen IO Analytics: " + e);
-		}
-	}
 	
 	public static void printZeroRatedProfs(){
 		ArrayList<Prof> profs = new ArrayList<Prof>();
@@ -488,5 +404,17 @@ public class Main {
 			}
 			catch(ClassCastException ex){}
 		}
+	}
+	
+	public static Preferences getPreferences(){
+		return Main.prefs;
+	}
+	
+	public static String getApplicationVersion(){
+		return Main.version;
+	}
+	
+	public static String getApplicationDirectory(){
+		return Main.folderName;
 	}
 }

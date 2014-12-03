@@ -35,7 +35,7 @@ import java.util.Map.Entry;
  * @author Mike Reinhold
  * @since 4.12.5
  */
-public class KeenUtils {
+class KeenUtils {
 
 	/**
 	 * Keen IO internally uses JSON to represent events. The Keen IO Java API requires that a
@@ -68,7 +68,15 @@ public class KeenUtils {
 		Map<String, Object> nestedMap = new HashMap<String, Object>();
 		
 		for(Entry<String, Object> entry: flatMap.entrySet()){
-			addNestedMapEntry(nestedMap, entry.getKey(), entry.getValue());
+			Object value = entry.getValue();
+			try{
+				//if the value at this key is a map, we need to nest that submap as well
+				@SuppressWarnings("unchecked")	//catch cast exception below
+				Map<String, Object> subMap = (Map<String, Object>)value;
+				value = createNestedMap(subMap);
+			}catch(ClassCastException e){}
+			
+			addNestedMapEntry(nestedMap, entry.getKey(), value);
 		}
 		return nestedMap;
 	}
@@ -81,7 +89,7 @@ public class KeenUtils {
 	 * @param key the key specifying the location in the nested map in which to insert the value
 	 * @param value the object to insert into the nested map
 	 */
-	public static void addNestedMapEntry(Map<String, Object> map, String key, Object value){
+	protected static void addNestedMapEntry(Map<String, Object> map, String key, Object value){
 		if(key.contains(MAP_SCOPING_DELIMITER)){	//check if the key contains multiple levels
 			int left = key.indexOf(MAP_SCOPING_DELIMITER);
 			String parent = key.substring(0, left);

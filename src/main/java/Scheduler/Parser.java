@@ -42,7 +42,7 @@ package Scheduler;								//define as member of Scheduler package
  * Import Progress Monitor generic for monitoring downloads
  * Import JOption Pane for gui messages
 *********************************************************/
-import io.devyse.scheduler.analytics.keen.KeenUtils;
+import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
@@ -207,18 +207,18 @@ public enum Parser {
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
-			KeenUtils.addNestedMapEntry(event, "university.name", "Kettering University");
-			KeenUtils.addNestedMapEntry(event, "university.url", url);
-			KeenUtils.addNestedMapEntry(event, "university.term", term);
-			KeenUtils.addNestedMapEntry(event, "results.courses.count", items.getDatabase().size());
-			KeenUtils.addNestedMapEntry(event, "results.courses.undergrad", items.isUndergrad());
-			KeenUtils.addNestedMapEntry(event, "results.courses.graduate_distance", items.isGradDist());
-			KeenUtils.addNestedMapEntry(event, "results.courses.graduate_campus", items.isGradCampus());
-			KeenUtils.addNestedMapEntry(event, "results.professors.count", items.getProfs().size());
-			KeenUtils.addNestedMapEntry(event, "results.professors.rate_my_prof", downloadRatings);
-			KeenUtils.addNestedMapEntry(event, "results.runtime", Long.valueOf(runtime));
+			event.put("university.name", "Kettering University");
+			event.put("university.url", url);
+			event.put("university.term", term);
+			event.put("results.courses.count", items.getDatabase().size());
+			event.put("results.courses.undergrad", items.isUndergrad());
+			event.put("results.courses.graduate_distance", items.isGradDist());
+			event.put("results.courses.graduate_campus", items.isGradCampus());
+			event.put("results.professors.count", items.getProfs().size());
+			event.put("results.professors.rate_my_prof", downloadRatings);
+			event.put("results.runtime", Long.valueOf(runtime));
 			
-			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
+			KeenEngine.getDefaultKeenEngine().registerEvent(Main.KEEN_DOWNLOAD, event);
 		}
 	}
 	

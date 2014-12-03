@@ -34,7 +34,7 @@ package Scheduler;									//declare as a member of scheduler package
 /********************************************************
  * Import the necessary classes to support the database
 *********************************************************/
-import io.devyse.scheduler.analytics.keen.KeenUtils;
+import io.devyse.scheduler.analytics.keen.KeenEngine;
 
 import java.io.Serializable;						//import serializable interface
 import java.util.Arrays;							//import array util class
@@ -369,22 +369,22 @@ public class Database implements Serializable, Cloneable{
 		try{
 			if(!Main.prefs.isAnalyticsOptOut()){
 				Map<String, Object> event = new HashMap<>();
-				KeenUtils.addNestedMapEntry(event, "university.name", "Kettering University");
-				KeenUtils.addNestedMapEntry(event, "university.term", this.getTerm());
-				KeenUtils.addNestedMapEntry(event, "parameters.closed", allowClosed);
-				KeenUtils.addNestedMapEntry(event, "parameters.use.min", useMin);
-				KeenUtils.addNestedMapEntry(event, "parameters.use.all", sync.getOwner().useAll.isSelected());
-				KeenUtils.addNestedMapEntry(event, "parameters.reporting", reportingEnabled);
-				KeenUtils.addNestedMapEntry(event, "parameters.classes", classes);
-				KeenUtils.addNestedMapEntry(event, "parameters.primary", primary);
-				KeenUtils.addNestedMapEntry(event, "results.schedules.found", temp.length);
-				KeenUtils.addNestedMapEntry(event, "results.schedules.conflicts", sync.getConflicts().size());
+				event.put("university.name", "Kettering University");
+				event.put("university.term", this.getTerm());
+				event.put("parameters.closed", allowClosed);
+				event.put("parameters.use.min", useMin);
+				event.put("parameters.use.all", sync.getOwner().useAll.isSelected());
+				event.put("parameters.reporting", reportingEnabled);
+				event.put("parameters.classes", classes);
+				event.put("parameters.primary", primary);
+				event.put("results.schedules.found", temp.length);
+				event.put("results.schedules.conflicts", sync.getConflicts().size());
 				
 				buildAllowed(event, classes, sectionsAllowed);
 				buildSelected(event, classes, numberSelected);
 				buildLinked(event, sync);
 				
-				Main.registerEvent(Main.KEEN_SCHEDULE, event);
+				KeenEngine.getDefaultKeenEngine().registerEvent(Main.KEEN_SCHEDULE, event);
 			}
 		}catch(Exception e){
 			e.printStackTrace(System.err);
@@ -393,7 +393,7 @@ public class Database implements Serializable, Cloneable{
 	
 	private void buildSelected(Map<String, Object> event, String[] classes, int[] numberSelected){
 		for(int classPos = 0; classPos < classes.length; classPos++){
-			KeenUtils.addNestedMapEntry(event, "parameters.selected."+classes[classPos],numberSelected[classPos]);
+			event.put("parameters.selected."+classes[classPos],numberSelected[classPos]);
 		}
 	}
 	
@@ -402,13 +402,13 @@ public class Database implements Serializable, Cloneable{
 			Course course = this.getCourse(classes[classPos]);
 			Section[] sections = course.getSectionsSObj();
 			for(int sectionPos = 0; sectionPos < sections.length; sectionPos++){
-				KeenUtils.addNestedMapEntry(event, "parameters.allowed."+classes[classPos]+"."+sections[sectionPos].getSection(), sectionsAllowed[classPos][sectionPos]);
+				event.put("parameters.allowed."+classes[classPos]+"."+sections[sectionPos].getSection(), sectionsAllowed[classPos][sectionPos]);
 			}
 		}
 	}
 	
 	private void buildLinked(Map<String, Object> event, ThreadSynch sync){
-		KeenUtils.addNestedMapEntry(event, "parameters.links", sync.getOwner().dependancy);
+		event.put("parameters.links", sync.getOwner().dependancy);
 	}
 	
 	
