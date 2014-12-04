@@ -26,12 +26,16 @@ package io.devyse.scheduler.analytics.keen;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import javax.xml.bind.DatatypeConverter;
 
 import Scheduler.Main;
 import io.keen.client.java.JavaKeenClientBuilder;
@@ -120,6 +124,22 @@ public class KeenEngine {
 	 * Value: {@value}
 	 */
 	public static final String KEEN_GLOBAL_APP_DIR = "scheduler.home";
+	
+	/**
+	 * The Keen IO property corresponding to the event occurrance time. By default Keen uses the time
+	 * the event is received by Keen servers, however this can be overridden by the client. Must
+	 * be specified as an ISO-8601 date string.
+	 * 
+	 * Value: {@value} (implicitly inside the keen scope of the event
+	 */
+	public static final String KEEN_EVENT_TIMESTAMP = "timestamp";
+	
+	/**
+	 * A custom event identifier to provide a litmus test against the keen.id for event uniqueness
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_EVENT_ID = "event.id";
 
 	/**
 	 * The default KeenEngine which can be used to publish events
@@ -272,7 +292,7 @@ public class KeenEngine {
 	 * 
 	 * @param global the flat map of global properties
 	 */
-	protected void addGlobalJavaProperties(Map<String, Object> global){
+	protected static void addGlobalJavaProperties(Map<String, Object> global){
 		Map<String, Object> system = new HashMap<>();
 		
 		for(Object key: System.getProperties().keySet()){
@@ -287,7 +307,7 @@ public class KeenEngine {
 	 * 
 	 * @param global the flat map of global properties
 	 */
-	protected void addGlobalApplicationProperties(Map<String, Object> global){
+	protected static void addGlobalApplicationProperties(Map<String, Object> global){
 		global.put(KEEN_GLOBAL_APP_VERSION, Main.getApplicationVersion());
 		global.put(KEEN_GLOBAL_APP_DIR, Main.getApplicationDirectory());
 	}
@@ -297,7 +317,7 @@ public class KeenEngine {
 	 * 
 	 * @param global the flat map of global properties
 	 */
-	protected void addGlobalUserProperties(Map<String, Object> global){
+	protected static void addGlobalUserProperties(Map<String, Object> global){
 		UUID identifier = Main.getPreferences().getIdentifier();
 		if(identifier == null){
 			identifier = UUID.randomUUID();
@@ -309,6 +329,34 @@ public class KeenEngine {
 	}
 	
 	/**
+	 * Add custom automatic properties that are event specific to the event. For instance,
+	 * a client side event id that can be used to verify the Keen IO keen.id event identifier.
+	 * 
+	 * @param nestedMap the nested map containing the event properties
+	 */
+	protected static void addEventSpecificProperties(Map<String, Object> nestedMap){
+		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_ID, UUID.randomUUID());
+	}
+	
+	/**
+	 * Keen namespace properties get put in a separate map as part of the Java SDK call
+	 * interface. Build out the Keen properties for inclusion in the event
+	 * 
+	 * @return the nested map properties that fall under the Keen namespace in the event
+	 */
+	protected static Map<String, Object> buildKeenProperties(){
+		Map<String, Object> nestedMap = new HashMap<>();
+		
+		//Keen allows overwriting the event timestamp in order to use the client event time
+		//instead of the server receipt timestamp
+		Calendar current = new GregorianCalendar();
+		String timestamp = DatatypeConverter.printDateTime(current);
+		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_TIMESTAMP, timestamp);
+		
+		return nestedMap;
+	}
+	
+	/**
 	 * Register the specified event into the specified collection
 	 * 
 	 * @param collection the name of the collection in the Keen project
@@ -316,7 +364,10 @@ public class KeenEngine {
 	 */
 	public void registerEvent(String collection, Map<String, Object> event){
 		try{
-			this.getKeen().addEventAsync(collection, KeenUtils.createNestedMap(event));
+			Map<String, Object> nested = KeenUtils.createNestedMap(event);
+			addEventSpecificProperties(nested);
+			
+			this.getKeen().addEventAsync(collection, nested, buildKeenProperties());
 		}catch(Exception e){
 			//this will happen if analytics failed to initialize properly
 		}
