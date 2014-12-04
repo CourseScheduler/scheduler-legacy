@@ -110,6 +110,20 @@ public class KeenEngine {
 	 * Value: {@value}
 	 */
 	public static final String KEEN_GLOBAL_USER_ID = "user.id";
+	
+	/**
+	 * The event property for the external IP address of the client
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_GLOBAL_USER_IP = "user.ip";
+	
+	/**
+	 * The event property for the user agent string of the client system
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_GLOBAL_USER_AGENT = "user.agent";
 
 	/**
 	 * The application version event property in the global properties.
@@ -140,6 +154,20 @@ public class KeenEngine {
 	 * Value: {@value}
 	 */
 	public static final String KEEN_EVENT_ID = "event.id";
+	
+	/**
+	 * Keen IO event property value which is automatically expanded into the client's external IP address
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_AUTO_COLLECT_IP = "${keen.ip}";
+	
+	/**
+	 * Keen IO event property value which is automatically expanded into the client's user agent string
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_AUTO_COLLECT_AGENT = "${keen.user_agent}";
 
 	/**
 	 * The default KeenEngine which can be used to publish events
@@ -326,6 +354,8 @@ public class KeenEngine {
 		}
 		
 		global.put(KEEN_GLOBAL_USER_ID, identifier);
+		global.put(KEEN_GLOBAL_USER_IP, KEEN_AUTO_COLLECT_IP);
+		global.put(KEEN_GLOBAL_USER_AGENT, KEEN_AUTO_COLLECT_AGENT);
 	}
 	
 	/**
