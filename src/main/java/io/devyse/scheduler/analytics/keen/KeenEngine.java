@@ -174,6 +174,14 @@ public class KeenEngine {
 	public static final String KEEN_EVENT_ID = "event.id";
 	
 	/**
+	 * A boolean event property to indicate if the event was transmitted realtime or if it was a
+	 * queued retry
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_EVENT_REALTIME = "event.realtime";
+	
+	/**
 	 * The Keen properties property in which the list of enabled add ons is placed.
 	 * 
 	 * Value: {@value}
@@ -391,6 +399,7 @@ public class KeenEngine {
 	 */
 	protected static void addEventSpecificProperties(Map<String, Object> nestedMap){
 		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_ID, UUID.randomUUID());
+		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_REALTIME, Boolean.TRUE);
 	}
 	
 	/**
