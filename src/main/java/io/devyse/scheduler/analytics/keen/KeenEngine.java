@@ -26,9 +26,11 @@ package io.devyse.scheduler.analytics.keen;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -119,11 +121,27 @@ public class KeenEngine {
 	public static final String KEEN_GLOBAL_USER_IP = "user.ip";
 	
 	/**
+	 * The event property for the IP geo location results produced by the IP to
+	 * geo location add on
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_GLOBAL_USER_GEO = "user.geo";
+	
+	/**
 	 * The event property for the user agent string of the client system
 	 * 
 	 * Value: {@value}
 	 */
 	public static final String KEEN_GLOBAL_USER_AGENT = "user.agent";
+	
+	/**
+	 * The event property for the user agent string details, populated by the user
+	 * agent parser addon.
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_GLOBAL_USER_AGENT_DETAILS = "user.agent_details";
 
 	/**
 	 * The application version event property in the global properties.
@@ -154,6 +172,13 @@ public class KeenEngine {
 	 * Value: {@value}
 	 */
 	public static final String KEEN_EVENT_ID = "event.id";
+	
+	/**
+	 * The Keen properties property in which the list of enabled add ons is placed.
+	 * 
+	 * Value: {@value}
+	 */
+	public static final String KEEN_EVENT_ADDONS = "addons";
 	
 	/**
 	 * Keen IO event property value which is automatically expanded into the client's external IP address
@@ -383,7 +408,71 @@ public class KeenEngine {
 		String timestamp = DatatypeConverter.printDateTime(current);
 		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_TIMESTAMP, timestamp);
 		
+		//configure the data enrichment add-ons
+		KeenUtils.addNestedMapEntry(nestedMap, KEEN_EVENT_ADDONS, buildKeenAddons());
+		
 		return nestedMap;
+	}
+	
+	/**
+	 * Build the Keen addon configuration for the event to perform additional collection and
+	 * processing on the event.
+	 * 
+	 * @return the list of addons that should be active for the event
+	 */
+	protected static List<Map<String, Object>> buildKeenAddons(){
+		List<Map<String, Object>> addOnsList = new ArrayList<>();
+		
+		//IP Geo Addon
+		addOnsList.add(buildKeenAddon(
+				"keen:ip_to_geo",
+				new String[]{"input.ip"},
+				new String[]{KEEN_GLOBAL_USER_IP},
+				KEEN_GLOBAL_USER_GEO
+		));
+		
+		//User Agent Addon
+		addOnsList.add(buildKeenAddon(
+				"keen:ua_parser",
+				new String[]{"input.ua_string"},
+				new String[]{KEEN_GLOBAL_USER_AGENT},
+				KEEN_GLOBAL_USER_AGENT_DETAILS
+		));
+		
+		//TODO provide mechanism for switching on the URL parser addon for download event or other events that have a URL
+		
+		return addOnsList;
+	}
+	
+	/**
+	 * Build a nested map to configure the addon specified in the addonName. Details on the
+	 * data collection addons and data enrichment features of Keen IO can be found at 
+	 * {@linkplain https://keen.io/docs/data-collection/data-enrichment/}.
+	 * 
+	 * The inputParameters array must be of the same length as the inputProperties array
+	 * 
+	 * @param addonName the addon name which this nested map will configure
+	 * @param inputParameters ordered list of input parameter names
+	 * @param inputProperties ordered list of properties which contain the values for the input parameters
+	 * @param output the output property into which the results of the data enrichment should be placed
+	 * 
+	 * @return the nested map containing the configuration for the add on
+	 * 
+	 * @throws IllegalArgumentException if the inputParameters array is not the same length as the inputProperties array
+	 */
+	protected static Map<String, Object> buildKeenAddon(String addonName, String[] inputParameters, String[] inputProperties, String output){
+		Map<String, Object> addon = new HashMap<>();
+		
+		if(inputParameters.length != inputProperties.length){
+			throw new IllegalArgumentException("Length of inputParameters array and inputProperties array must match");
+		}
+
+		KeenUtils.addNestedMapEntry(addon, "name", addonName);
+		KeenUtils.addNestedMapEntry(addon, "output", output);
+		for(int index = 0; index < inputParameters.length; index++){
+			KeenUtils.addNestedMapEntry(addon, inputParameters[index], inputProperties[index]);
+		}
+		return addon;
 	}
 	
 	/**
