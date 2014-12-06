@@ -1,6 +1,7 @@
 package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
+import io.devyse.scheduler.logging.LogManager;
 
 import java.awt.Component;
 
@@ -26,6 +27,13 @@ import java.util.Properties;
 
 
 public class Main {
+	
+	/**
+	 * Initialize logging as early as possible
+	 */
+	static {	
+		LogManager.initialize();
+	}
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -94,7 +102,9 @@ public class Main {
 	public static final String KEEN_CONFIG = "config";
 	
 	
-	public static void main(String[] args) throws Exception{ 
+	public static void main(String[] args) throws Exception{	
+	
+		
 		//Make sure the majority of SSL/TLS protocols are enabled
 		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		

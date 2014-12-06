@@ -21,7 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-
 package io.devyse.scheduler.analytics.keen;
 
 import java.io.FileInputStream;
@@ -264,9 +263,8 @@ public class KeenEngine {
 	 */
 	protected void initialize(String config, long timeout){
 		try{
-			//enable logging and debug to better track issues during Keen setup
+			//enable logging to better track issues during Keen setup
 			KeenLogging.enableLogging();
-			this.getKeen().setDebugMode(true);
 			
 			configureKeenClient(config);
 			configureShutdownHook(timeout);
