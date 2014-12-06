@@ -207,6 +207,7 @@ public class Database implements Serializable, Cloneable{
 	 * @return Schedule[]: the possible schedules based on parameters
 	*********************************************************/
 	public Schedule[] makeSchedulesOpt(String[] classes, ArrayList<String> primary, boolean allowClosed, int useMin, ThreadSynch sync, boolean[][] sectionsAllowed, int[] numberSelected, boolean reportingEnabled){
+		long startTime = System.currentTimeMillis();
 		int[] permOffset = new int[classes.length];	//combinatorial object offset currently 0, may need to be 1; must test to find out if all combinations are found or not
 		
 		for(int pos = beginIndex; pos < permOffset.length; pos++){
@@ -359,13 +360,15 @@ public class Database implements Serializable, Cloneable{
 		Schedule[] temp = result.toArray(new Schedule[0]);//get the schedule[]
 		Arrays.sort(temp);							//sort it
 		
-		registerScheduleEvent(allowClosed, useMin, reportingEnabled, classes, primary, sectionsAllowed, numberSelected, sync, temp);
+		long endTime = System.currentTimeMillis();
+		
+		registerScheduleEvent(allowClosed, useMin, reportingEnabled, classes, primary, sectionsAllowed, numberSelected, sync, temp, endTime - startTime);
 				
 		sync.updateWatch("Updating List", -1);		//set new note
 		return temp;								//return the results
 	}
 	
-	private void registerScheduleEvent(boolean allowClosed, int useMin, boolean reportingEnabled, String[] classes, List<String> primary, boolean[][] sectionsAllowed, int[] numberSelected, ThreadSynch sync, Schedule[] temp){
+	private void registerScheduleEvent(boolean allowClosed, int useMin, boolean reportingEnabled, String[] classes, List<String> primary, boolean[][] sectionsAllowed, int[] numberSelected, ThreadSynch sync, Schedule[] temp, long runtime){
 		try{
 			if(!Main.prefs.isAnalyticsOptOut()){
 				Map<String, Object> event = new HashMap<>();
@@ -379,6 +382,7 @@ public class Database implements Serializable, Cloneable{
 				event.put("parameters.primary", primary);
 				event.put("results.schedules.found", temp.length);
 				event.put("results.schedules.conflicts", sync.getConflicts().size());
+				event.put("results.runtime", runtime);
 				
 				buildAllowed(event, classes, sectionsAllowed);
 				buildSelected(event, classes, numberSelected);
