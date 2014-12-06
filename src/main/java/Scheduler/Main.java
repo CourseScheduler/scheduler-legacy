@@ -32,7 +32,7 @@ public class Main {
 	********************************************************/
 	protected static final long versionID = 201412032345L;//object id
 	protected static final long buildNumber = 1568L;//build number
-	protected static final String version = new String("4.12.5");
+	protected static final String version = new String("4.12.6");
 	protected static final int policyVersion = 1;
 	
 	

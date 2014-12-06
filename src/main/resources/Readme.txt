@@ -24,6 +24,8 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.6
+
 4.12.5
 	-Improved reliability and readability of the analytics code. 
 	-Added analytic attributes and improved data type storage for attributes
