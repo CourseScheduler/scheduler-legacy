@@ -21,7 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-
 package io.devyse.scheduler.analytics.keen;
 
 import java.io.FileInputStream;
@@ -495,7 +494,13 @@ public class KeenEngine {
 			Map<String, Object> nested = KeenUtils.createNestedMap(event);
 			addEventSpecificProperties(nested);
 			
-			this.getKeen().addEventAsync(collection, nested, buildKeenProperties());
+			this.getKeen().addEventAsync(
+				this.getKeen().getDefaultProject(),
+				collection,
+				nested, 
+				buildKeenProperties(),
+				null		//callback
+			);
 		}catch(Exception e){
 			//this will happen if analytics failed to initialize properly
 		}
