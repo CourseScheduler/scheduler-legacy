@@ -42,6 +42,7 @@ package Scheduler;								//define as member of Scheduler package
  * Import Progress Monitor generic for monitoring downloads
  * Import JOption Pane for gui messages
 *********************************************************/
+import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
@@ -206,18 +207,18 @@ public enum Parser {
 		if(!Main.prefs.isAnalyticsOptOut()){
 
 			Map<String, Object> event = new HashMap<>();
-			Main.mapifyEntry(event, "university.name", "Kettering University");
-			Main.mapifyEntry(event, "university.url", url);
-			Main.mapifyEntry(event, "university.term", term);
-			Main.mapifyEntry(event, "results.courses.count", items.getDatabase().size());
-			Main.mapifyEntry(event, "results.courses.undergrad", items.isUndergrad());
-			Main.mapifyEntry(event, "results.courses.graduate_distance", items.isGradDist());
-			Main.mapifyEntry(event, "results.courses.graduate_campus", items.isGradCampus());
-			Main.mapifyEntry(event, "results.professors.count", items.getProfs().size());
-			Main.mapifyEntry(event, "results.professors.rate_my_prof", downloadRatings);
-			Main.mapifyEntry(event, "results.runtime", Long.valueOf(runtime));
+			event.put("university.name", "Kettering University");
+			event.put("university.url", url);
+			event.put("university.term", term);
+			event.put("results.courses.count", items.getDatabase().size());
+			event.put("results.courses.undergrad", items.isUndergrad());
+			event.put("results.courses.graduate_distance", items.isGradDist());
+			event.put("results.courses.graduate_campus", items.isGradCampus());
+			event.put("results.professors.count", items.getProfs().size());
+			event.put("results.professors.rate_my_prof", downloadRatings);
+			event.put("results.runtime", Long.valueOf(runtime));
 			
-			Main.registerEvent(Main.KEEN_DOWNLOAD, event);
+			KeenEngine.getDefaultKeenEngine().registerEvent(Main.KEEN_DOWNLOAD, event);
 		}
 	}
 	
