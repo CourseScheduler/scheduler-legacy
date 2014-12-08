@@ -1,5 +1,5 @@
 /**
- * @(#) LogManager.java
+ * @(#) Logging.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -23,6 +23,8 @@
  */
 package io.devyse.scheduler.logging;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
@@ -31,13 +33,20 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  * @author Mike Reinhold
  * @since 4.12.6
  */
-public class LogManager {
+public class Logging {
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Logging.class);
+	
 	/**
 	 * Initialize the logging subsystem and necessary logging bridges
 	 */
 	public static void initialize(){
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
+		
+		logger.info("JUL to SLF4J bridge initialized");
 	}
 }

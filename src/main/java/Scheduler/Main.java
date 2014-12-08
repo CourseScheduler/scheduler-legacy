@@ -1,7 +1,7 @@
 package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
-import io.devyse.scheduler.logging.LogManager;
+import io.devyse.scheduler.logging.Logging;
 
 import java.awt.Component;
 
@@ -32,7 +32,7 @@ public class Main {
 	 * Initialize logging as early as possible
 	 */
 	static {	
-		LogManager.initialize();
+		Logging.initialize();
 	}
 	
 	/********************************************************

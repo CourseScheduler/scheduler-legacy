@@ -38,6 +38,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import Scheduler.Main;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
@@ -52,6 +55,11 @@ import io.keen.client.java.KeenProject;
  * @since 4.12.5
  */
 public class KeenEngine {
+	
+	/**
+	 * Static logger
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(KeenEngine.class);
 	
 	/**
 	 * Keen configuration file containing the project ID, read key, and write key. This file
@@ -266,14 +274,18 @@ public class KeenEngine {
 			//enable logging to better track issues during Keen setup
 			KeenLogging.enableLogging();
 			
+			//disable the default JUL log handler installed by Keen
+			KeenUtils.disableKeenDefaultLogHandler();
+			
 			configureKeenClient(config);
 			configureShutdownHook(timeout);
 			configureGlobalProperties();
 			
 			this.setInitialized(true);
+			logger.debug("Successfully initialized Keen IO Analytics using configuration from {}", config);
 		}catch(Exception e){
-			System.out.println("Unable to initialize Keen IO Analytics: " + e);
 			this.setInitialized(false);
+			logger.error("Unable to initialize Keen IO Analytics", e);
 		}
 	}
 	
