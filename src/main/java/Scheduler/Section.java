@@ -876,19 +876,19 @@ public class Section implements Cloneable, Serializable, Comparable<Section>{
 		String period;
 		
 		if(startComp == Compare.less.value()){
-			period = two.getPeriodPer().getStartTime().toString();
+			period = two.getPeriodPer().getStartTime().toString() + (two.getPeriodPer().getStartTime().getAm() ? " am" : " pm");
 		}
 		else{
-			period = one.getPeriodPer().getStartTime().toString();
+			period = one.getPeriodPer().getStartTime().toString() + (one.getPeriodPer().getStartTime().getAm() ? " am" : " pm");
 		}
 		
 		if(endComp == Compare.more.value()){
 			Time end = two.getPeriodPer().getEndTime();
-			period += "-" + end.toString() + (end.getAm() ? "am" : "pm");
+			period += " - " + end.toString() + (end.getAm() ? " am" : " pm");
 		}
 		else{
 			Time end = one.getPeriodPer().getEndTime();
-			period += "-" + end.toString() + (end.getAm() ? "am" : "pm");
+			period += " - " + end.toString() + (end.getAm() ? " am" : " pm");
 		}
 		
 		Section toReturn = new Section();
