@@ -316,7 +316,7 @@ public class KeenEngine {
 			
 			this.getKeen().setDefaultProject(keenProject);
 		} catch(IOException e){
-			System.out.println("Unable to load keen configuration file (" + KEEN_DEFAULT_CONFIG_FILE + "): " + e);
+			logger.error("Unable to load keen configuration file ({}): ", KEEN_DEFAULT_CONFIG_FILE, e);
 			throw e;
 		}
 	}
@@ -336,7 +336,7 @@ public class KeenEngine {
 				try {
 					keenExecutor.awaitTermination(timeout, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.error("Interrupted while waiting for analytics executor to terminate", e);
 				}
 			}
 		});
@@ -508,6 +508,7 @@ public class KeenEngine {
 			this.getKeen().addEventAsync(collection, nested, buildKeenProperties());
 		}catch(Exception e){
 			//this will happen if analytics failed to initialize properly
+			logger.warn("Unable to send event due to uninitialized analytics engine", e);
 		}
 	}
 	

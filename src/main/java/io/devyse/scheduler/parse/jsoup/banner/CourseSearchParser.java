@@ -33,6 +33,8 @@ import java.util.Set;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Process the course search results page into separate sub-documents for each course
@@ -41,6 +43,11 @@ import org.jsoup.select.Elements;
  * @since 4.12.4
  */
 public class CourseSearchParser extends AbstractParser<Void> {
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CourseSearchParser.class);
 	
 	/**
 	 * Serial Version UID
@@ -67,10 +74,10 @@ public class CourseSearchParser extends AbstractParser<Void> {
 	protected void parse(Document document){
 		//TODO remove debugging statements and switch to logging
 		Set<CourseParser> courseParsers = new HashSet<>();
-		System.out.println("\n=== Section Listing ==============================");
+		logger.debug("\n=== Section Listing ==============================");
 		Elements sectionRows = document.select("table.datadisplaytable > tbody > tr:has(th.ddtitle, td.dddefault span)");
 		
-		System.out.println("Found " + sectionRows.size()/2 + " Sections (" + sectionRows.size() + " Rows)");
+		logger.debug("Found {} Sections ({} Rows)", sectionRows.size()/2, sectionRows.size());
 		
 		for(Element row = sectionRows.first(); row != null; row = row.nextElementSibling()){
 			// Section info is 2 table rows - 1 "header" table row and 1 "detail" table row, each with sub info			
@@ -94,7 +101,7 @@ public class CourseSearchParser extends AbstractParser<Void> {
 		for(CourseParser parser : courseParsers){
 			Map<String, String> result = parser.join();
 
-			System.out.println("\n---- Section " + ++section);
+			logger.debug("\n---- Section {}", ++section);
 			persister.persist(result);
 		}
 	}

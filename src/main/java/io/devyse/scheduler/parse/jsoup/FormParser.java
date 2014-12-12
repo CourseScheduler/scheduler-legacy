@@ -30,6 +30,8 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.KeyVal;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.FormElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract FormParser to provide basic functionality for processing documents containing
@@ -40,6 +42,11 @@ import org.jsoup.nodes.FormElement;
  */
 public abstract class FormParser extends AbstractParser<Document> {
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(FormParser.class);
+	
 	/**
 	 * Serial Version UID
 	 */
@@ -137,8 +144,7 @@ public abstract class FormParser extends AbstractParser<Document> {
 		String action = form.absUrl("action");
 		String method = form.attr("method");
 
-		//TODO Log this instead of print it
-		System.out.println("Form submits to " + action + " via " + method);
+		logger.debug("Form submits to {} via {}", action, method);
 		
 		return form.submit();
 	}
