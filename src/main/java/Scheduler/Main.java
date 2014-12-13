@@ -1,6 +1,7 @@
 package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
+import io.devyse.scheduler.logging.Logging;
 
 import java.awt.Component;
 
@@ -13,6 +14,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -27,12 +31,24 @@ import java.util.Properties;
 
 public class Main {
 	
+	/**
+	 * Initialize logging as early as possible
+	 */
+	static {	
+		Logging.initialize();
+	}
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Main.class);
+	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
 	********************************************************/
 	protected static final long versionID = 201412032345L;//object id
 	protected static final long buildNumber = 1568L;//build number
-	protected static final String version = new String("4.12.6");
+	protected static final String version = new String("4.12.7");
 	protected static final int policyVersion = 1;
 	
 	
@@ -94,31 +110,31 @@ public class Main {
 	public static final String KEEN_CONFIG = "config";
 	
 	
-	public static void main(String[] args) throws Exception{ 
+	public static void main(String[] args) throws Exception{	
+	
+		
 		//Make sure the majority of SSL/TLS protocols are enabled
 		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
 		try {
-			try {
-				sis = (SingleInstanceService) ServiceManager
-						.lookup("javax.jnlp.SingleInstanceService");
-				sisL = new SISListener();
-				sis.addSingleInstanceListener(sisL);
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-					@Override
-					public void run() {
-						try {
-							sis.removeSingleInstanceListener(sisL);
-						} catch (Exception e) {
-						}
+			sis = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
+			sisL = new SISListener();
+			sis.addSingleInstanceListener(sisL);
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				@Override
+				public void run() {
+					try {
+						sis.removeSingleInstanceListener(sisL);
+					} catch (Exception e) {
+						logger.error("Unable to deregister the single instance listener", e);
 					}
-				});
-			} catch (UnavailableServiceException e) {
-				sis = null;
-			}
-		} catch (NoClassDefFoundError e) {
-			// TODO: handle exception
+				}
+			});
+		} catch (UnavailableServiceException | NoClassDefFoundError e) {
+			sis = null;
+			logger.error("Unable to register as a single instance service", e);
 		}
+		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -128,10 +144,9 @@ public class Main {
 		        }
 		    }
 		} 
-		catch (UnsupportedLookAndFeelException e) {} 
-		catch (ClassNotFoundException e) {} 
-		catch (InstantiationException e) {} 
-		catch (IllegalAccessException e) {}
+		catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			logger.warn("Unable to set look and feel", e);
+		} 
 		
 		Properties systemProps = System.getProperties();
 		
@@ -265,9 +280,12 @@ public class Main {
 			}
 		}
 		
-		for(Prof prof: profs){
-			System.out.println(prof.getName() + ": " + prof.getRating());
-		}		
+		//only print out the professors without ratings if debug enabled
+		if(logger.isDebugEnabled()){
+			for(Prof prof: profs){
+				logger.debug("{}: {}", prof.getName(), prof.getRating());
+			}		
+		}
 	}
 	
 	

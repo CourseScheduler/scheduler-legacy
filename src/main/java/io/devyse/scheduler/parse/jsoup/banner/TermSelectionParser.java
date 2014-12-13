@@ -39,6 +39,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JSoup Parser which parser the Banner term selection page, selects a term 
@@ -50,6 +52,11 @@ import org.jsoup.select.Elements;
  */
 public class TermSelectionParser extends FormParser {
 
+	/**
+	 * Static logger 
+	 */
+	private static Logger logger = LoggerFactory.getLogger(TermSelectionParser.class);
+	
 	/**
 	 * Serial Version UID
 	 */
@@ -92,20 +99,16 @@ public class TermSelectionParser extends FormParser {
 		
 		//extract the available term codes and names from the form field
 		List<Term> termOptions = new ArrayList<>();
-		System.out.println(termParameter + " selected from:");
+		logger.debug("{} selected from:", termParameter);
 		for(Element term: terms){
 			String code = term.attr("value");
 			if(code.compareTo("") != 0){
 				Term found = new BasicTerm(code, term.text());
 				termOptions.add(found);
 				
-				//TODO stop this debug printing
-				System.out.println(found.getId() + ": " + found.getName());
+				logger.debug("{}: {}", found.getId(), found.getName());
 			} else {
-				
-				//TODO stop debug printing
-				//TODO log info
-				System.out.println("Ignored empty entry: " + code);
+				logger.debug("Ignored empty entry: {}", code);
 			}
 		}
 		
