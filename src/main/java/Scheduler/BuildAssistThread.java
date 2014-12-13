@@ -34,6 +34,10 @@ package Scheduler;									//declare as member of scheduler package
  * The following imports are necessary for this class
 ********************************************************/
 import javax.swing.SwingWorker;						//subclasses by this class
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;							//use to store list of helper threads
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +53,10 @@ import java.util.Vector;
 ********************************************************/
 public class BuildAssistThread extends SwingWorker<Void,Void> {
 	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(BuildAssistThread.class);
 	
 	/********************************************************
 	 * The following are protected static constants for versioning
@@ -296,8 +304,7 @@ public class BuildAssistThread extends SwingWorker<Void,Void> {
 						}
 						
 						if(Main.conflictDebugEnabled){
-							System.out.println("\n\n");
-							System.out.println(conflict.toTerminalString());
+							logger.debug(conflict.toTerminalString());
 						}
 						
 						sync.addConflict(conflict);

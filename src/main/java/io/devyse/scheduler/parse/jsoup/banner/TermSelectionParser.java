@@ -99,7 +99,7 @@ public class TermSelectionParser extends FormParser {
 		
 		//extract the available term codes and names from the form field
 		List<Term> termOptions = new ArrayList<>();
-		System.out.println(termParameter + " selected from:");
+		logger.debug("{} selected from:", termParameter);
 		for(Element term: terms){
 			String code = term.attr("value");
 			if(code.compareTo("") != 0){

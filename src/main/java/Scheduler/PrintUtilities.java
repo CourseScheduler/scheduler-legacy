@@ -13,9 +13,19 @@ package Scheduler;
 import java.awt.*;
 
 import javax.swing.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.print.*;
 
 public class PrintUtilities implements Printable {
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(PrintUtilities.class);
+	
 	protected static final long versionID = 2008070900006L;	//object version
 	protected static final long serialVersionUID = 1L +
 			Version.printUtility.id;				//serial version
@@ -39,7 +49,7 @@ public class PrintUtilities implements Printable {
 			printJob.setPrintService(PrinterJob.lookupPrintServices()[0]);
 		}
 		catch(Exception ex){
-			ex.printStackTrace();
+			logger.error("Unable to access print service", ex);
 		}
 		printJob.setPrintable(this);
 		if (printJob.printDialog()){				

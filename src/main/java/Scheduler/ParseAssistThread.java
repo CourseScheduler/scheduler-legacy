@@ -38,7 +38,11 @@ import java.io.InputStream;							//input streams
 import java.io.IOException;							//input/output exceptions
 import java.net.URL;								//url class
 import java.util.Scanner;							//scanner utility
+
 import javax.swing.SwingWorker;						//swing worker abstract class
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /*********************************************************
@@ -50,6 +54,11 @@ import javax.swing.SwingWorker;						//swing worker abstract class
  * @see SwingWorker
 ********************************************************/
 public class ParseAssistThread extends SwingWorker<Void, Void> {
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ParseAssistThread.class);
 	
 	
 	/********************************************************
@@ -135,6 +144,7 @@ public class ParseAssistThread extends SwingWorker<Void, Void> {
 							nameStr += reader.next().substring(startIndex);//get first name
 							next = new Prof();		//create new prof
 							next.setName(nameStr);	//set prof name
+							reader.close();
 							break;					//break case
 						}
 						case numRate:{break;}		//break the case since we don't care about num of ratings
@@ -150,6 +160,7 @@ public class ParseAssistThread extends SwingWorker<Void, Void> {
 							catch(Exception ex){	//catch conversion failure
 								rating = min;		//set rating to 0
 							}
+							reader.close();
 							break;					//break the case
 						}
 						case easeRate:	{			//current parameter is ease rating
@@ -168,15 +179,17 @@ public class ParseAssistThread extends SwingWorker<Void, Void> {
 							profs.addIfNew(next);	//add if new prof						
 							
 							time = reset;			//reset current parameter
+							reader.close();
 							break;					//break the case
 						}
 					}
 					time++;							//increment the current parameter
 				}
 			}
+			test.close();
 		}
 		catch(IOException ex){
-			System.out.println(ex.getMessage());	//print out error message
+			logger.error("Unable to parse professor and rating", ex);	//print out error message
 			exception = true;						//set exception to true
 		}
 		return null;								//return Void type

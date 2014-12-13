@@ -15,6 +15,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -34,6 +37,11 @@ public class Main {
 	static {	
 		Logging.initialize();
 	}
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Main.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -275,9 +283,12 @@ public class Main {
 			}
 		}
 		
-		for(Prof prof: profs){
-			System.out.println(prof.getName() + ": " + prof.getRating());
-		}		
+		//only print out the professors without ratings if debug enabled
+		if(logger.isDebugEnabled()){
+			for(Prof prof: profs){
+				logger.debug("{}: {}", prof.getName(), prof.getRating());
+			}		
+		}
 	}
 	
 	

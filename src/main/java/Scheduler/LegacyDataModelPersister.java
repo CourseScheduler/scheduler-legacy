@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.devyse.scheduler.retrieval.CoursePersister;
 
 /**
@@ -42,12 +45,20 @@ import io.devyse.scheduler.retrieval.CoursePersister;
 public class LegacyDataModelPersister implements CoursePersister {
 
 	/**
-	 * 
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(LegacyDataModelPersister.class);
+	
+	/**
+	 * Legacy database class
 	 */
 	private Database database;
 	
 	/**
+	 * Create a new instance of the legacy datamodel persister which will store persist the 
+	 * course data into the specified database
 	 * 
+	 * @param database the legacy database which is the target for the persisting activity
 	 */
 	public LegacyDataModelPersister(Database database) {
 		super();
@@ -67,14 +78,14 @@ public class LegacyDataModelPersister implements CoursePersister {
 	 */
 	@Override
 	public void persist(Map<String, String> data) {
-		// TODO Auto-generated method stub
-
-		//TODO remove temporary debugging output
-		List<String> keys = new ArrayList<>();
-		keys.addAll(data.keySet());
-		Collections.sort(keys);
-		for(String key: keys){
-			System.out.println(key + ": " + data.get(key));
+		//only go through the effort of outputting if the necessary logging level is enabled
+		if(logger.isDebugEnabled()){
+			List<String> keys = new ArrayList<>();
+			keys.addAll(data.keySet());
+			Collections.sort(keys);
+			for(String key: keys){
+				logger.debug("{}: {}", key, data.get(key));
+			}
 		}
 		
 		Section section = new Section();
@@ -97,8 +108,10 @@ public class LegacyDataModelPersister implements CoursePersister {
 	}
 	
 	/**
-	 * @param data
-	 * @param section
+	 * Process the section header and extract the relevant fields 
+	 * 
+	 * @param data map of the section data extracted from the source
+	 * @param section the section instance into which the data should be persisted 
 	 */
 	private void processHeaderFields(Map<String, String> data, Section section){
 		String header = data.get("header");
@@ -118,8 +131,10 @@ public class LegacyDataModelPersister implements CoursePersister {
 	}
 	
 	/**
-	 * @param data
-	 * @param section
+	 * Process the course data to extract the section type
+	 * 
+	 * @param data map of the section data extracted from the source
+	 * @param section the section instance into which the data should be persisted
 	 */
 	private void processSectionType(Map<String, String> data, Section section){
 		String levels = data.get("levels");
@@ -151,9 +166,11 @@ public class LegacyDataModelPersister implements CoursePersister {
 	}
 	
 	/**
-	 * @param data
-	 * @param section
-	 * @param notes
+	 * Process the meeting times from the course data and update the section meeting information
+	 * 
+	 * @param data map of the section data extracted from the source
+	 * @param section the section instance into which the data should be persisted
+	 * @param notes the section notes field containing additional details
 	 */
 	private void processMeetingInformation(Map<String, String> data, Section section, String notes){
 		//check for meetings
@@ -187,8 +204,10 @@ public class LegacyDataModelPersister implements CoursePersister {
 	}
 
 	/**
-	 * @param instructorString
-	 * @return
+	 * Extract the instructor list from the provided instructor string
+	 * 
+	 * @param instructorString the instructor string containing the instructor names
+	 * @return the list of instructor names
 	 */
 	private List<String> extractInstructorList(String instructorString){
 		List<String> instructorList = new ArrayList<>();
@@ -205,8 +224,10 @@ public class LegacyDataModelPersister implements CoursePersister {
 	}
 	
 	/**
-	 * @param dayString
-	 * @return
+	 * Build a day flag array based on the specified day character string
+	 * 
+	 * @param dayString a string of characters representing the days on which a meeting occurs (eg. MWF)
+	 * @return a day flag array indicating the days
 	 */
 	private boolean[] buildDayArray(String dayString){
 		boolean[] days = new boolean[Day.values().length];

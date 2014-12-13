@@ -72,7 +72,6 @@ public class CourseSearchParser extends AbstractParser<Void> {
 	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
 	 */
 	protected void parse(Document document){
-		//TODO remove debugging statements and switch to logging
 		Set<CourseParser> courseParsers = new HashSet<>();
 		logger.debug("\n=== Section Listing ==============================");
 		Elements sectionRows = document.select("table.datadisplaytable > tbody > tr:has(th.ddtitle, td.dddefault span)");

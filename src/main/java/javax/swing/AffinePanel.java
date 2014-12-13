@@ -31,7 +31,9 @@
  */
 package javax.swing;
 
-import javax.swing.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -42,7 +44,17 @@ import java.awt.geom.NoninvertibleTransformException;
  * Transform any swing component.
  */
 public class AffinePanel extends JPanel {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3486541619930533783L;
 
+	/**
+	 * Static Logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(AffinePanel.class);
+	
     AffineTransform at;
 
     CellRendererPane crp = new CellRendererPane();
@@ -167,7 +179,7 @@ public class AffinePanel extends JPanel {
             AffineTransform inverse = at2.createInverse();
             p0 = (Point) inverse.transform(p, new Point());
         } catch (NoninvertibleTransformException ex) {
-            ex.printStackTrace();
+            logger.warn("Unable to invert transform", ex);
             p0 = findPoint(r, at2, p);
         }
         Component c = SwingUtilities.getDeepestComponentAt(view, p0.x, p0.y);

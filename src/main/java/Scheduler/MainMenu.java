@@ -43,13 +43,16 @@ import javax.swing.JMenuItem;				//used inside the menus
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;				//used to separate items
 import javax.swing.GroupLayout;				//used with the display term
+
 import java.awt.BorderLayout;				//used to display groups
+
 import javax.swing.JPanel;					//used for grouping items
 import javax.swing.JLabel;					//used to display the current term
 import javax.swing.JFileChooser;			//used to select files
 import javax.swing.filechooser.FileNameExtensionFilter;//used to filter files
 import javax.swing.filechooser.FileView;
 import javax.swing.JOptionPane;				//import popup dialogs
+
 import java.awt.event.ActionEvent;			//used for events
 import java.awt.event.ActionListener;		//used to listen for events
 import java.beans.PropertyChangeEvent;		//used for property change events
@@ -63,6 +66,9 @@ import java.util.Scanner;
 
 import javax.swing.Box;						//used for boxes
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /********************************************************
  * Class MainMenu
@@ -74,6 +80,10 @@ import javax.swing.Box;						//used for boxes
 ********************************************************/
 public class MainMenu extends JMenuBar {
 	
+	/**
+	 * Static Logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(MainMenu.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -483,7 +493,7 @@ public class MainMenu extends JMenuBar {
 								"Please Wait", JOptionPane.WARNING_MESSAGE);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error("Unable to print the schedule", e);
 				}
 			}
 			else if(source.equals(deleteScheduleMenu)){
@@ -522,6 +532,8 @@ public class MainMenu extends JMenuBar {
 									Main.master.tabControl.setTitleAt(pos, orig);
 									Main.master.setModified(false, pos, true);
 								}
+								
+								titleScan.close();
 							}
 							
 							for(int pos = 0; pos < Main.master.detached.size(); pos++){
@@ -537,6 +549,7 @@ public class MainMenu extends JMenuBar {
 									Main.master.detached.get(pos).setTitle(orig);
 									Main.master.setModified(true, pos, true);
 								}
+								titleScan.close();
 							}
 						}
 						else{

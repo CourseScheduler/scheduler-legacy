@@ -42,6 +42,7 @@ import javax.swing.JPanel;				//import panels
 import javax.swing.JFrame;				//import frames
 import javax.swing.GroupLayout;			//import the group layout
 import javax.swing.JButton;				//import buttons
+
 import java.awt.Component;				//import component
 import java.awt.Dimension;				//import dimensions
 import java.awt.event.ActionListener;	//import action listener interface
@@ -51,8 +52,13 @@ import java.awt.event.KeyEvent;			//import the key event
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;		//import parse exception for use with MaskFormatter
+
 import javax.swing.JOptionPane;			//import the joption pane message dialogs
-import javax.swing.text.MaskFormatter;	//import MaskFormatter for use with JFormattedTextField
+import javax.swing.text.MaskFormatter;	
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import MaskFormatter for use with JFormattedTextField
 
 
 /********************************************************
@@ -65,6 +71,10 @@ import javax.swing.text.MaskFormatter;	//import MaskFormatter for use with JForm
 ********************************************************/
 public class ChooseTerm extends JFrame {
 	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(ChooseTerm.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -132,7 +142,7 @@ public class ChooseTerm extends JFrame {
 		try {
 			year = new JFormattedTextField(new MaskFormatter("####"));//setup the year mask
 		} catch (ParseException e) {		//to accept only 4 numbers
-			e.printStackTrace();			
+			logger.error("Unable to parse year", e);			
 		}									//instantiate the text field
 		
 		year.setText(Main.prefs.getCurrentTerm().substring(0, 4));

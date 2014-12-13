@@ -60,6 +60,8 @@ import javax.swing.JOptionPane;					//Import message pane
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /********************************************************
@@ -76,6 +78,10 @@ public enum Parser {
 	********************************************************/
 	ku (Main.prefs.getSID());					//enumerator construction
 	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Parser.class);
 	
 	/********************************************************
 	 * The following are the fields of the enumerators 
@@ -197,8 +203,7 @@ public enum Parser {
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
 			return items;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Error retrieving or parsing course dataset from Banner", e);
 			return null;
 		}
 	}
@@ -361,6 +366,8 @@ public enum Parser {
 			}
 			file.close();
 		}
-		catch(Exception ex1){ex1.printStackTrace(); System.err.println(ex1.getLocalizedMessage());}							//catch file not found but do nothing
+		catch(Exception ex1){
+			logger.warn("Unable to access professor name realignment file", ex1);
+		}							//catch file not found but do nothing
 	}
 }

@@ -48,6 +48,9 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;					//import the progress bar
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;							//import the arrayList utility
 
 
@@ -57,7 +60,11 @@ import java.util.ArrayList;							//import the arrayList utility
  * @purpose Provides storage and methods for making class schedules
 *********************************************************/
 public class Database implements Serializable, Cloneable{
-													//define class
+
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Database.class);
 
 	/********************************************************
 	 * The following are fields of the Database
@@ -387,7 +394,7 @@ public class Database implements Serializable, Cloneable{
 				KeenEngine.getDefaultKeenEngine().registerEvent(Main.KEEN_SCHEDULE, event);
 			}
 		}catch(Exception e){
-			e.printStackTrace(System.err);
+			logger.error("Exception processing schedule event", e);
 		}
 	}
 	
