@@ -24,6 +24,8 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.7
+
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day
 	-Replaced console logging statements with SLF4J logging to the console
