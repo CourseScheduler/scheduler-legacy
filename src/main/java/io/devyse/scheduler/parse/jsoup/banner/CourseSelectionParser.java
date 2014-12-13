@@ -35,6 +35,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * JSoup FormParser which processes a Banner course selection page and
@@ -46,6 +48,11 @@ import org.jsoup.select.Elements;
  */
 public class CourseSelectionParser extends FormParser {
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CourseSelectionParser.class);
+	
 	/**
 	 * Serial Version UID
 	 */
@@ -80,7 +87,7 @@ public class CourseSelectionParser extends FormParser {
 		//add in the subject selection options
 		Elements subjects = form.select("select#subj_id option");
 		for(Element subject: subjects){
-			System.out.println("sel_subj: " + subject.attr("value") + " - " + subject.text());
+			logger.debug("sel_subj: {} - {}", subject.attr("value"), subject.text());
 			data.add(HttpConnection.KeyVal.create("sel_subj", subject.attr("value")));
 		}
 		

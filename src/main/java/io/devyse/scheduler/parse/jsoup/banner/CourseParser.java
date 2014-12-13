@@ -39,6 +39,8 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A CourseParser parses a sub-document extracted from the main course search results document
@@ -49,6 +51,11 @@ import org.jsoup.select.Elements;
  */
 public class CourseParser extends AbstractParser<Map<String, String>>{
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(CourseParser.class);
+	
 	/**
 	 * Serial Version UID
 	 */
@@ -189,21 +196,23 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 		Element restrictionElement = document.select("span:containsOwn(Restriction)").first();
 		try{
 			for(Node node = restrictionElement.nextSibling(); !(node instanceof Element && ((Element)node).tag().equals(Tag.valueOf("span"))); node = node.nextSibling()){
-				System.out.println("Restriction: " + node);
+				logger.debug("Restriction: {}", node);
 				///TODO handle the restrictions list - grouping of restrictions (or restriction list elements) indicated by indentation
 			}
 		}catch(NullPointerException e){
 			//Not all courses will have restrictions and this element is only present if restrictions exist
+			logger.debug("No restriction found", e);
 		}
 		
 		Element prerequisiteElement = document.select("span:containsOwn(Prerequisite)").first();
 		try{
 			for(Node node = prerequisiteElement.nextSibling(); node != null; node = node.nextSibling()){
-				System.out.println("Prereq: " + node);
+				logger.debug("Prereq: {}", node);
 				//TODO handle the prerequisite list - can be AND-OR or OR-AND formatted (keywords 'and' 'or' present to indicate w/ parentheses for grouping
 			}
 		} catch(Exception e){
 			//Not all courses will have prerequisites and this element is only present if prerequisites exist
+			logger.debug("No prequisite found", e);
 		}
 	}
 }

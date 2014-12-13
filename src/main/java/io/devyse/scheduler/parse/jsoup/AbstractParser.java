@@ -26,6 +26,8 @@ package io.devyse.scheduler.parse.jsoup;
 import java.util.concurrent.ForkJoinTask;
 
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract JSoup Parser which provides some basic functionality for parsing a source
@@ -39,6 +41,11 @@ import org.jsoup.nodes.Document;
  */
 public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(AbstractParser.class);
+	
 	/**
 	 * Serial Version UID
 	 */
@@ -104,8 +111,7 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 			parse(this.getSource());
 			return true;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block - improve this with logging
-			e.printStackTrace();
+			logger.error("Unable to parse the source document: {}", source, e);
 			return false;
 		}
 	}

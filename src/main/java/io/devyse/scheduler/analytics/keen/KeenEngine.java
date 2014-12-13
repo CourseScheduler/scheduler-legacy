@@ -21,7 +21,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-
 package io.devyse.scheduler.analytics.keen;
 
 import java.io.FileInputStream;
@@ -39,6 +38,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import Scheduler.Main;
 import io.keen.client.java.JavaKeenClientBuilder;
 import io.keen.client.java.KeenClient;
@@ -53,6 +55,11 @@ import io.keen.client.java.KeenProject;
  * @since 4.12.5
  */
 public class KeenEngine {
+	
+	/**
+	 * Static logger
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(KeenEngine.class);
 	
 	/**
 	 * Keen configuration file containing the project ID, read key, and write key. This file
@@ -264,18 +271,21 @@ public class KeenEngine {
 	 */
 	protected void initialize(String config, long timeout){
 		try{
-			//enable logging and debug to better track issues during Keen setup
+			//enable logging to better track issues during Keen setup
 			KeenLogging.enableLogging();
-			this.getKeen().setDebugMode(true);
+			
+			//disable the default JUL log handler installed by Keen
+			KeenUtils.disableKeenDefaultLogHandler();
 			
 			configureKeenClient(config);
 			configureShutdownHook(timeout);
 			configureGlobalProperties();
 			
 			this.setInitialized(true);
+			logger.debug("Successfully initialized Keen IO Analytics using configuration from {}", config);
 		}catch(Exception e){
-			System.out.println("Unable to initialize Keen IO Analytics: " + e);
 			this.setInitialized(false);
+			logger.error("Unable to initialize Keen IO Analytics", e);
 		}
 	}
 	
@@ -306,7 +316,7 @@ public class KeenEngine {
 			
 			this.getKeen().setDefaultProject(keenProject);
 		} catch(IOException e){
-			System.out.println("Unable to load keen configuration file (" + KEEN_DEFAULT_CONFIG_FILE + "): " + e);
+			logger.error("Unable to load keen configuration file ({}): ", KEEN_DEFAULT_CONFIG_FILE, e);
 			throw e;
 		}
 	}
@@ -326,7 +336,7 @@ public class KeenEngine {
 				try {
 					keenExecutor.awaitTermination(timeout, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.error("Interrupted while waiting for analytics executor to terminate", e);
 				}
 			}
 		});
@@ -498,6 +508,7 @@ public class KeenEngine {
 			this.getKeen().addEventAsync(collection, nested, buildKeenProperties());
 		}catch(Exception e){
 			//this will happen if analytics failed to initialize properly
+			logger.warn("Unable to send event due to uninitialized analytics engine", e);
 		}
 	}
 	

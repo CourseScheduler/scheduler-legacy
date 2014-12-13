@@ -46,8 +46,10 @@ import javax.swing.JButton;					//uses a button
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;					//for finding the year
 import java.awt.BorderLayout;				//border layout is used
@@ -71,6 +73,10 @@ import java.awt.Font;						//font definitions
 *********************************************************/
 public class HelpAboutFrame extends JFrame {
 	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(HelpAboutFrame.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -308,25 +314,25 @@ public class HelpAboutFrame extends JFrame {
 		try{
 			policy = Main.loader.getResource("Privacy.html");
 		}catch(Exception e){
-			e.printStackTrace(System.err);
+			logger.warn("Unable to load privacy policy", e);
 		}
 		try {
 			policyPanel.setContentType("text/html");
 			policyPanel.setPage(policy);
 		} catch (IOException e) {
-			e.printStackTrace(System.err);
+			logger.warn("Unable to display privacy policy", e);
 		}		
 		
 		policyPanel.addHyperlinkListener(new HyperlinkListener() {
             @Override
             public void hyperlinkUpdate(HyperlinkEvent hle) {
                 if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
-                    System.out.println(hle.getURL());
+                    logger.debug("Hyperlink activated {}", hle.getURL());
                     Desktop desktop = Desktop.getDesktop();
                     try {
                         desktop.browse(hle.getURL().toURI());
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        logger.error("Unable toopen hyperlink in external application", ex);
                     }
                 }
             }

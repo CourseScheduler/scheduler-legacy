@@ -35,9 +35,15 @@ package Scheduler;									//declare as member of scheduler package
  * The following imports are necessary for this class's function
 *********************************************************/
 import javax.swing.SwingWorker;						//swing worker abstract class
+
 import java.awt.print.PrinterException;				//printer exceptions
 import java.awt.print.PrinterJob;					//printer job class
-import javax.swing.JDialog;							//dialog class
+
+import javax.swing.JDialog;							
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//dialog class
 
 
 /*********************************************************
@@ -49,6 +55,11 @@ import javax.swing.JDialog;							//dialog class
  * @See SwingWorker<T,V>
 *********************************************************/
 public class PrintThread extends SwingWorker<Void, Void> {
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(PrintThread.class);
 	
 	/*********************************************************
 	 * The following protected static constants are versioning values
@@ -76,7 +87,7 @@ public class PrintThread extends SwingWorker<Void, Void> {
 			printerJob.print();						//print the job
 		}
 		catch (PrinterException pe) {				//catch exceptions
-			System.out.println("Error printing: " + pe);//print out exceptions
+			logger.error("Unable to print", pe);
 		}
 		return null;								//return Void
 	}

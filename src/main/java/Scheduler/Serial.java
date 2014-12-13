@@ -43,6 +43,9 @@ import java.io.ObjectInputStream;			//for opening object streams in
 import java.io.ObjectOutputStream;			//for opening object streams out
 import java.io.File;						//for making file objects
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /*********************************************************
  * Class Serial
@@ -52,6 +55,10 @@ import java.io.File;						//for making file objects
 *********************************************************/
 public class Serial {
 
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(Serial.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES
@@ -80,7 +87,7 @@ public class Serial {
 			return result;							//return the result of the read and cast
 		}
 		catch (Exception ex){						//catch class cast exceptions
-			System.out.println(ex.toString());		//print out error messages
+			logger.error("Unable to deserialize object", ex);
 			return null;							//return null object
 		}
 	}

@@ -60,6 +60,7 @@ import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -88,6 +89,9 @@ import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /*********************************************************
  * class MakeSchedule
@@ -98,6 +102,11 @@ import javax.swing.event.ListSelectionListener;
  * @see JPanel, Tab (custom)
 *********************************************************/
 public class MakeSchedule extends JPanel implements Tab {
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(MakeSchedule.class);
 	
 	
 	/*********************************************************
@@ -1216,7 +1225,7 @@ public class MakeSchedule extends JPanel implements Tab {
 					basicComp.put(count, empty);
 					basicCont.put(count++, daily);
 				} catch(ClassCastException ex){
-					ex.printStackTrace();
+					logger.error("Unable to build display constraints", ex);
 				}
 			}
 			
