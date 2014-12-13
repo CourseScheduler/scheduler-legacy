@@ -117,26 +117,24 @@ public class Main {
 		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
 		try {
-			try {
-				sis = (SingleInstanceService) ServiceManager
-						.lookup("javax.jnlp.SingleInstanceService");
-				sisL = new SISListener();
-				sis.addSingleInstanceListener(sisL);
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-					@Override
-					public void run() {
-						try {
-							sis.removeSingleInstanceListener(sisL);
-						} catch (Exception e) {
-						}
+			sis = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
+			sisL = new SISListener();
+			sis.addSingleInstanceListener(sisL);
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				@Override
+				public void run() {
+					try {
+						sis.removeSingleInstanceListener(sisL);
+					} catch (Exception e) {
+						logger.error("Unable to deregister the single instance listener", e);
 					}
-				});
-			} catch (UnavailableServiceException e) {
-				sis = null;
-			}
-		} catch (NoClassDefFoundError e) {
-			// TODO: handle exception
+				}
+			});
+		} catch (UnavailableServiceException | NoClassDefFoundError e) {
+			sis = null;
+			logger.error("Unable to register as a single instance service", e);
 		}
+		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -146,10 +144,9 @@ public class Main {
 		        }
 		    }
 		} 
-		catch (UnsupportedLookAndFeelException e) {} 
-		catch (ClassNotFoundException e) {} 
-		catch (InstantiationException e) {} 
-		catch (IllegalAccessException e) {}
+		catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			logger.warn("Unable to set look and feel", e);
+		} 
 		
 		Properties systemProps = System.getProperties();
 		
