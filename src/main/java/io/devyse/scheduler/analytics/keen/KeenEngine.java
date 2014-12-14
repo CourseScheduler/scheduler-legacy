@@ -328,7 +328,7 @@ public class KeenEngine {
 	 * @param timeout the timeout, in seconds, which the executor service will have to allow event publishing
 	 */
 	protected void configureShutdownHook(final long timeout){
-		Runtime.getRuntime().addShutdownHook(new Thread(){
+		Runtime.getRuntime().addShutdownHook(new Thread("Keen IO Cleanup"){
 			@Override
 			public void run(){
 				ExecutorService keenExecutor = (ExecutorService)keen.getPublishExecutor();

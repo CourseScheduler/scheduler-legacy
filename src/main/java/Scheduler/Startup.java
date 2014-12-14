@@ -1,17 +1,19 @@
 package Scheduler;
 
+import io.devyse.scheduler.startup.SingleInstanceController;
+
 import javax.jnlp.ServiceManager;
 import javax.jnlp.SingleInstanceService;
 
 public class Startup {
 
 	protected static SingleInstanceService sis;
-	protected static SISListener sisL;
+	protected static SingleInstanceController sisL;
 	
 	public static void main(String[] args) {
 		try{
 		    sis = (SingleInstanceService)ServiceManager.lookup("javax.jnlp.SingleInstanceService");
-		    sisL = new SISListener();
+		    sisL = new SingleInstanceController();
 		    sis.addSingleInstanceListener(sisL);
 		    Runtime.getRuntime().addShutdownHook(new Thread(){
 		    	@Override

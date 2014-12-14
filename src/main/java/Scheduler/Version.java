@@ -92,7 +92,6 @@ public enum Version {
 	courseList	(420000000, CourseList.versionID, pad(new String("CourseList.java"))),
 	courseType  (430000000, CourseType.versionID, pad(new String("CourseType.java"))),
 	textFilter  (440000000, JTextFieldFilter.getVersionID(), pad(new String("JTextFieldFilter.java"))),
-	singleton   (450000000, SISListener.getVersionID(), pad(new String("SISListener.java"))),
 	conflict    (460000000, Conflict.getVersionID(), pad(new String("Conflict.java"))),
 	;
 	
