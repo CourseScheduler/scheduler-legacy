@@ -23,7 +23,13 @@
  */
 package io.devyse.scheduler.startup;
 
+import javax.jnlp.ServiceManager;
 import javax.jnlp.SingleInstanceListener;
+import javax.jnlp.SingleInstanceService;
+import javax.jnlp.UnavailableServiceException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
 
@@ -37,6 +43,16 @@ import Scheduler.Main;
  * @since 4.12.7
  */
 public class SingleInstanceController implements SingleInstanceListener {
+	
+	/**
+	 * Service name for the JNLP provided SingleInstanceService
+	 */
+	public static final String JNLP_SINGLE_INSTANCE_SERVICE_NAME = "javax.jnlp.SingleInstanceService";
+	
+	/**
+	 * Static logger
+	 */
+	private static Logger logger = LoggerFactory.getLogger(SingleInstanceController.class);
 	
 	/* (non-Javadoc)
 	 * @see javax.jnlp.SingleInstanceListener#newActivation(java.lang.String[])
@@ -53,5 +69,30 @@ public class SingleInstanceController implements SingleInstanceListener {
 		
 		//open schedule files specified at start up
 		Main.openScheduleFiles(parameters.getOpenFiles());
+	}
+	
+	/**
+	 * Register a SingleInstanceController as a listener in order to control additional instances
+	 */
+	public static void register(){
+		try {
+			final SingleInstanceService service = (SingleInstanceService) ServiceManager.lookup(JNLP_SINGLE_INSTANCE_SERVICE_NAME);
+			final SingleInstanceController controller = new SingleInstanceController();
+			service.addSingleInstanceListener(controller);
+			
+			//register a shutdown hook for removing the single instance listener
+			Runtime.getRuntime().addShutdownHook(new Thread("SIS Controller") {
+				@Override
+				public void run() {
+					try {
+						service.removeSingleInstanceListener(controller);
+					} catch (Exception e) {
+						logger.error("Unable to deregister the single instance listener", e);
+					}
+				}
+			});
+		} catch (UnavailableServiceException | NoClassDefFoundError e) {
+			logger.error("Unable to register as a single instance listener", e);
+		}
 	}
 }

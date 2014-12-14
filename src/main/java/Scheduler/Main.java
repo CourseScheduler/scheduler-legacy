@@ -2,14 +2,12 @@ package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
+import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
 import io.devyse.scheduler.startup.SingleInstanceController;
 
 import java.awt.Component;
 
-import javax.jnlp.ServiceManager;
-import javax.jnlp.SingleInstanceService;
-import javax.jnlp.UnavailableServiceException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -103,9 +101,6 @@ public class Main {
 	protected static String os;
 	protected static String jvm;
 	
-	protected static SingleInstanceService sis;
-	protected static SingleInstanceController sisL;
-	
 	protected static boolean nimbus = false;
 	protected static boolean conflictDebugEnabled = false;
 	
@@ -116,28 +111,16 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception{	
-			
-		//Make sure the majority of SSL/TLS protocols are enabled
-		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
-		try {
-			sis = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
-			sisL = new SingleInstanceController();
-			sis.addSingleInstanceListener(sisL);
-			Runtime.getRuntime().addShutdownHook(new Thread() {
-				@Override
-				public void run() {
-					try {
-						sis.removeSingleInstanceListener(sisL);
-					} catch (Exception e) {
-						logger.error("Unable to deregister the single instance listener", e);
-					}
-				}
-			});
-		} catch (UnavailableServiceException | NoClassDefFoundError e) {
-			sis = null;
-			logger.error("Unable to register as a single instance service", e);
-		}
+		//Register a SingleInstanceListener to handle secondary invocation
+		SingleInstanceController.register();
+		
+		//process the command line arguments
+		Parameters parameters = new Parameters();
+		new JCommander(parameters, args);
+		
+		//make sure that the required SSL/TLS protocols are enabled for use in HTTPS
+		Encryption.configureHttpsProtocols(parameters.getHttpsProtocols());
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -248,11 +231,7 @@ public class Main {
 				master.mainMenu.newScheduleMenu.setEnabled(false);
 			}
 		}
-		
-		//process the command line arguments
-		Parameters parameters = new Parameters();
-		new JCommander(parameters, args);
-		
+				
 		//open any schedule files specified at start up
 		openScheduleFiles(parameters.getOpenFiles());
 	}

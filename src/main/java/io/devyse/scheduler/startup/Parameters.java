@@ -41,14 +41,34 @@ public class Parameters {
 
 	/**
 	 * List of schedule files that should be opened by the application at startup
+	 * 
+	 * Value: {@value}
 	 */
-	@Parameter
+	@Parameter(description = "Schedule files to open at start up")
 	private List<String> openFiles = new ArrayList<>();
+	
+	/**
+	 * Comma separated list of enabled HTTPS protocols.
+	 * 
+	 * See the https.protocols property accessible via {@link System#getProperty(String)}
+	 * for more information.
+	 * 
+	 * Value: {@value}
+	 */
+	@Parameter(names = "-https.protocols", description = "Comma separated list of the enabled HTTPS protocols")
+	private String httpsProtocols = "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello";
 
 	/**
 	 * @return the openFiles the files that should be opened during startup
 	 */
 	public List<String> getOpenFiles() {
 		return openFiles;
+	}
+	
+	/**
+	 * @return the httpsProtocols that should be enabled as defined in the https.protocols system property
+	 */
+	public String getHttpsProtocols(){
+		return httpsProtocols;
 	}
 }
