@@ -2,6 +2,8 @@ package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
+import io.devyse.scheduler.startup.Parameters;
+import io.devyse.scheduler.startup.SingleInstanceController;
 
 import java.awt.Component;
 
@@ -18,9 +20,12 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.beust.jcommander.JCommander;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
@@ -99,7 +104,7 @@ public class Main {
 	protected static String jvm;
 	
 	protected static SingleInstanceService sis;
-	protected static SISListener sisL;
+	protected static SingleInstanceController sisL;
 	
 	protected static boolean nimbus = false;
 	protected static boolean conflictDebugEnabled = false;
@@ -111,14 +116,13 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception{	
-	
-		
+			
 		//Make sure the majority of SSL/TLS protocols are enabled
 		System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello");
 		
 		try {
 			sis = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
-			sisL = new SISListener();
+			sisL = new SingleInstanceController();
 			sis.addSingleInstanceListener(sisL);
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
@@ -245,13 +249,12 @@ public class Main {
 			}
 		}
 		
-		for(String item: args){
-			if(item.endsWith(Main.scheduleExt)){
-				ScheduleWrap found = ScheduleWrap.load(item);
-				
-				Main.master.mainMenu.addMadeSchedule(found, new File(item).getName());
-			}
-		}		
+		//process the command line arguments
+		Parameters parameters = new Parameters();
+		new JCommander(parameters, args);
+		
+		//open any schedule files specified at start up
+		openScheduleFiles(parameters.getOpenFiles());
 	}
 	
 	private static void registerStartupEvent(){
@@ -434,5 +437,15 @@ public class Main {
 	
 	public static String getApplicationDirectory(){
 		return Main.folderName;
+	}
+	
+	public static void openScheduleFiles(List<String> files){
+		for(String item: files){
+			if(item.endsWith(Main.scheduleExt)){
+				ScheduleWrap found = ScheduleWrap.load(item);
+				
+				Main.master.mainMenu.addMadeSchedule(found, new File(item).getName());
+			}
+		}	
 	}
 }
