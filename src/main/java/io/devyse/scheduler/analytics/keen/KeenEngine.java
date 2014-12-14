@@ -505,7 +505,13 @@ public class KeenEngine {
 			Map<String, Object> nested = KeenUtils.createNestedMap(event);
 			addEventSpecificProperties(nested);
 			
-			this.getKeen().addEventAsync(collection, nested, buildKeenProperties());
+			this.getKeen().addEventAsync(
+				this.getKeen().getDefaultProject(),
+				collection,
+				nested, 
+				buildKeenProperties(),
+				null		//callback
+			);
 		}catch(Exception e){
 			//this will happen if analytics failed to initialize properly
 			logger.warn("Unable to send event due to uninitialized analytics engine", e);
