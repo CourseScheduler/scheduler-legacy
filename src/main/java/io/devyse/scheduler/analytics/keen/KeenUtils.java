@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Keen utility methods for building events and mapping data to events
@@ -45,7 +45,7 @@ class KeenUtils {
 	/**
 	 * Static logger
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(KeenUtils.class);
+	private static final XLogger logger = XLoggerFactory.getXLogger(KeenUtils.class);
 
 	/**
 	 * Keen IO internally uses JSON to represent events. The Keen IO Java API requires that a

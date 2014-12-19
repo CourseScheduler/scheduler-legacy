@@ -48,8 +48,8 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;					//import the progress bar
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;							//import the arrayList utility
 
@@ -64,7 +64,7 @@ public class Database implements Serializable, Cloneable{
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(Database.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(Database.class);
 
 	/********************************************************
 	 * The following are fields of the Database

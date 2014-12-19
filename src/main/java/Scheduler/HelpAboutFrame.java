@@ -46,8 +46,8 @@ import javax.swing.JButton;					//uses a button
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,7 +76,7 @@ public class HelpAboutFrame extends JFrame {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(HelpAboutFrame.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(HelpAboutFrame.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES

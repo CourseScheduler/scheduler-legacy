@@ -66,8 +66,8 @@ import java.util.Scanner;
 
 import javax.swing.Box;						//used for boxes
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 /********************************************************
@@ -83,7 +83,7 @@ public class MainMenu extends JMenuBar {
 	/**
 	 * Static Logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(MainMenu.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(MainMenu.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES

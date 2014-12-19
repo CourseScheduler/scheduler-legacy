@@ -23,8 +23,8 @@
  */
 package io.devyse.scheduler.logging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
@@ -38,7 +38,7 @@ public class Logging {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(Logging.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(Logging.class);
 	
 	/**
 	 * Initialize the logging subsystem and necessary logging bridges

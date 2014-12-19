@@ -35,8 +35,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * JSoup FormParser which processes a Banner course selection page and
@@ -51,7 +51,7 @@ public class CourseSelectionParser extends FormParser {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(CourseSelectionParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(CourseSelectionParser.class);
 	
 	/**
 	 * Serial Version UID

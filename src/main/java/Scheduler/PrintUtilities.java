@@ -14,8 +14,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.awt.print.*;
 
@@ -24,7 +24,7 @@ public class PrintUtilities implements Printable {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(PrintUtilities.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(PrintUtilities.class);
 	
 	protected static final long versionID = 2008070900006L;	//object version
 	protected static final long serialVersionUID = 1L +

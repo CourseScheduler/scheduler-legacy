@@ -35,8 +35,8 @@ package Scheduler;									//declare as member of scheduler package
 ********************************************************/
 import javax.swing.SwingWorker;						//subclasses by this class
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;							//use to store list of helper threads
 import java.util.HashMap;
@@ -56,7 +56,7 @@ public class BuildAssistThread extends SwingWorker<Void,Void> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(BuildAssistThread.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(BuildAssistThread.class);
 	
 	/********************************************************
 	 * The following are protected static constants for versioning

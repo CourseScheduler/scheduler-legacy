@@ -28,8 +28,8 @@ import javax.jnlp.SingleInstanceListener;
 import javax.jnlp.SingleInstanceService;
 import javax.jnlp.UnavailableServiceException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import com.beust.jcommander.JCommander;
 
@@ -52,7 +52,7 @@ public class SingleInstanceController implements SingleInstanceListener {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(SingleInstanceController.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(SingleInstanceController.class);
 	
 	/* (non-Javadoc)
 	 * @see javax.jnlp.SingleInstanceListener#newActivation(java.lang.String[])

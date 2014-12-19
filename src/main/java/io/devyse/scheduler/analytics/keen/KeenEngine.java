@@ -38,8 +38,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import Scheduler.Main;
 import io.keen.client.java.JavaKeenClientBuilder;
@@ -59,7 +59,7 @@ public class KeenEngine {
 	/**
 	 * Static logger
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(KeenEngine.class);
+	private static final XLogger logger = XLoggerFactory.getXLogger(KeenEngine.class);
 	
 	/**
 	 * Keen configuration file containing the project ID, read key, and write key. This file

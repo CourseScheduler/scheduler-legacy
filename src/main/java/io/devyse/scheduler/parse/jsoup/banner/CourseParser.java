@@ -39,8 +39,8 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * A CourseParser parses a sub-document extracted from the main course search results document
@@ -54,7 +54,7 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(CourseParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(CourseParser.class);
 	
 	/**
 	 * Serial Version UID

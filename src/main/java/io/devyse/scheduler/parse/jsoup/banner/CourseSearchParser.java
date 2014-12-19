@@ -33,8 +33,8 @@ import java.util.Set;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Process the course search results page into separate sub-documents for each course
@@ -47,7 +47,7 @@ public class CourseSearchParser extends AbstractParser<Void> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(CourseSearchParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(CourseSearchParser.class);
 	
 	/**
 	 * Serial Version UID
