@@ -60,8 +60,8 @@ import javax.swing.JOptionPane;					//Import message pane
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 /********************************************************
@@ -81,7 +81,7 @@ public enum Parser {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(Parser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(Parser.class);
 	
 	/********************************************************
 	 * The following are the fields of the enumerators 

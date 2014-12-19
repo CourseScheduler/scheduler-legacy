@@ -26,8 +26,8 @@ package io.devyse.scheduler.parse.jsoup;
 import java.util.concurrent.ForkJoinTask;
 
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Abstract JSoup Parser which provides some basic functionality for parsing a source
@@ -44,7 +44,7 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(AbstractParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(AbstractParser.class);
 	
 	/**
 	 * Serial Version UID

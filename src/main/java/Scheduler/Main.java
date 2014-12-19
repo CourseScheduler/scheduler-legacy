@@ -15,8 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import com.beust.jcommander.JCommander;
 
@@ -44,7 +44,7 @@ public class Main {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(Main.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(Main.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES

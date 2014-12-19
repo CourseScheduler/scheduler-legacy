@@ -31,8 +31,8 @@
  */
 package javax.swing;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -53,7 +53,7 @@ public class AffinePanel extends JPanel {
 	/**
 	 * Static Logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(AffinePanel.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(AffinePanel.class);
 	
     AffineTransform at;
 

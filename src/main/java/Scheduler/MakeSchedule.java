@@ -89,8 +89,8 @@ import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 /*********************************************************
@@ -106,7 +106,7 @@ public class MakeSchedule extends JPanel implements Tab {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(MakeSchedule.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(MakeSchedule.class);
 	
 	
 	/*********************************************************

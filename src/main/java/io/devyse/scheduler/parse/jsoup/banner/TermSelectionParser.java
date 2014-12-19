@@ -39,8 +39,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.FormElement;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * JSoup Parser which parser the Banner term selection page, selects a term 
@@ -55,7 +55,7 @@ public class TermSelectionParser extends FormParser {
 	/**
 	 * Static logger 
 	 */
-	private static Logger logger = LoggerFactory.getLogger(TermSelectionParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(TermSelectionParser.class);
 	
 	/**
 	 * Serial Version UID

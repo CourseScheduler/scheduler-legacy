@@ -43,8 +43,8 @@ import java.io.ObjectInputStream;			//for opening object streams in
 import java.io.ObjectOutputStream;			//for opening object streams out
 import java.io.File;						//for making file objects
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 /*********************************************************
@@ -58,7 +58,7 @@ public class Serial {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(Serial.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(Serial.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES

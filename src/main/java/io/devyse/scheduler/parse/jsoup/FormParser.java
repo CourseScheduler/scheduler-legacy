@@ -30,8 +30,8 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.KeyVal;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.FormElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Abstract FormParser to provide basic functionality for processing documents containing
@@ -45,7 +45,7 @@ public abstract class FormParser extends AbstractParser<Document> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(FormParser.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(FormParser.class);
 	
 	/**
 	 * Serial Version UID

@@ -56,8 +56,8 @@ import java.text.ParseException;		//import parse exception for use with MaskForm
 import javax.swing.JOptionPane;			//import the joption pane message dialogs
 import javax.swing.text.MaskFormatter;	
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 //import MaskFormatter for use with JFormattedTextField
 
 
@@ -74,7 +74,7 @@ public class ChooseTerm extends JFrame {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(ChooseTerm.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(ChooseTerm.class);
 	
 	/********************************************************
 	 * UPDATE SERIAL VERSION IN VERSION WHEN THIS FILE CHANGES

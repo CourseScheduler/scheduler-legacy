@@ -41,8 +41,8 @@ import java.util.Scanner;							//scanner utility
 
 import javax.swing.SwingWorker;						//swing worker abstract class
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 
 /*********************************************************
@@ -58,7 +58,7 @@ public class ParseAssistThread extends SwingWorker<Void, Void> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(ParseAssistThread.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(ParseAssistThread.class);
 	
 	
 	/********************************************************

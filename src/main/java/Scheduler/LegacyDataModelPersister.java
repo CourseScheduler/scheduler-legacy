@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import io.devyse.scheduler.retrieval.CoursePersister;
 
@@ -47,7 +47,7 @@ public class LegacyDataModelPersister implements CoursePersister {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(LegacyDataModelPersister.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(LegacyDataModelPersister.class);
 	
 	/**
 	 * Legacy database class

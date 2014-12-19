@@ -41,8 +41,8 @@ import java.awt.print.PrinterJob;					//printer job class
 
 import javax.swing.JDialog;							
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 //dialog class
 
 
@@ -59,7 +59,7 @@ public class PrintThread extends SwingWorker<Void, Void> {
 	/**
 	 * Static logger
 	 */
-	private static Logger logger = LoggerFactory.getLogger(PrintThread.class);
+	private static XLogger logger = XLoggerFactory.getXLogger(PrintThread.class);
 	
 	/*********************************************************
 	 * The following protected static constants are versioning values
