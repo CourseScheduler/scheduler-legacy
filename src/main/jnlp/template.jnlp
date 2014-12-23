@@ -1,5 +1,5 @@
  <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="${j2seVersion}" codebase="${codebase}" href="${targetFileName}">
+<jnlp spec="${j2seVersion}" codebase="${codebase}" href="${targetFileName}" version="${appVersion}">
 
 	<information>
 		<title>${project.Name}</title>
