@@ -17,6 +17,7 @@
 		<!-- Source Code and Target JVM version -->
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+		<Scheduler.j2seVersion>1.8+</Scheduler.j2seVersion>
 		<maven.compiler.compilerArgument>-Xlint:all</maven.compiler.compilerArgument>
 
 		<!-- Source file encoding -->
@@ -367,12 +368,13 @@
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
 					<mainClass>${Scheduler.mainClass}</mainClass>
-					<j2seVersion>1.7+</j2seVersion>
+					<j2seVersion>${Scheduler.j2seVersion}</j2seVersion>
 					<allPermissions>true</allPermissions>
 					<offlineAllowed>true</offlineAllowed>
 					
 					<additionalParameters>
 						<appVersion>${project.version}</appVersion>
+						<j2seAutoDL>http://java.sun.com/products/autodl/j2se</j2seAutoDL>
 					</additionalParameters>
 				</configuration>
 			</plugin>

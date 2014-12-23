@@ -29,7 +29,7 @@
 	
 	<update check="always" policy="always" />
 	<resources>
-		<j2se version="${j2seVersion}" java-vm-args="${javaVmArgs}" />
+		<j2se version="${j2seVersion}" href="${j2seAutoDL}" java-vm-args="${javaVmArgs}" />
 		${dependencies}
 	</resources>
 	

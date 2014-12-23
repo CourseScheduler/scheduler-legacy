@@ -29,6 +29,8 @@ ChangeLog
 	-Build process improvement
 	-Improved application startup and bootstrapping
 	-Added jnlp version to webstart to improve version checking
+	-Added j2se href for auto JRE update on platforms that support it
+	-Prepare for Java 8 upgrade by bumping jnlp spec & runtime
 
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day
