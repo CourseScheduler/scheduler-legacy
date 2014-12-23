@@ -1,5 +1,5 @@
 Course Scheduler
-Open Source
+Open Sourcescheduler-legacy-4.12.7-SNAPSHOT/
 
 Source is available on request via email to licensing@coursescheduler.io
 Redistribution in source and binary forms, with or without modification
@@ -28,6 +28,7 @@ ChangeLog
 	-Update dependencies
 	-Build process improvement
 	-Improved application startup and bootstrapping
+	-Added jnlp version to webstart to improve version checking
 
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day
