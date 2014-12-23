@@ -25,6 +25,9 @@ in future releases.
 
 ChangeLog
 4.12.7
+	-Update dependencies
+	-Build process improvement
+	-Improved application startup and bootstrapping
 
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day
