@@ -6,14 +6,22 @@ import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
 import io.devyse.scheduler.startup.SingleInstanceController;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
@@ -206,6 +214,7 @@ public class Main {
 		master.setVisible(true);
 		master.createBufferStrategy(buffers);
 		
+		//check if new privacy policy to display
 		if(prefs.getPolicyVersion() < policyVersion){
 			
 			//display the policy
@@ -219,6 +228,11 @@ public class Main {
 			prefs.save();
 		}
 		
+		//check if user is running an older Java version, in this case 1.7
+		if(System.getProperty("java.specification.version").compareTo("1.7") == 0){
+			showJavaRuntimeWarning();
+		}
+	
 		if (database == null){
 			int hresult = JOptionPane.showConfirmDialog(Main.master,
 					"You have not yet downloaded course information for " + 
@@ -244,7 +258,6 @@ public class Main {
 		}
 	}
 	
-	
 	public static void printZeroRatedProfs(){
 		ArrayList<Prof> profs = new ArrayList<Prof>();
 		
@@ -268,6 +281,58 @@ public class Main {
 				logger.debug("{}: {}", prof.getName(), prof.getRating());
 			}		
 		}
+	}
+	
+	private static void showJavaRuntimeWarning(){
+		// for copying style
+	    JLabel label = new JLabel();
+	    Font font = label.getFont();
+
+	    // create some css from the label's font
+	    StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+	    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+	    style.append("font-size:" + font.getSize() + "pt;");
+		
+	    //build the message
+		JEditorPane jreWarning = new JEditorPane("text/html", "<html><body style=\"" + style + "\">"
+	            + "You are currently running an older version of the Java Runtime Environment (" + System.getProperty("java.version") + "). <br/><br/>"
+	            + "Oracle has announced the end of life for JRE 7 in April of 2015, more information can be found at "
+	            + "<a href=\"http://www.oracle.com/technetwork/java/javase/downloads/eol-135779.html\">http://www.oracle.com/technetwork/java/javase/downloads/eol-135779.html</a>. <br/><br/>"
+	            + "As such, the Course Scheduler will be migrating to Java 8 in an upcoming release. All users are encouraged to " 
+				+ "upgrade to Java 8 as soon as possible."
+				+ "</body></html>");
+		
+		jreWarning.setEditable(false);
+		
+		//Nimbus will override manually setting the background color via setBackground(Color) unless told otherwise
+		Color bgColor = label.getBackground();
+		UIDefaults defaults = new UIDefaults();
+		defaults.put("EditorPane[Enabled].backgroundPainter", bgColor);
+		jreWarning.putClientProperty("Nimbus.Overrides", defaults);
+		jreWarning.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+		jreWarning.setBackground(bgColor);
+		
+		//add hyperlink listener to handle opening the link
+		jreWarning.addHyperlinkListener(new HyperlinkListener(){
+
+			@Override
+			public void hyperlinkUpdate(HyperlinkEvent hle) {
+				if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+                    logger.debug("Hyperlink activated {}", hle.getURL());
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(hle.getURL().toURI());
+                    } catch (Exception ex) {
+                        logger.error("Unable to open hyperlink in external application", ex);
+                    }
+                }
+			}
+		});
+		
+		JOptionPane.showMessageDialog(master, 
+			jreWarning,
+			"Upgrade to Java 8",
+			JOptionPane.WARNING_MESSAGE);
 	}
 	
 	
