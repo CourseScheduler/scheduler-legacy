@@ -229,7 +229,12 @@ public class Main {
 		}
 		
 		//check if user is running an older Java version, in this case 1.7
-		if(System.getProperty("java.specification.version").compareTo("1.7") == 0){
+		logger.info("java.version: {}", System.getProperty("java.version"));
+		logger.info("java.vm.specification.version: {}", System.getProperty("java.vm.specification.version"));
+		logger.info("java.vm.version: {}", System.getProperty("java.vm.version"));
+		logger.info("java.specification.version: {}", System.getProperty("java.specification.version"));
+		logger.info("java.class.version: {}", System.getProperty("java.class.version"));
+		if(System.getProperty("java.version").startsWith("1.7")){
 			showJavaRuntimeWarning();
 		}
 	
