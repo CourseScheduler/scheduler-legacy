@@ -175,6 +175,8 @@ public class HelpAboutFrame extends JFrame {
 				modLabels[ordinal].setOpaque(true);
 				buildLabels[ordinal].setOpaque(true);
 			}
+			
+			builder.close();
 		}
 		
 		//horizSeq1.addGap(10);				//pad 10 from the left edge
@@ -228,20 +230,20 @@ public class HelpAboutFrame extends JFrame {
 		date = new JLabel(" Last Modified: " + Version.date());//get last modified date
 		author = new JLabel("Author: " + Main.author);//get author name
 		email = new JLabel("Email: " + Main.email);//get maintainer email
-		maintain = new JLabel("<html>Current Maintainer: " + Main.maintain + "</html>");//get maintainer name
+		maintain = new JLabel("<html>Maintainer: " + Main.maintain + "</html>");//get maintainer name
 		ratingNotes = new JLabel();		//create pane for the rating comment
 		ratingNotes.setText("<html>Professor ratings are courtesy " +
 				"of ratemyprofessors.com. The ratings are " + 
 				"not the view of the author or maintainers.</html>");//built rating comment
 		ratingNotes.setBackground(author.getBackground());//set background color
 		ratingNotes.setFont(author.getFont());//set font
-		//ratingNotes.setEditable(false);		//make uneditable
+		
+		items.close();
 		
 		credits = new JLabel();			//make pane for credits
 		credits.setText("Contributers: " + Main.contributers);//set contributers text
 		credits.setBackground(mainPanel.getBackground());//set background color
 		credits.setFont(author.getFont());	//set font
-		//credits.setEditable(false);			//make uneditable
 		
 		Calendar calendar = Calendar.getInstance();	//make new date for today
 		copyright = new JLabel(" Copyright " +//build copyright string 
