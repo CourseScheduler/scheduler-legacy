@@ -9,7 +9,6 @@ import io.devyse.scheduler.swing.handlers.DefaultBrowserHyperlinkListener;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -21,8 +20,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
