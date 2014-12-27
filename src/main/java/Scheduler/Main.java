@@ -5,6 +5,7 @@ import io.devyse.scheduler.logging.Logging;
 import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
 import io.devyse.scheduler.startup.SingleInstanceController;
+import io.devyse.scheduler.swing.handlers.DefaultBrowserHyperlinkListener;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -319,21 +320,7 @@ public class Main {
 		jreWarning.setBackground(bgColor);
 		
 		//add hyperlink listener to handle opening the link
-		jreWarning.addHyperlinkListener(new HyperlinkListener(){
-
-			@Override
-			public void hyperlinkUpdate(HyperlinkEvent hle) {
-				if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
-                    logger.debug("Hyperlink activated {}", hle.getURL());
-                    Desktop desktop = Desktop.getDesktop();
-                    try {
-                        desktop.browse(hle.getURL().toURI());
-                    } catch (Exception ex) {
-                        logger.error("Unable to open hyperlink in external application", ex);
-                    }
-                }
-			}
-		});
+		jreWarning.addHyperlinkListener(new DefaultBrowserHyperlinkListener());
 		
 		JOptionPane.showMessageDialog(master, 
 			jreWarning,
