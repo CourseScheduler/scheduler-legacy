@@ -175,6 +175,7 @@ public enum Parser {
 			}
 			
 			sync.updateWatch("Querying course data from Banner", sync.finished++);
+			logger.info("Querying course data from Banner");
 			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
 
 			if(sync.isCanceled()){
@@ -183,6 +184,7 @@ public enum Parser {
 			}
 			
 			sync.updateWatch("Processing courses retrieved from Banner", sync.finished++);
+			logger.info("Processing courses retrieved from Banner");
 			pool.execute(courseParse);
 			
 			//simple progress updating
@@ -192,15 +194,18 @@ public enum Parser {
 				long queued = pool.getQueuedTaskCount();
 				sync.finished = (int)(sync.finished + Long.max((last-queued),1));
 				sync.updateWatch("Waiting for " + queued + " processing tasks to complete", sync.finished);
+				logger.info("Waiting for {} processing tasks to complete", queued);
 				last = queued;
 
 				if(sync.isCanceled()){
+					logger.info("Download cancelled. Shutting down executor pool");
 					pool.shutdownNow();
 					return null;
 				}
 			}
 			
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
+			logger.info("Finished processing courses from Baner");
 			return items;
 		} catch (Exception e) {
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
