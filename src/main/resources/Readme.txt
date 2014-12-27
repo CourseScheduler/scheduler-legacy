@@ -33,6 +33,7 @@ ChangeLog
 	-Prepare for Java 8 upgrade by bumping jnlp spec & runtime
 	-Add Java 7 end of life (Oracle) warning
 	-Fixes issue #23, illegal use of Long.max(long, long) in Java 7
+	-Updated about window with social media details
 
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day
