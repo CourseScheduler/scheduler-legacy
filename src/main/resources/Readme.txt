@@ -32,6 +32,7 @@ ChangeLog
 	-Added j2se href for auto JRE update on platforms that support it
 	-Prepare for Java 8 upgrade by bumping jnlp spec & runtime
 	-Add Java 7 end of life (Oracle) warning
+	-Fixes issue #23, illegal use of Long.max(long, long) in Java 7
 
 4.12.6
 	-Fixed issue #14, UI bug where conflict would occupy inaccurate portion of the day

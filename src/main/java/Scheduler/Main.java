@@ -304,7 +304,8 @@ public class Main {
 	            + "Oracle has announced the end of life for JRE 7 in April of 2015, more information can be found at "
 	            + "<a href=\"http://www.oracle.com/technetwork/java/javase/downloads/eol-135779.html\">http://www.oracle.com/technetwork/java/javase/downloads/eol-135779.html</a>. <br/><br/>"
 	            + "As such, the Course Scheduler will be migrating to Java 8 in an upcoming release. All users are encouraged to " 
-				+ "upgrade to Java 8 as soon as possible."
+				+ "upgrade to Java 8 as soon as possible. You can download the appropriate installer for your system from " 
+	            + "<a href=\"http://java.com/en/download/\">Oracle</a>."
 				+ "</body></html>");
 		
 		jreWarning.setEditable(false);
