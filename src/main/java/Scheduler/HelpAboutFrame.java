@@ -332,7 +332,7 @@ public class HelpAboutFrame extends JFrame {
                     try {
                         desktop.browse(hle.getURL().toURI());
                     } catch (Exception ex) {
-                        logger.error("Unable toopen hyperlink in external application", ex);
+                        logger.error("Unable to open hyperlink in external application", ex);
                     }
                 }
             }

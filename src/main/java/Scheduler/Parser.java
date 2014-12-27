@@ -134,6 +134,7 @@ public enum Parser {
 		}
 		
 		if(sync.isCanceled()){							//check if the operation is cancelled
+			logger.info("Download cancelled.");
 			return null;								//if so, return invalid value
 		}
 		
@@ -142,6 +143,7 @@ public enum Parser {
 		long end = System.currentTimeMillis();		
 		
 		if(sync.isCanceled()){
+			logger.info("Download cancelled.");
 			return null;
 		}
 		
@@ -159,9 +161,11 @@ public enum Parser {
 		try {
 			TermSelector selector = new StaticSelector(term);
 			sync.updateWatch("Checking available terms in Banner", sync.finished++);
+			logger.info("Checking available terms in Banner");
 			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
@@ -170,37 +174,45 @@ public enum Parser {
 			items.setTerm(selector.getTerm().getId());
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
 			
 			sync.updateWatch("Querying course data from Banner", sync.finished++);
+			logger.info("Querying course data from Banner");
 			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
 			
 			sync.updateWatch("Processing courses retrieved from Banner", sync.finished++);
+			logger.info("Processing courses retrieved from Banner");
 			pool.execute(courseParse);
 			
 			//simple progress updating
 			long last = pool.getQueuedTaskCount();
 			while(!courseParse.isDone()){
+				logger.debug("Sleeping for {} ms before checking task status", 100);
 				Thread.sleep(100);
 				long queued = pool.getQueuedTaskCount();
-				sync.finished = (int)(sync.finished + Long.max((last-queued),1));
+				sync.finished = (int)(sync.finished + Math.max((last-queued),1L));
 				sync.updateWatch("Waiting for " + queued + " processing tasks to complete", sync.finished);
+				logger.debug("Waiting for {} processing tasks to complete", queued);
 				last = queued;
 
 				if(sync.isCanceled()){
+					logger.info("Download cancelled. Shutting down executor pool");
 					pool.shutdownNow();
 					return null;
 				}
 			}
 			
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
+			logger.info("Finished processing courses from Baner");
 			return items;
 		} catch (Exception e) {
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
