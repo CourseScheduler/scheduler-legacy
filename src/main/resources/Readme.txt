@@ -10,20 +10,18 @@ in future releases.
  
  
  Installation Notes:
- 	The new deployment method for the Kettering Course Scheduler is to use the Java Web Start runtime. WebStart is installed as part of Java SE 7 and should register .jnlp files to be run by javaws.
+ 	The new deployment method for the Kettering Course Scheduler is to use the Java Web Start runtime. WebStart is installed as part of Java SE 8 and should register .jnlp files to be run by javaws.
  	This allows the user to download a small .jnlp file from the hosting website, which will then be launched by Java Web Start. Java Web Start will download any application files needed
  	and will install desktop and menu shortcuts. It also registers the program's associated file types with the operating system.
- 	
- 	IMPORTANT -- If you have a previous version of the Scheduler that utilizes the BitRock installer file, you MUST uninstall that version first.
- 	
- 	IMPORTANT -- You MUST be using 32-bit Java to use the Java Web Start version of the application because Web Start is not yet available in a 64-bit binary. The JAR files are provided for
- 	users who really, really don't want to use the 32-bit Java Virtual Machine for its Web Start features.
  	
  Un-Installation Notes:
  	Java Web Start manages its downloaded applications via the Java Control Panel. Click on the "View" button in the Temporary Internet files section to bring up the Java Cache Viewer.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.8
+	-Changed project runtime requirement to JRE8
+	
 4.12.7
 	-Update dependencies
 	-Build process improvement
