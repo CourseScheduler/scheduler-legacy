@@ -196,11 +196,12 @@ public enum Parser {
 			//simple progress updating
 			long last = pool.getQueuedTaskCount();
 			while(!courseParse.isDone()){
+				logger.debug("Sleeping for {} ms before checking task status", 100);
 				Thread.sleep(100);
 				long queued = pool.getQueuedTaskCount();
-				sync.finished = (int)(sync.finished + Long.max((last-queued),1));
+				sync.finished = (int)(sync.finished + Math.max((last-queued),1L));
 				sync.updateWatch("Waiting for " + queued + " processing tasks to complete", sync.finished);
-				logger.info("Waiting for {} processing tasks to complete", queued);
+				logger.debug("Waiting for {} processing tasks to complete", queued);
 				last = queued;
 
 				if(sync.isCanceled()){
