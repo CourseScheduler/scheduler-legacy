@@ -35,6 +35,8 @@ package Scheduler;							//define as member of shceduler package
  * Import the classes necessary to build and use the GUI
  * 		too many to list their purposes
 *********************************************************/
+import io.devyse.scheduler.swing.handlers.DefaultBrowserHyperlinkListener;
+
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;					//this extends JFrame
 import javax.swing.JPanel;					//Uses numerous panels
@@ -43,6 +45,7 @@ import javax.swing.JTabbedPane;				//uses a tab pane
 import javax.swing.JScrollPane;				//uses a scroll pane
 import javax.swing.GroupLayout;				//uses a couple group layouts
 import javax.swing.JButton;					//uses a button
+import javax.swing.UIDefaults;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -115,8 +118,8 @@ public class HelpAboutFrame extends JFrame {
 	protected JLabel email;					//label for maintainer's email
 	protected JLabel credits;				//pane for the names of contributors
 	protected JLabel copyright;				//label for copyright info
-	protected JLabel twitter;				//label for the twitter account
-	protected JLabel mailingList;			//label for the user group mailing list
+	protected JEditorPane twitter;			//label for the twitter account
+	protected JEditorPane mailingList;		//label for the user group mailing list
 	protected JPanel generalPanel;			//panel for the general info
 	protected JLabel ratingNotes;			//pane for the rating disclaimer
 	protected GroupLayout generalLayout;	//grouplayout for the general tab
@@ -225,8 +228,29 @@ public class HelpAboutFrame extends JFrame {
 		generalLayout = new GroupLayout(generalPanel);//make grouplayout for panel
 		generalPanel.setLayout(generalLayout);//set layout manager
 		
-		twitter = new JLabel("<html>Follow on Twitter: <a href=\"https://twitter.com/coursescheduler\">@coursescheduler</a></html>");
-		mailingList = new JLabel("<html>Join the <a href=\"https://groups.google.com/d/forum/course-scheduler-user-group\">mailing list</a></html>");
+		Font font = title.getFont();
+		StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
+	    style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
+	    style.append("font-size:" + font.getSize() + "pt;");
+		
+	    Color bgColor = title.getBackground();
+		UIDefaults defaults = new UIDefaults();
+		defaults.put("EditorPane[Enabled].backgroundPainter", bgColor);
+		
+		twitter = new JEditorPane("text/html", "<html>Follow on Twitter: <a href=\"https://twitter.com/coursescheduler\">@coursescheduler</a></html>");
+		twitter.setEditable(false);
+		twitter.putClientProperty("Nimbus.Overrides", defaults);
+		twitter.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+		twitter.setBackground(bgColor);
+		twitter.addHyperlinkListener(new DefaultBrowserHyperlinkListener());
+	    		
+		mailingList = new JEditorPane("text/html", "<html>Join the <a href=\"https://groups.google.com/d/forum/course-scheduler-user-group\">mailing list</a></html>");
+		mailingList.setEditable(false);
+		mailingList.putClientProperty("Nimbus.Overrides", defaults);
+		mailingList.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+		mailingList.setBackground(bgColor);
+		mailingList.addHyperlinkListener(new DefaultBrowserHyperlinkListener());
+		
 		Scanner items = new Scanner(Version.version());//create scanner on the version
 		
 		version = new JLabel(" Release Version: " + items.next());//get release version text
