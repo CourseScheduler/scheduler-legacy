@@ -115,6 +115,8 @@ public class HelpAboutFrame extends JFrame {
 	protected JLabel email;					//label for maintainer's email
 	protected JLabel credits;				//pane for the names of contributors
 	protected JLabel copyright;				//label for copyright info
+	protected JLabel twitter;				//label for the twitter account
+	protected JLabel mailingList;			//label for the user group mailing list
 	protected JPanel generalPanel;			//panel for the general info
 	protected JLabel ratingNotes;			//pane for the rating disclaimer
 	protected GroupLayout generalLayout;	//grouplayout for the general tab
@@ -223,6 +225,8 @@ public class HelpAboutFrame extends JFrame {
 		generalLayout = new GroupLayout(generalPanel);//make grouplayout for panel
 		generalPanel.setLayout(generalLayout);//set layout manager
 		
+		twitter = new JLabel("<html>Follow on Twitter: <a href=\"https://twitter.com/coursescheduler\">@coursescheduler</a></html>");
+		mailingList = new JLabel("<html>Join the <a href=\"https://groups.google.com/d/forum/course-scheduler-user-group\">mailing list</a></html>");
 		Scanner items = new Scanner(Version.version());//create scanner on the version
 		
 		version = new JLabel(" Release Version: " + items.next());//get release version text
@@ -248,7 +252,7 @@ public class HelpAboutFrame extends JFrame {
 		Calendar calendar = Calendar.getInstance();	//make new date for today
 		copyright = new JLabel(" Copyright " +//build copyright string 
 			"\u00a9" + " " + (calendar.get(Calendar.YEAR)));//with this year
-		jvm = new JLabel(Main.jvm);
+		jvm = new JLabel("Runtime: " + Main.jvm);
 		
 		//horizontal layout definition
 		generalLayout.setHorizontalGroup(generalLayout.createParallelGroup()//set horizontal group to new parallel group
@@ -265,7 +269,10 @@ public class HelpAboutFrame extends JFrame {
 					.addComponent(author)	//add the author, email, and maintainers to the parallel group
 					.addComponent(email)
 					.addComponent(maintain)
+					.addComponent(twitter)
+					.addComponent(mailingList)
 				)
+				.addGap(60)					
 			)
 			.addGroup(generalLayout.createSequentialGroup()//add another sequential group to the parallel group
 				.addGap(10)					//add a gap of 10 to the sequence
@@ -290,6 +297,10 @@ public class HelpAboutFrame extends JFrame {
 			.addGroup(generalLayout.createParallelGroup()//add another parallel group to the sequence
 				.addComponent(date)			//add date and email to the parallel group
 				.addComponent(email)
+			)
+			.addGroup(generalLayout.createSequentialGroup()
+				.addComponent(twitter)
+				.addComponent(mailingList)
 			)
 			.addComponent(jvm)
 			.addGap(30)						//add a gap of 30 to the sequence
