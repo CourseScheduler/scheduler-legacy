@@ -134,6 +134,7 @@ public enum Parser {
 		}
 		
 		if(sync.isCanceled()){							//check if the operation is cancelled
+			logger.info("Download cancelled.");
 			return null;								//if so, return invalid value
 		}
 		
@@ -142,6 +143,7 @@ public enum Parser {
 		long end = System.currentTimeMillis();		
 		
 		if(sync.isCanceled()){
+			logger.info("Download cancelled.");
 			return null;
 		}
 		
@@ -159,9 +161,11 @@ public enum Parser {
 		try {
 			TermSelector selector = new StaticSelector(term);
 			sync.updateWatch("Checking available terms in Banner", sync.finished++);
+			logger.info("Checking available terms in Banner");
 			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
@@ -170,6 +174,7 @@ public enum Parser {
 			items.setTerm(selector.getTerm().getId());
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
@@ -179,6 +184,7 @@ public enum Parser {
 			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
 
 			if(sync.isCanceled()){
+				logger.info("Download cancelled. Shutting down executor pool");
 				pool.shutdownNow();
 				return null;
 			}
