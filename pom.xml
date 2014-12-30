@@ -15,8 +15,8 @@
 	<inceptionYear>2009</inceptionYear>
 	<properties>
 		<!-- Source Code and Target JVM version -->
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<Scheduler.j2seVersion>1.8+</Scheduler.j2seVersion>
 		<maven.compiler.compilerArgument>-Xlint:all</maven.compiler.compilerArgument>
 
