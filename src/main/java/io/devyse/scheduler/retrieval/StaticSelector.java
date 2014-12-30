@@ -75,7 +75,7 @@ public class StaticSelector extends AbstractTermSelector {
 	public Term selectTerm(Collection<Term> options) {
 		
 		for(Term term: options){
-			if(term.getId().equals(getTermId())){
+			if(term.getInternalId().equals(getTermId())){
 				setTerm(term);		//set and return preselected term
 				return getTerm();	
 			}

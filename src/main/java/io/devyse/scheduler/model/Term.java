@@ -23,13 +23,15 @@
  */
 package io.devyse.scheduler.model;
 
+import java.util.Objects;
+
 /**
  * Interface describing a registration term.
  * 
  * @author Mike Reinhold
  * @since 4.12.4
  */
-public interface Term {
+public interface Term extends Comparable<Term>{
 
 	/**
 	 * The unique term identifier for this term as defined by
@@ -37,8 +39,10 @@ public interface Term {
 	 * year and semester (201402)
 	 *
 	 * @return the term identifier
+	 * 
+	 * @since 4.12.8
 	 */
-	public String getId();
+	public String getInternalId();
 	
 	/**
 	 * The common name of the term as defined by the university.
@@ -48,4 +52,59 @@ public interface Term {
 	 * @return the term name
 	 */
 	public String getName();
+	
+	/**
+	 * The university for which this registration term is valid
+	 *
+	 * @return the university for this term
+	 * 
+	 * @since 4.12.8
+	 */
+	public University getUniversity();
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public default boolean equals(Term other) {
+		return	this.getUniversity().equals(other.getUniversity()) &&
+				this.getInternalId().equals(other.getInternalId())
+		;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public default int getHashCode() {
+		return Objects.hash(
+				this.getUniversity(),
+				this.getInternalId()
+		);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public default int compareTo(Term other) {
+		int result = this.getUniversity().compareTo(other.getUniversity());
+		
+		if(result == 0){
+			result = this.getInternalId().compareTo(other.getInternalId());
+		}
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public static String toString(Term term){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(term.getName());
+		sb.append(" (");
+		sb.append(term.getInternalId());
+		sb.append(") - ");
+		sb.append(term.getUniversity());
+		
+		return sb.toString();
+	}
 }

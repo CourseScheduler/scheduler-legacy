@@ -1,5 +1,5 @@
 /**
- * @(#) PreferencesSelector.java
+ * @(#) University.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,41 +21,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package Scheduler;
+package io.devyse.scheduler.model;
 
-import io.devyse.scheduler.retrieval.AbstractTermSelector;
-
-import java.util.Collection;
+import java.util.Objects;
 
 /**
- * Term selector that uses the currentTerm value in the user Preferences
- * 
+ * Represent the University for which course data can or has been
+ * downloaded and schedules can be generated. 
+ *
  * @author Mike Reinhold
  *
  */
-public class PreferencesSelector extends AbstractTermSelector {
+public interface University extends Comparable<University>{
+
 
 	/**
-	 * Build a new PreferencesSelector
+	 * The common name of the university, for instance "Kettering University"
+	 *
+	 * @return university name
 	 */
-	public PreferencesSelector() {
-		super();
-	}
-
+	public String getName();
+	
 	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	@Override
-	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
-		String termString = Main.prefs.getCurrentTerm();
-		
-		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getInternalId().equals(termString)){
-				setTerm(term);		//set and return current preferences term
-				return getTerm();	
-			}
-		}
-		
-		return getTerm();	//return default value
+	public default boolean equals(University other) {
+		return this.getName().equals(other.getName());
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public default int getHashCode() {
+		return Objects.hash(
+			this.getName()
+		);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public default int compareTo(University other) {
+		return this.getName().compareTo(other.getName());
 	}
 }

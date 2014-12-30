@@ -1,5 +1,5 @@
 /**
- * @(#) BasicTerm.java
+ * @(#) AbstractTerm.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -23,20 +23,20 @@
  */
 package io.devyse.scheduler.model;
 
-import java.util.Objects;
-
 /**
- * Basic term implementation containing the term id and a user friendly name
+ * Basic term implementation containing the term id and a user friendly name.
+ * 
+ * The basic term is not associated with any specific university
  * 
  * @author Mike Reinhold
  * @since 4.12.4
  */
-public class BasicTerm implements Term {
-
+public abstract class AbstractTerm implements Term {
+	
 	/**
 	 * Term identifier, usually a code defining the year and semester
 	 */
-	private String id;
+	private String internalId;
 
 	/**
 	 * Term name, usually text declaring the year and semester
@@ -44,20 +44,55 @@ public class BasicTerm implements Term {
 	private String name;
 	
 	/**
-	 * Build an term based on the id and name
+	 * University for which this term is related
 	 */
-	public BasicTerm(String id, String name) {
+	private University university;
+	
+	/**
+	 * Build an term based on the id and name
+	 *
+	 * @param university the university to which the term is related
+	 * @param internalId the internal name of the term as used by the university
+	 * @param name the external name of the term as used by the university
+	 */
+	protected AbstractTerm(University university, String internalId, String name) {
 		super();
-		this.setId(id);
+		this.setInternalId(internalId);
 		this.setName(name);
+		this.setUniversity(university);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString(){
+		return Term.toString(this);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof Term){return equals((Term)other);}
+		else{return super.equals(other);}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this.getHashCode();
+	}
+	
 	/* (non-Javadoc)
 	 * @see io.devyse.scheduler.model.Term#getId()
 	 */
 	@Override
-	public String getId() {
-		return this.id;
+	public String getInternalId() {
+		return this.internalId;
 	}
 
 	/* (non-Javadoc)
@@ -67,12 +102,20 @@ public class BasicTerm implements Term {
 	public String getName() {
 		return this.name;
 	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Term#getUniversity()
+	 */
+	@Override
+	public University getUniversity() {
+		return university;
+	}
 	
 	/**
 	 * @param id the id to set
 	 */
-	protected void setId(String id) {
-		this.id = id;
+	protected void setInternalId(String id) {
+		this.internalId = id;
 	}
 
 	/**
@@ -81,42 +124,11 @@ public class BasicTerm implements Term {
 	protected void setName(String name) {
 		this.name = name;
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Term other) {
-		return this.getId().equals(other.getId())
-		;
-	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * @param university the university to set
 	 */
-	public int getHashCode() {
-		return Objects.hash(
-				this.getId()
-		);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Term other) {
-		int result = this.getId().compareTo(other.getId());
-		
-		return result;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString(){
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append(this.getName());
-		
-		return sb.toString();
+	protected void setUniversity(University university){
+		this.university = university;
 	}
 }

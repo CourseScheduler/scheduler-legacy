@@ -23,8 +23,8 @@
  */
 package io.devyse.scheduler.parse.jsoup.banner;
 
-import io.devyse.scheduler.model.BasicTerm;
 import io.devyse.scheduler.model.Term;
+import io.devyse.scheduler.model.Terms;
 import io.devyse.scheduler.parse.jsoup.FormParser;
 import io.devyse.scheduler.retrieval.TermSelector;
 
@@ -103,17 +103,17 @@ public class TermSelectionParser extends FormParser {
 		for(Element term: terms){
 			String code = term.attr("value");
 			if(code.compareTo("") != 0){
-				Term found = new BasicTerm(code, term.text());
+				Term found = Terms.newTerm(/*TODO*/, code, term.text());
 				termOptions.add(found);
 				
-				logger.debug("{}: {}", found.getId(), found.getName());
+				logger.debug("{}: {}", found.getInternalId(), found.getName());
 			} else {
 				logger.debug("Ignored empty entry: {}", code);
 			}
 		}
 		
 		//select the term to download using the term selector and add it to the HTTP connection parameters
-		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getId()));
+		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getInternalId()));
 		
 		return data;
 	}
