@@ -1,5 +1,5 @@
 /**
- * @(#) University.java
+ * @(#) Universities.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -23,51 +23,43 @@
  */
 package io.devyse.scheduler.model;
 
-import java.util.Objects;
-
 /**
- * Represent the University for which course data can or has been
- * downloaded and schedules can be generated. 
- *
+ * Utility classes and constructor methods for Universities
+ * 
  * @author Mike Reinhold
  * @since 4.12.8
+ *
  */
-public interface University extends Comparable<University>{
+public class Universities {
 
 	/**
-	 * The common name of the university, for instance "Kettering University"
+	 * Create a new University with the specified name
+	 * 
+	 * @param name common name of the university
+	 * 
+	 * @return the new university
+	 */
+	public University newUniversity(String name){
+		return new TransientUniversity(name);
+	}
+	
+	/**
+	 * Transient university class which is a placeholder until persistence based classes are available
+	 * 
+	 * @author Mike Reinhold
+	 * @since 4.12.8
 	 *
-	 * @return university name
 	 */
-	public String getName();
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public default boolean equals(University other) {
-		return this.getName().equals(other.getName());
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	public default int getHashCode() {
-		return Objects.hash(
-			this.getName()
-		);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public default int compareTo(University other) {
-		return this.getName().compareTo(other.getName());
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	public static String toString(University uni){
-		return uni.getName();
+	private static class TransientUniversity extends AbstractUniversity{
+
+		/**
+		 * Create a new placeholder university
+		 * 
+		 * @param name the university name
+		 */
+		public TransientUniversity(String name) {
+			super(name);
+		}
+		
 	}
 }

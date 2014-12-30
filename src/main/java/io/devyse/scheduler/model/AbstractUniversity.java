@@ -1,5 +1,5 @@
 /**
- * @(#) University.java
+ * @(#) AbstractUniversity.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -23,51 +23,67 @@
  */
 package io.devyse.scheduler.model;
 
-import java.util.Objects;
-
 /**
- * Represent the University for which course data can or has been
- * downloaded and schedules can be generated. 
+ * Provide basic functionality and implementation for the University interface
  *
  * @author Mike Reinhold
  * @since 4.12.8
+ * 
  */
-public interface University extends Comparable<University>{
+public abstract class AbstractUniversity implements University {
+	
+	/**
+	 * Common name of the university
+	 */
+	private String name;
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.University#getName()
+	 */
+	@Override
+	public String getName() {
+		return this.name;
+	}
 
 	/**
-	 * The common name of the university, for instance "Kettering University"
-	 *
-	 * @return university name
+	 * @param name the name to set
 	 */
-	public String getName();
-	
+	protected void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Create a new AbstractUniversity with the specified name
+	 *
+	 */
+	public AbstractUniversity(String name) {
+		super();
+		
+		this.setName(name);
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(University other) {
-		return this.getName().equals(other.getName());
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof University){ return this.equals((University)obj);}
+		else return false;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
-	public default int getHashCode() {
-		return Objects.hash(
-			this.getName()
-		);
+	@Override
+	public int hashCode() {
+		return this.getHashCode();
 	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public default int compareTo(University other) {
-		return this.getName().compareTo(other.getName());
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	public static String toString(University uni){
-		return uni.getName();
+	@Override
+	public String toString() {
+		return University.toString(this);
 	}
 }
