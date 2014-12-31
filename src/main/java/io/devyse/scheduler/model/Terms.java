@@ -23,6 +23,9 @@
  */
 package io.devyse.scheduler.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Utility and constructor method class
  * 
@@ -67,6 +70,11 @@ public class Terms {
 		protected TransientTerm(University university, String internalId, String name) {
 			super(university, internalId, name);
 		}
-		
+
+		@Override
+		public Collection<TermDataSet> getDatasets() {
+			// TODO Auto-generated method stub
+			return new ArrayList<TermDataSet>();	//TODO this is only temporary
+		}		
 	}
 }

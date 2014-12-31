@@ -23,6 +23,7 @@
  */
 package io.devyse.scheduler.model;
 
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -62,11 +63,15 @@ public interface Term extends Comparable<Term>{
 	 */
 	public University getUniversity();
 	
-	//TODO
-	/*
-	 * public List<TermDataset> getDatasets() 
-	 */	
-	
+	/**
+	 * The DataSets that are available for this term
+	 * 
+	 * @return the collection of available datasets
+	 * 
+	 * @since 4.12.8
+	 */
+	public Collection<TermDataSet> getDatasets(); 
+		
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

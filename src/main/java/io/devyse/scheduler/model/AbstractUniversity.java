@@ -68,7 +68,7 @@ public abstract class AbstractUniversity implements University {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof University){ return this.equals((University)obj);}
-		else return false;
+		else { return super.equals(obj); }
 	}
 
 	/* (non-Javadoc)

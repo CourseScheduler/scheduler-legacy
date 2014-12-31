@@ -245,7 +245,7 @@ public interface DateTimeBlock extends Comparable<DateTimeBlock>{
 	 * @see java.lang.Object#toString()
 	 */
 	public static String toString(DateTimeBlock block){
-		return DateTimeBlock.toString(block, TextStyle.FULL, DateTimeFormatter.ISO_DATE);
+		return DateTimeBlock.toString(block, TextStyle.FULL, DateTimeFormatter.ISO_INSTANT);
 	}
 
 	/**

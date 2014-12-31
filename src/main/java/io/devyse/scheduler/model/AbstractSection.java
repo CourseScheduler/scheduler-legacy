@@ -53,7 +53,7 @@ public abstract class AbstractSection implements Section {
 	 */
 	private String name;
 	
-	/**
+	/**c
 	 * The unique section identifier
 	 */
 	private String sectionNumber;
@@ -103,6 +103,7 @@ public abstract class AbstractSection implements Section {
 		return this.sectionNumber;
 	}
 	
+	//TODO replace with getTermDataSet()? 
 	/* (non-Javadoc)
 	 * @see io.devyse.scheduler.model.Section#getTerm()
 	 */
