@@ -62,6 +62,11 @@ public interface Term extends Comparable<Term>{
 	 */
 	public University getUniversity();
 	
+	//TODO
+	/*
+	 * public List<TermDataset> getDatasets() 
+	 */	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
