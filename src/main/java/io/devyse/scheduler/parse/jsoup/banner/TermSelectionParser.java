@@ -103,7 +103,7 @@ public class TermSelectionParser extends FormParser {
 		for(Element term: terms){
 			String code = term.attr("value");
 			if(code.compareTo("") != 0){
-				Term found = Terms.newTerm(/*TODO*/, code, term.text());
+				Term found = Terms.newTerm(/*TODO*/null, code, term.text());
 				termOptions.add(found);
 				
 				logger.debug("{}: {}", found.getInternalId(), found.getName());
