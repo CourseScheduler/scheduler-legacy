@@ -245,7 +245,7 @@ public interface DateTimeBlock extends Comparable<DateTimeBlock>{
 	 * @see java.lang.Object#toString()
 	 */
 	public static String toString(DateTimeBlock block){
-		return DateTimeBlock.toString(block, TextStyle.FULL, DateTimeFormatter.ISO_INSTANT);
+		return DateTimeBlock.toString(block, TextStyle.FULL, DateTimeFormatter.ISO_OFFSET_TIME, DateTimeFormatter.ISO_DATE);
 	}
 
 	/**
@@ -254,24 +254,26 @@ public interface DateTimeBlock extends Comparable<DateTimeBlock>{
 	 * is also applied to the text style. The formatter is applied to the
 	 * start and end times
 	 *
+	 * @param block the DateTimeBlock to format as a string
 	 * @param style the text style which should be used
-	 * @param formatter
+	 * @param timeFormatter formatter for the time
+	 * @param dateFormatter formatter for the date
 	 * 
-	 * @return the formatter string
+	 * @return the formatted string
 	 */
-	public static String toString(DateTimeBlock block, TextStyle style, DateTimeFormatter formatter) {
+	public static String toString(DateTimeBlock block, TextStyle style, DateTimeFormatter timeFormatter, DateTimeFormatter dateFormatter) {
 		StringBuilder sb = new StringBuilder();
 		
 		//TODO what should this string look like
-		sb.append(block.getDayOfWeek().getDisplayName(style, formatter.getLocale()));
+		sb.append(block.getDayOfWeek().getDisplayName(style, dateFormatter.getLocale()));
 		sb.append(" ");
-		sb.append(block.getOffsetStartTime().format(formatter));
+		sb.append(block.getOffsetStartTime().format(timeFormatter));
 		sb.append("-");						
-		sb.append(block.getOffsetEndTime().format(formatter));
+		sb.append(block.getOffsetEndTime().format(timeFormatter));
 		sb.append("");
-		sb.append(block.getStartDate().format(formatter));
+		sb.append(block.getStartDate().format(dateFormatter));
 		sb.append(" ");
-		sb.append(block.getEndDate().format(formatter));
+		sb.append(block.getEndDate().format(dateFormatter));
 		
 		return sb.toString();
 	}
@@ -283,11 +285,12 @@ public interface DateTimeBlock extends Comparable<DateTimeBlock>{
 	 * start and end times
 	 *
 	 * @param style the text style which should be used
-	 * @param formatter
+	 * @param timeFormatter formatter for the time
+	 * @param dateFormatter formatter for the date
 	 * 
-	 * @return the formatter string
+	 * @return the formatted string
 	 */
-	public default String toString(TextStyle style, DateTimeFormatter formatter){
-		return DateTimeBlock.toString(this, style, formatter);
+	public default String toString(TextStyle style, DateTimeFormatter timeFormatter, DateTimeFormatter dateFormatter){
+		return DateTimeBlock.toString(this, style, timeFormatter, dateFormatter);
 	}
 }
