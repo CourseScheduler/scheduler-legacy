@@ -14,7 +14,22 @@ import java.util.Objects;
  */
 public interface Instructor extends Comparable<Instructor> {
 	
-	//TODO
+	/**
+	 * Retrieve the instructor name
+	 * 
+	 * @return the instructor name
+	 */
+	public String getName();
+	
+	/**
+	 * The Instructor is tied to the Term dataset which contains the course data which references
+	 * this instructor.
+	 * 
+	 * @return the dataset of the term which contains the Instructor
+	 */
+	public TermDataSet getTermDataSet();
+	
+	//TODO other methods?
 
 	
 	
