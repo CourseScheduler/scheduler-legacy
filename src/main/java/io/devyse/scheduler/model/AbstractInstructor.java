@@ -45,10 +45,10 @@ public abstract class AbstractInstructor implements Instructor {
 	/**
 	 * Construct a new abstract instructor using the specified name and term data set
 	 * 
-	 * @param name the instructor's name
 	 * @param termDataSet the dataset for the term containing the instructor
+	 * @param name the instructor's name
 	 */
-	protected AbstractInstructor() {
+	protected AbstractInstructor(TermDataSet termDataSet, String name) {
 		super();
 		
 		this.setName(name);
