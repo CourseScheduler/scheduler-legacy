@@ -97,7 +97,7 @@ public interface Meeting extends Comparable<Meeting> {
 	 *
 	 * @return the set of instructors for this meeting
 	 */
-	public Set<String> getInstructors();	//ANALYZE instructors using own object?
+	public Set<Instructor> getInstructors();
 	
 	/**
 	 * Meetings are specific to a single Section of a course

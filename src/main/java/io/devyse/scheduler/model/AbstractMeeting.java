@@ -68,7 +68,7 @@ public abstract class AbstractMeeting implements Meeting {
 	/**
 	 * Instructors which participate in the meeting
 	 */
-	private Set<String> instructors;
+	private Set<Instructor> instructors;
 	
 	/**
 	 * The parent section (registration unit)
@@ -127,7 +127,7 @@ public abstract class AbstractMeeting implements Meeting {
 	 * @see io.devyse.scheduler.model.Meeting#getInstructors()
 	 */
 	@Override
-	public Set<String> getInstructors() {
+	public Set<Instructor> getInstructors() {
 		return this.instructors;
 	}
 
@@ -184,7 +184,7 @@ public abstract class AbstractMeeting implements Meeting {
 	/**
 	 * @param instructors the instructors to set
 	 */
-	protected void setInstructors(Set<String> instructors) {
+	protected void setInstructors(Set<Instructor> instructors) {
 		this.instructors = instructors;
 	}
 
