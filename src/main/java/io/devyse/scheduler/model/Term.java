@@ -43,7 +43,7 @@ public interface Term extends Comparable<Term>{
 	 * 
 	 * @since 4.12.8
 	 */
-	public String getInternalId();
+	public String getTermId();
 	
 	/**
 	 * The common name of the term as defined by the university.
@@ -77,7 +77,7 @@ public interface Term extends Comparable<Term>{
 	 */
 	public default boolean equals(Term other) {
 		return	this.getUniversity().equals(other.getUniversity()) &&
-				this.getInternalId().equals(other.getInternalId())
+				this.getTermId().equals(other.getTermId())
 		;
 	}
 	
@@ -87,7 +87,7 @@ public interface Term extends Comparable<Term>{
 	public default int getHashCode() {
 		return Objects.hash(
 				this.getUniversity(),
-				this.getInternalId()
+				this.getTermId()
 		);
 	}
 	
@@ -98,7 +98,7 @@ public interface Term extends Comparable<Term>{
 		int result = this.getUniversity().compareTo(other.getUniversity());
 		
 		if(result == 0){
-			result = this.getInternalId().compareTo(other.getInternalId());
+			result = this.getTermId().compareTo(other.getTermId());
 		}
 		return result;
 	}
@@ -111,7 +111,7 @@ public interface Term extends Comparable<Term>{
 		
 		sb.append(term.getName());
 		sb.append(" (");
-		sb.append(term.getInternalId());
+		sb.append(term.getTermId());
 		sb.append(") - ");
 		sb.append(term.getUniversity());
 		

@@ -81,13 +81,12 @@ public interface Section extends Comparable<Section> {
 	 */
 	public String getSectionNumber();
 	
-	//TODO change this to Term Dataset? add getVersion?
 	/**
-	 * The registration term as identified by the university
+	 * The term dataset which contains this section
 	 *
-	 * @return the registration term
+	 * @return the data set for the registration term which contains this section
 	 */
-	public Term getTerm();
+	public TermDataSet getTermDataSet();
 	
 	
 	//TODO seat availability, other fields?
@@ -96,7 +95,7 @@ public interface Section extends Comparable<Section> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public default boolean equals(Section other) {
-		return	this.getTerm().equals(other.getTerm()) &&
+		return	this.getTermDataSet().equals(other.getTermDataSet()) &&
 				this.getCRN().equals(other.getCRN())
 		;
 	}
@@ -106,7 +105,7 @@ public interface Section extends Comparable<Section> {
 	 */
 	public default int getHashCode() {
 		return Objects.hash(
-				this.getTerm(),
+				this.getTermDataSet(),
 				this.getCRN()
 		);
 	}
@@ -115,7 +114,7 @@ public interface Section extends Comparable<Section> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public default int compareTo(Section other) {
-		int result = this.getTerm().compareTo(other.getTerm());
+		int result = this.getTermDataSet().compareTo(other.getTermDataSet());
 		
 		if(result == 0){
 			//slightly different than the equals or hashCode because we would want to sort

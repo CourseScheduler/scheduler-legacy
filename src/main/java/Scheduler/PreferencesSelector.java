@@ -50,7 +50,7 @@ public class PreferencesSelector extends AbstractTermSelector {
 		String termString = Main.prefs.getCurrentTerm();
 		
 		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getInternalId().equals(termString)){
+			if(term.getTermId().equals(termString)){
 				setTerm(term);		//set and return current preferences term
 				return getTerm();	
 			}

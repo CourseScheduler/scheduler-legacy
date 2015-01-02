@@ -171,7 +171,7 @@ public enum Parser {
 			}
 			
 			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
-			items.setTerm(selector.getTerm().getInternalId());
+			items.setTerm(selector.getTerm().getTermId());
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");

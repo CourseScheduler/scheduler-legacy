@@ -36,7 +36,7 @@ public abstract class AbstractTerm implements Term {
 	/**
 	 * Term identifier, usually a code defining the year and semester
 	 */
-	private String internalId;
+	private String termId;
 
 	/**
 	 * Term name, usually text declaring the year and semester
@@ -57,7 +57,7 @@ public abstract class AbstractTerm implements Term {
 	 */
 	protected AbstractTerm(University university, String internalId, String name) {
 		super();
-		this.setInternalId(internalId);
+		this.setTermId(internalId);
 		this.setName(name);
 		this.setUniversity(university);
 	}
@@ -91,8 +91,8 @@ public abstract class AbstractTerm implements Term {
 	 * @see io.devyse.scheduler.model.Term#getId()
 	 */
 	@Override
-	public String getInternalId() {
-		return this.internalId;
+	public String getTermId() {
+		return this.termId;
 	}
 
 	/* (non-Javadoc)
@@ -114,8 +114,8 @@ public abstract class AbstractTerm implements Term {
 	/**
 	 * @param id the id to set
 	 */
-	protected void setInternalId(String id) {
-		this.internalId = id;
+	protected void setTermId(String id) {
+		this.termId = id;
 	}
 
 	/**
