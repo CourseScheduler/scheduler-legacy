@@ -45,7 +45,8 @@ import org.testng.asserts.SoftAssert;
  * 		the average number of collisions per unique hashcode
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 public class HashCodeQualityHelper {
 

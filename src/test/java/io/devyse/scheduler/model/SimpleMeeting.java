@@ -29,7 +29,8 @@ package io.devyse.scheduler.model;
  * compareTo, etc)
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 public class SimpleMeeting extends AbstractMeeting {
 	

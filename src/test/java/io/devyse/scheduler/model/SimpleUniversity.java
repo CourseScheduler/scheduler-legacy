@@ -28,7 +28,8 @@ package io.devyse.scheduler.model;
  * functionality and default implementation
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 public class SimpleUniversity extends AbstractUniversity {
 	

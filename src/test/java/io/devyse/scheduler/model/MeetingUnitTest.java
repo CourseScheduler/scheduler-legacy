@@ -40,7 +40,8 @@ import org.testng.asserts.SoftAssert;
  * functionality has appropriate semantics.
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 @Test(	groups = {"unit","interface","Meeting.basic"}, 
 		dependsOnGroups = {"DateTimeBlock.basic"}
@@ -366,10 +367,10 @@ public class MeetingUnitTest {
 		}
 
 		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getTerm()
+		 * @see io.devyse.scheduler.model.Section#getTermDataSet()
 		 */
 		@Override
-		public Term getTerm() {
+		public TermDataSet getTermDataSet() {
 			return null;
 		}
 	}

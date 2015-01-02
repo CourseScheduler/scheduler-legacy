@@ -23,6 +23,7 @@
  */
 package io.devyse.scheduler.model;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -34,6 +35,7 @@ import org.testng.asserts.SoftAssert;
  * Unit tests for the Section and AbstractSection classes and base functionality
  *
  * @author Mike Reinhold
+ * @since 4.12.8
  *
  */
 @Test(	groups = {"unit","interface","Section.basic"},
@@ -47,9 +49,10 @@ public class SectionUnitTest {
 	private static final String less = "1";
 	private static final String middle = "5";
 	private static final String more = "9";
-	private static final Term lesserTerm = new SimpleTerm(new SimpleUniversity("1"), "1", "1");
-	private static final Term middleTerm = new SimpleTerm(new SimpleUniversity("5"), "5", "5");
-	private static final Term greaterTerm = new SimpleTerm(new SimpleUniversity("9"), "9", "9");
+	private static final Version version = new SimpleVersion(OffsetDateTime.now());
+	private static final TermDataSet lesserTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("1"), "1", "1"), version);
+	private static final TermDataSet middleTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("5"), "5", "5"), version);
+	private static final TermDataSet greaterTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("9"), "9", "9"), version);
 	
 	/**
 	 * Sections for use in testing base functions
@@ -181,7 +184,7 @@ public class SectionUnitTest {
 	 */
 	public static Section generateSection(Random generator){
 		return new SimpleSection(
-				TermUnitTest.generateTerm(generator),
+				TermDataSetUnitTest.generateTermDataSet(generator),
 				Long.toHexString(generator.nextLong()),
 				Long.toHexString(generator.nextLong()), 
 				Long.toHexString(generator.nextLong())

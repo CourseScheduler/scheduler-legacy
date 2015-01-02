@@ -31,7 +31,8 @@ import java.util.Collection;
  * methods and semantics
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 public class SimpleTerm extends AbstractTerm {
 

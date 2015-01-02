@@ -34,7 +34,8 @@ import java.time.ZoneOffset;
  * compareTo, duration, etc)
  *
  * @author Mike Reinhold
- *
+ * @since 4.12.8
+ * 
  */
 public class SimpleDateTimeBlock extends AbstractDateTimeBlock{
 
