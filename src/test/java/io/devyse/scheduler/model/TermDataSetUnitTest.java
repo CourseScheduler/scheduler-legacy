@@ -25,11 +25,16 @@ package io.devyse.scheduler.model;
 
 import java.util.Random;
 
+import org.testng.annotations.Test;
+
 /**
  * @author Mike Reinhold
  * @since 4.12.8
  *
  */
+@Test(	groups = {"unit","interface","TermDataSet.basic"}, 
+	dependsOnGroups = {"Term.basic", "Version.basic"}
+)
 public class TermDataSetUnitTest {
 
 	/**
@@ -39,7 +44,7 @@ public class TermDataSetUnitTest {
 	public static TermDataSet generateTermDataSet(Random generator){
 		return new SimpleTermDataSet(
 			TermUnitTest.generateTerm(generator),
-			VersionUnitTest.generateVersion()
+			VersionUnitTest.generateVersion(generator)
 		);
 	}
 
