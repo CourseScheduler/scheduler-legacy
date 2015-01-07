@@ -219,7 +219,7 @@ public interface DateTimeBlock extends Comparable<DateTimeBlock>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(DateTimeBlock other) {
+	public default boolean isEqual(DateTimeBlock other) {
 		return 	this.getStartDate().equals(other.getStartDate()) 	&&
 				this.getEndDate().equals(other.getEndDate())		&&
 				this.getDayOfWeek().equals(other.getDayOfWeek()) 	&&

@@ -100,7 +100,7 @@ public abstract class AbstractInstructor implements Instructor {
 	 */
 	@Override
 	public boolean equals(Object other){
-		if(other instanceof Instructor){ return this.equals((Instructor)other); }
+		if(other instanceof Instructor){ return this.isEqual((Instructor)other); }
 		else { return super.equals(other); }
 	}
 	

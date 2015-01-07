@@ -110,8 +110,8 @@ public interface Meeting extends Comparable<Meeting> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public default boolean equals(Meeting other) {
-		return 	this.getSection().equals(other.getSection()) &&
-				this.getDateTimeBlock().equals(other.getDateTimeBlock())
+		return 	this.getSection().isEqual(other.getSection()) &&
+				this.getDateTimeBlock().isEqual(other.getDateTimeBlock())
 		;
 	}
 	

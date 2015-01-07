@@ -44,7 +44,7 @@ public interface University extends Comparable<University>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(University other) {
+	public default boolean isEqual(University other) {
 		return this.getName().equals(other.getName());
 	}
 	

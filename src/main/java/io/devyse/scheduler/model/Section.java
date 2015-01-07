@@ -94,7 +94,7 @@ public interface Section extends Comparable<Section> {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(Section other) {
+	public default boolean isEqual(Section other) {
 		return	this.getTermDataSet().equals(other.getTermDataSet()) &&
 				this.getCRN().equals(other.getCRN())
 		;

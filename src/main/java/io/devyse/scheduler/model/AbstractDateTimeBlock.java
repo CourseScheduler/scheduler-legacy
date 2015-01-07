@@ -232,7 +232,7 @@ public abstract class AbstractDateTimeBlock implements DateTimeBlock{
 	 */
 	@Override
 	public boolean equals(Object other) {										
-		if(other instanceof DateTimeBlock) return this.equals((DateTimeBlock)other);
+		if(other instanceof DateTimeBlock) return this.isEqual((DateTimeBlock)other);
 		else return false;
 	}
 	

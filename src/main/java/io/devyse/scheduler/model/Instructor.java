@@ -56,7 +56,7 @@ public interface Instructor extends Comparable<Instructor> {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(Instructor other) {
+	public default boolean isEqual(Instructor other) {
 		return	this.getTermDataSet().equals(other.getTermDataSet()) &&
 				this.getName().equals(other.getName())
 		;

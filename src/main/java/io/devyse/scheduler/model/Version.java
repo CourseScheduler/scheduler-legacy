@@ -51,7 +51,7 @@ public interface Version extends Comparable<Version>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(Version other){
+	public default boolean isEqual(Version other){
 		return 	this.getRetrievalTime().equals(other.getRetrievalTime()) &&
 				this.isComplete() == other.isComplete()
 		;

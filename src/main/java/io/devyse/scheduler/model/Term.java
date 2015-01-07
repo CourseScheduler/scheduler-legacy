@@ -75,8 +75,8 @@ public interface Term extends Comparable<Term>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(Term other) {
-		return	this.getUniversity().equals(other.getUniversity()) &&
+	public default boolean isEqual(Term other) {
+		return	this.getUniversity().isEqual(other.getUniversity()) &&
 				this.getTermId().equals(other.getTermId())
 		;
 	}

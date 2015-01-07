@@ -184,7 +184,7 @@ public abstract class AbstractSection implements Section {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Section){ return this.equals((Section)obj); }
+		if(obj instanceof Section){ return this.isEqual((Section)obj); }
 		else return false;
 	}
 

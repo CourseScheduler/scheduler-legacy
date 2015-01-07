@@ -75,7 +75,7 @@ public abstract class AbstractTerm implements Term {
 	 */
 	@Override
 	public boolean equals(Object other){
-		if(other instanceof Term){return equals((Term)other);}
+		if(other instanceof Term){return isEqual((Term)other);}
 		else{return super.equals(other);}
 	}
 

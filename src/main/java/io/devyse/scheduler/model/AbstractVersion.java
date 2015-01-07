@@ -88,7 +88,7 @@ public abstract class AbstractVersion implements Version {
 	 */
 	@Override
 	public boolean equals(Object object){
-		if(object instanceof Version) { return this.equals((Version)object); }
+		if(object instanceof Version) { return this.isEqual((Version)object); }
 		else { return super.equals(object); }
 	}
 
