@@ -55,6 +55,18 @@ public class SimpleInstructor extends AbstractInstructor {
 	}
 	
 	/**
+	 * Generate a new Instructor using the specified TermDataSet and name
+	 * 
+	 * @param dataset the term dataset containing the instructor
+	 * @param name the instructor's name
+	 * 
+	 * @return a new, simple Instructor
+	 */
+	public static Instructor newInstructor(TermDataSet dataset, String name){
+		return new SimpleInstructor(dataset, name);
+	}
+	
+	/**
 	 * Create a new Simple instructor for testing base and abstract functionality
 	 * 
 	 * @param dataset the term dataset containing the instructor
