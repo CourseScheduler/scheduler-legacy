@@ -23,12 +23,11 @@
  */
 package io.devyse.scheduler.model;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import io.devyse.scheduler.model.simple.SimpleMeeting;
+import io.devyse.scheduler.model.stub.StubDateTimeBlock;
+import io.devyse.scheduler.model.stub.StubSection;
+
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 import org.testng.annotations.BeforeClass;
@@ -43,9 +42,7 @@ import org.testng.asserts.SoftAssert;
  * @since 4.12.8
  * 
  */
-@Test(	groups = {"unit","interface","Meeting.basic"}, 
-		dependsOnGroups = {"DateTimeBlock.basic"}
-)
+@Test(	groups = {"unit","interface","Meeting.basic"})
 public class MeetingUnitTest {
 	
 	/**
@@ -93,9 +90,9 @@ public class MeetingUnitTest {
 	 * 
 	 */
 	private void setupSections() {
-		s1 = new SectionStub(10);
-		s2 = new SectionStub(50); 
-		s3 = new SectionStub(90);
+		s1 = StubSection.newStaticSection(10);
+		s2 = StubSection.newStaticSection(50); 
+		s3 = StubSection.newStaticSection(90);
 	}
 	
 	
@@ -104,9 +101,9 @@ public class MeetingUnitTest {
 	 * 
 	 */
 	private void setupDateTimeBlocks(){
-		t1 = new SimpleDateTimeBlock(DayOfWeek.MONDAY, LocalTime.MIDNIGHT, LocalTime.NOON, ZoneOffset.UTC, LocalDate.now(), LocalDate.now().plusDays(7));
-		t2 = new SimpleDateTimeBlock(DayOfWeek.TUESDAY, LocalTime.MIDNIGHT, LocalTime.NOON, ZoneOffset.UTC, LocalDate.now(), LocalDate.now().plusDays(7));
-		t3 = new SimpleDateTimeBlock(DayOfWeek.WEDNESDAY, LocalTime.MIDNIGHT, LocalTime.NOON, ZoneOffset.UTC, LocalDate.now(), LocalDate.now().plusDays(7));
+		t1 = StubDateTimeBlock.newStaticDateTimeBlock(10);
+		t2 = StubDateTimeBlock.newStaticDateTimeBlock(20);
+		t3 = StubDateTimeBlock.newStaticDateTimeBlock(30);
 	}
 	
 	/**
@@ -114,13 +111,13 @@ public class MeetingUnitTest {
 	 *
 	 */
 	private void setupMeetings(){
-		m0 = new SimpleMeeting(s1, t1);
+		m0 = SimpleMeeting.newMeeting(s1, t1);
 		m0b = m0;
-		m1 = new SimpleMeeting(s1, t1);
-		m2 = new SimpleMeeting(s1, t2);
-		m3 = new SimpleMeeting(s1, t3);
-		m4 = new SimpleMeeting(s2, t1);
-		m5 = new SimpleMeeting(s3, t1);	
+		m1 = SimpleMeeting.newMeeting(s1, t1);
+		m2 = SimpleMeeting.newMeeting(s1, t2);
+		m3 = SimpleMeeting.newMeeting(s1, t3);
+		m4 =  SimpleMeeting.newMeeting(s2, t1);
+		m5 = SimpleMeeting.newMeeting(s3, t1);	
 	}
 	
 	/**
@@ -189,7 +186,7 @@ public class MeetingUnitTest {
 	@Test
 	public void confirmHashCodeQuality_RandomData(){
 		HashCodeQualityHelper.confirmHashCodeQuality( 
-				(Random r) -> {return MeetingUnitTest.generateMeeting(r);}
+				(Random r) -> {return SimpleMeeting.newRandomMeeting(r);}
 		);
 	}
 	
@@ -204,19 +201,6 @@ public class MeetingUnitTest {
 		HashCodeQualityHelper.confirmHashCodeQuality(Arrays.asList(
 				m0, m0b, m1, m2, m3, m4, m5
 		));
-	}
-	
-	/**
-	 * Generate a Term based on the current state of a Random
-	 *
-	 * @param generator a Random for use in building the Term
-	 * @return the next Term
-	 */
-	public static Meeting generateMeeting(Random generator){
-		return new SimpleMeeting(
-				new SectionStub(generator.nextInt(100)), 
-				DateTimeBlockUnitTest.generateDateTimeBlock(generator)
-		);
 	}
 	
 	/**
@@ -253,125 +237,5 @@ public class MeetingUnitTest {
 		ct.assertEquals(Math.signum(m1.compareTo(m4)), Math.signum(m4.compareTo(m5)), "Transitivity expected for instances varying on section");
 		
 		ct.assertAll();
-	}
-	
-	/**
-	 * A stub of the Section interface for use when testing the Meeting interface.
-	 * 
-	 * We need a section stub as the basic implementation of Meeting can't be tested
-	 * without a Section, however the proper functioning of Section depends on the
-	 * base functionality of Meeting working as expected.
-	 * 
-	 * Just uses a "section id" to differentiate between sections. 
-	 *
-	 * @author Mike Reinhold
-	 *
-	 */
-	private static class SectionStub implements Section {
-
-		/**
-		 * Unique SectionStub identifier
-		 */
-		private int id;
-		
-		/**
-		 * Create a SectionStub
-		 *
-		 * @param id unique SectionStub identifier
-		 */
-		public SectionStub(int id) {
-			this.id = id;
-		}
-		
-		/**
-		 * A unique identifier for the SectionStub
-		 *
-		 * @param id unique SectionStub identifier
-		 */
-		private Integer getId() {
-			return this.id;
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Comparable#compareTo(java.lang.Object)
-		 */
-		@Override
-		public int compareTo(Section o) {
-			return getId().compareTo(((SectionStub)o).getId());
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-		@Override
-		public boolean equals(Object other){
-			if(other instanceof SectionStub) {return getId().equals(((SectionStub)other).getId());}
-			return false;
-		}
-		
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#equals(io.devyse.scheduler.model.Section)
-		 */
-		@Override
-		public boolean equals(Section other){
-			if(other instanceof SectionStub) {return getId().equals(((SectionStub)other).getId());}
-			return false;
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
-		@Override
-		public int hashCode(){
-			return Objects.hashCode(getId());
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getCRN()
-		 */
-		@Override
-		public String getCRN() {
-			return this.getId().toString();
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getCourseID()
-		 */
-		@Override
-		public String getCourseNumber() {
-			return "";
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getDescription()
-		 */
-		@Override
-		public String getDescription() {
-			return "";
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getName()
-		 */
-		@Override
-		public String getName() {
-			return "";
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getSectionID()
-		 */
-		@Override
-		public String getSectionNumber() {
-			return "";
-		}
-
-		/* (non-Javadoc)
-		 * @see io.devyse.scheduler.model.Section#getTermDataSet()
-		 */
-		@Override
-		public TermDataSet getTermDataSet() {
-			return null;
-		}
 	}
 }

@@ -23,6 +23,8 @@
  */
 package io.devyse.scheduler.model;
 
+import io.devyse.scheduler.model.simple.SimpleUniversity;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -37,9 +39,7 @@ import org.testng.asserts.SoftAssert;
  * @since 4.12.8
  * 
  */
-@Test(	groups = {"unit","interface","University.basic"}, 
-		dependsOnGroups = {}
-)
+@Test(	groups = {"unit","interface","University.basic"})
 public class UniversityUnitTest {
 	
 	/**
@@ -66,11 +66,11 @@ public class UniversityUnitTest {
 	 */
 	@BeforeClass
 	public void setup() {
-		u1 = new SimpleUniversity(middle);
+		u1 = SimpleUniversity.newUniversity(middle);
 		u2 = u1;
-		u3 = new SimpleUniversity(middle);
-		u4 = new SimpleUniversity(less);
-		u5 = new SimpleUniversity(more);
+		u3 = SimpleUniversity.newUniversity(middle);
+		u4 = SimpleUniversity.newUniversity(less);
+		u5 = SimpleUniversity.newUniversity(more);
 	}
 
 	/**
@@ -158,9 +158,7 @@ public class UniversityUnitTest {
 	 * @return the next University
 	 */
 	public static University generateUniversity(Random generator){
-		return new SimpleUniversity(
-					Long.toHexString(generator.nextLong())
-		);
+		return SimpleUniversity.newRandomUniversity(generator);
 	}
 	
 	/**

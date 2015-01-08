@@ -23,9 +23,9 @@
  */
 package io.devyse.scheduler.model;
 
-import java.time.Instant;
+import io.devyse.scheduler.model.simple.SimpleVersion;
+
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.Random;
 
 import org.testng.annotations.BeforeClass;
@@ -40,9 +40,7 @@ import org.testng.asserts.SoftAssert;
  * @since 4.12.8
  *
  */
-@Test(	groups = {"unit","interface","Version.basic"}, 
-	dependsOnGroups = {}
-)
+@Test(	groups = {"unit","interface","Version.basic"})
 public class VersionUnitTest {
 
 	/**
@@ -54,45 +52,15 @@ public class VersionUnitTest {
 	Version v0, v0b, v0c, v1, v2;
 	
 	/**
-	 * @param timestamp the OffsetDateTime to use as the timestamp
-	 * 
-	 * @return a new Version based on the specified offset date time
-	 */
-	public static Version generateVersion(OffsetDateTime timestamp){
-		return new SimpleVersion(timestamp);
-	}
-	
-	/**
-	 * @param generator the random generator to use to create a new Version
-	 * 
-	 * @return a new, randomized Version
-	 */
-	public static Version generateVersion(Random generator){
-		return generateVersion(OffsetDateTime.ofInstant(
-			Instant.ofEpochMilli(generator.nextLong()),
-			ZoneId.systemDefault()
-		));
-	}
-	
-	/**
-	 * @param version the version upon which the new Version should be based
-	 * 
-	 * @return a new Version using the same timestamp as the specified version
-	 */
-	public static Version duplicateVersion(Version version){
-		return generateVersion(version.getRetrievalTime());
-	}
-	
-	/**
 	 * Prepare the class for unit testing
 	 */
 	@BeforeClass
 	public void setup(){
-		v0 = generateVersion(OffsetDateTime.MIN);
+		v0 = SimpleVersion.newVersionFromTimestamp(OffsetDateTime.MIN);
 		v0b = v0;
-		v0c = VersionUnitTest.duplicateVersion(v0);
-		v1 = generateVersion(OffsetDateTime.now());
-		v2 = generateVersion(OffsetDateTime.MAX);
+		v0c = SimpleVersion.duplicateVersion(v0);
+		v1 = SimpleVersion.newVersionFromTimestamp(OffsetDateTime.now());
+		v2 = SimpleVersion.newVersionFromTimestamp(OffsetDateTime.MAX);
 	}
 
 	/**
@@ -158,7 +126,7 @@ public class VersionUnitTest {
 	@Test
 	public void confirmHashCodeQuality_RandomData(){
 		HashCodeQualityHelper.confirmHashCodeQuality( 
-				(Random r) -> {return VersionUnitTest.generateVersion(r);}
+				(Random r) -> {return SimpleVersion.newRandomVersion(r);}
 		);
 	}
 	

@@ -23,6 +23,8 @@
  */
 package io.devyse.scheduler.model;
 
+import io.devyse.scheduler.model.simple.SimpleDateTimeBlock;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -95,7 +97,7 @@ public class DateTimeBlockUnitTest {
 	 * 		i2 has same field data as a but occurring in a date range ending on the start of a
 	 * 		i3 has same field data as a but occurring in a date range that contains a
 	 */
-	private SimpleDateTimeBlock a1, a2, a3, a4, a5, b1, b2, c1, c2, d1, d2, e1, e2, f1, f2, g1, g2, h1, i1, i2, i3;
+	private DateTimeBlock a1, a2, a3, a4, a5, b1, b2, c1, c2, d1, d2, e1, e2, f1, f2, g1, g2, h1, i1, i2, i3;
 		
 	/**
 	 * Prepare the test instances for use in the tests.
@@ -107,35 +109,35 @@ public class DateTimeBlockUnitTest {
 	 */
 	@BeforeClass
 	public void setUp() {
-		a1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		a1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
 		a2 = a1;
-		a3 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
-		a4 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME.minusSeconds(ZONE_1_2_OFFSET), TEST_END_TIME.plusSeconds(ZONE_1_2_OFFSET), TEST_ZONE_2, TEST_START_DATE, TEST_END_DATE);
-		a5 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME.plusSeconds(ZONE_1_3_OFFSET), TEST_END_TIME.plusSeconds(ZONE_1_3_OFFSET), TEST_ZONE_3, TEST_START_DATE, TEST_END_DATE);
+		a3 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		a4 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME.minusSeconds(ZONE_1_2_OFFSET), TEST_END_TIME.plusSeconds(ZONE_1_2_OFFSET), TEST_ZONE_2, TEST_START_DATE, TEST_END_DATE);
+		a5 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME.plusSeconds(ZONE_1_3_OFFSET), TEST_END_TIME.plusSeconds(ZONE_1_3_OFFSET), TEST_ZONE_3, TEST_START_DATE, TEST_END_DATE);
 		
-		b1 = new SimpleDateTimeBlock(TEST_DAY.minus(1), TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
-		b2 = new SimpleDateTimeBlock(TEST_DAY.plus(1), TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		b1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY.minus(1), TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		b2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY.plus(1), TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
 		
-		c1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME.minusMinutes(TEST_DURATION), TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
-		c2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME.plusMinutes(TEST_DURATION), TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		c1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME.minusMinutes(TEST_DURATION), TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		c2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME.plusMinutes(TEST_DURATION), TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
 		
-		d1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME.minusMinutes(TEST_DURATION), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
-		d2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME.plusMinutes(TEST_DURATION), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		d1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME.minusMinutes(TEST_DURATION), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		d2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME.plusMinutes(TEST_DURATION), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
 		
-		e1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_2, TEST_START_DATE, TEST_END_DATE);
-		e2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_3, TEST_START_DATE, TEST_END_DATE);
+		e1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_2, TEST_START_DATE, TEST_END_DATE);
+		e2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_3, TEST_START_DATE, TEST_END_DATE);
 		
-		f1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(1), TEST_END_DATE);
-		f2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.plusDays(1), TEST_END_DATE);
+		f1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(1), TEST_END_DATE);
+		f2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.plusDays(1), TEST_END_DATE);
 		
-		g1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE.minusDays(TEST_PERIOD));
-		g2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE.plusDays(TEST_PERIOD));
+		g1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE.minusDays(TEST_PERIOD));
+		g2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE.plusDays(TEST_PERIOD));
 		
-		h1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME.minusMinutes(TEST_LENGTH), TEST_END_TIME.minusMinutes(TEST_LENGTH), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
+		h1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME.minusMinutes(TEST_LENGTH), TEST_END_TIME.minusMinutes(TEST_LENGTH), TEST_ZONE_1, TEST_START_DATE, TEST_END_DATE);
 		
-		i1 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(2*TEST_PERIOD), TEST_START_DATE.minusDays(TEST_PERIOD));
-		i2 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(TEST_PERIOD), TEST_START_DATE);
-		i3 = new SimpleDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(TEST_PERIOD), TEST_END_DATE.plusDays(TEST_PERIOD));
+		i1 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(2*TEST_PERIOD), TEST_START_DATE.minusDays(TEST_PERIOD));
+		i2 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(TEST_PERIOD), TEST_START_DATE);
+		i3 = SimpleDateTimeBlock.newDateTimeBlock(TEST_DAY, TEST_START_TIME, TEST_END_TIME, TEST_ZONE_1, TEST_START_DATE.minusDays(TEST_PERIOD), TEST_END_DATE.plusDays(TEST_PERIOD));
 	}
 		
 	/**
@@ -217,7 +219,7 @@ public class DateTimeBlockUnitTest {
 	@Test
 	public void confirmHashCodeQuality_RandomData(){
 		HashCodeQualityHelper.confirmHashCodeQuality( 
-				(Random r) -> {return DateTimeBlockUnitTest.generateDateTimeBlock(r);}
+				(Random r) -> {return SimpleDateTimeBlock.newRandomDateTimeBlock(r);}
 		);
 	}
 	
@@ -232,27 +234,6 @@ public class DateTimeBlockUnitTest {
 		HashCodeQualityHelper.confirmHashCodeQuality(Arrays.asList(
 				a1, a2, a3, a4, a5, b1, b2, c1, c2, d1, d2, e1, e2, f1, f2, g1, g2, h1, i1, i2, i3
 		));
-	}
-	
-	/**
-	 * Generate a DateTimeBlock based on the current state of a Random
-	 *
-	 * @param generator a Random for use in building the DateTimeBlocks
-	 * @return the next DateTimeBlock
-	 */
-	public static DateTimeBlock generateDateTimeBlock(Random generator){
-		return new SimpleDateTimeBlock(
-				DayOfWeek.of(Math.abs(generator.nextInt() % DayOfWeek.values().length)+1),
-				LocalTime.of(Math.abs(generator.nextInt(24)), 
-						Math.abs(generator.nextInt(60)), Math.abs(generator.nextInt(60)), 
-						Math.abs(generator.nextInt(1000000000))),
-				LocalTime.of(Math.abs(generator.nextInt(24)), 
-						Math.abs(generator.nextInt(60)), Math.abs(generator.nextInt(60)), 
-						Math.abs(generator.nextInt(1000000000))),
-				ZoneOffset.ofHours(generator.nextInt(19)),
-				LocalDate.ofEpochDay(Math.abs(generator.nextInt(1000000000))),
-				LocalDate.ofEpochDay(Math.abs(generator.nextInt(1000000000)))
-		);
 	}
 	
 	/**

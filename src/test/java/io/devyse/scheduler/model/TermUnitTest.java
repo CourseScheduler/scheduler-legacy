@@ -23,6 +23,9 @@
  */
 package io.devyse.scheduler.model;
 
+import io.devyse.scheduler.model.simple.SimpleTerm;
+import io.devyse.scheduler.model.stub.StubUniversity;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -39,9 +42,7 @@ import org.testng.asserts.SoftAssert;
  * @since 4.12.8
  * 
  */
-@Test(	groups = {"unit","interface","Term.basic"}, 
-		dependsOnGroups = {"University.basic"}
-)
+@Test(	groups = {"unit","interface","Term.basic"})
 public class TermUnitTest {
 	
 	/**
@@ -77,17 +78,17 @@ public class TermUnitTest {
 	 */
 	@BeforeClass
 	public void setup() {
-		lesserUni = new SimpleUniversity(less);
-		middleUni = new SimpleUniversity(middle);
-		greaterUni = new SimpleUniversity(more);
+		lesserUni = StubUniversity.newStaticUniversity(1);
+		middleUni = StubUniversity.newStaticUniversity(5);
+		greaterUni = StubUniversity.newStaticUniversity(9);
 		
-		t1 = new SimpleTerm(middleUni, middle, middle);
+		t1 = SimpleTerm.newTerm(middleUni, middle, middle);
 		t2 = t1;
-		t3 = new SimpleTerm(middleUni, middle, middle);
-		t4 = new SimpleTerm(lesserUni, middle, middle);
-		t5 = new SimpleTerm(greaterUni, middle, middle);
-		t6 = new SimpleTerm(middleUni, less, less);
-		t7 = new SimpleTerm(middleUni, more, more);
+		t3 = SimpleTerm.newTerm(middleUni, middle, middle);
+		t4 = SimpleTerm.newTerm(lesserUni, middle, middle);
+		t5 = SimpleTerm.newTerm(greaterUni, middle, middle);
+		t6 = SimpleTerm.newTerm(middleUni, less, less);
+		t7 = SimpleTerm.newTerm(middleUni, more, more);
 	}
 	
 	/**
@@ -153,7 +154,7 @@ public class TermUnitTest {
 	@Test
 	public void confirmHashCodeQuality_RandomData(){
 		HashCodeQualityHelper.confirmHashCodeQuality( 
-				(Random r) -> {return TermUnitTest.generateTerm(r);}
+				(Random r) -> {return SimpleTerm.newRandomTerm(r);}
 		);
 	}
 	
@@ -168,20 +169,6 @@ public class TermUnitTest {
 		HashCodeQualityHelper.confirmHashCodeQuality(Arrays.asList(
 				t1, t2, t3, t4, t5, t6, t7
 		));
-	}
-	
-	/**
-	 * Generate a Term based on the current state of a Random
-	 *
-	 * @param generator a Random for use in building the Term
-	 * @return the next Term
-	 */
-	public static Term generateTerm(Random generator){
-		return new SimpleTerm(
-					new SimpleUniversity(Long.toHexString(generator.nextLong())),
-					Long.toHexString(generator.nextLong()),
-					Long.toHexString(generator.nextLong())
-		);
 	}
 	
 	/**

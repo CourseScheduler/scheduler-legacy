@@ -23,7 +23,11 @@
  */
 package io.devyse.scheduler.model;
 
-import java.time.OffsetDateTime;
+import io.devyse.scheduler.model.Section;
+import io.devyse.scheduler.model.TermDataSet;
+import io.devyse.scheduler.model.simple.SimpleSection;
+import io.devyse.scheduler.model.stub.StubTermDataSet;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -38,9 +42,7 @@ import org.testng.asserts.SoftAssert;
  * @since 4.12.8
  *
  */
-@Test(	groups = {"unit","interface","Section.basic"},
-		dependsOnGroups = {"Meeting.basic", "Term.basic"} 
-)
+@Test(	groups = {"unit","interface","Section.basic"})
 public class SectionUnitTest {
 	
 	/**
@@ -49,10 +51,9 @@ public class SectionUnitTest {
 	private static final String less = "1";
 	private static final String middle = "5";
 	private static final String more = "9";
-	private static final Version version = new SimpleVersion(OffsetDateTime.now());
-	private static final TermDataSet lesserTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("1"), "1", "1"), version);
-	private static final TermDataSet middleTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("5"), "5", "5"), version);
-	private static final TermDataSet greaterTerm = new SimpleTermDataSet(new SimpleTerm(new SimpleUniversity("9"), "9", "9"), version);
+	private static final TermDataSet lesserTerm = StubTermDataSet.newTermDataSet(1);
+	private static final TermDataSet middleTerm = StubTermDataSet.newTermDataSet(5);
+	private static final TermDataSet greaterTerm = StubTermDataSet.newTermDataSet(9);
 	
 	/**
 	 * Sections for use in testing base functions
@@ -83,17 +84,17 @@ public class SectionUnitTest {
 	 */
 	@BeforeClass
 	public void setup() {
-		s1 = new SimpleSection(middleTerm, middle, middle, middle);
+		s1 = SimpleSection.newSection(middleTerm, middle, middle, middle);
 		s2 = s1;
-		s3 = new SimpleSection(middleTerm, middle, middle, middle);
-		s4 = new SimpleSection(lesserTerm, middle, middle, middle);
-		s5 = new SimpleSection(greaterTerm, middle, middle, middle);
-		s6 = new SimpleSection(middleTerm, less, middle, middle);
-		s7 = new SimpleSection(middleTerm, more, middle, middle);
-		s8 = new SimpleSection(middleTerm, more, less, middle);
-		s9 = new SimpleSection(middleTerm, more, more, middle);
-		s10 = new SimpleSection(middleTerm, more, middle, less);
-		s11 = new SimpleSection(middleTerm, more, middle, more);
+		s3 = SimpleSection.newSection(middleTerm, middle, middle, middle);
+		s4 = SimpleSection.newSection(lesserTerm, middle, middle, middle);
+		s5 = SimpleSection.newSection(greaterTerm, middle, middle, middle);
+		s6 = SimpleSection.newSection(middleTerm, less, middle, middle);
+		s7 = SimpleSection.newSection(middleTerm, more, middle, middle);
+		s8 = SimpleSection.newSection(middleTerm, more, less, middle);
+		s9 = SimpleSection.newSection(middleTerm, more, more, middle);
+		s10 = SimpleSection.newSection(middleTerm, more, middle, less);
+		s11 = SimpleSection.newSection(middleTerm, more, middle, more);
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class SectionUnitTest {
 	@Test
 	public void confirmHashCodeQuality_RandomData(){
 		HashCodeQualityHelper.confirmHashCodeQuality( 
-				(Random r) -> {return SectionUnitTest.generateSection(r);}
+				(Random r) -> {return SimpleSection.newRandomSection(r);}
 		);
 	}
 	
@@ -174,21 +175,6 @@ public class SectionUnitTest {
 		HashCodeQualityHelper.confirmHashCodeQuality(Arrays.asList(
 				s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11
 		));
-	}
-	
-	/**
-	 * Generate a Term based on the current state of a Random
-	 *
-	 * @param generator a Random for use in building the Term
-	 * @return the next Term
-	 */
-	public static Section generateSection(Random generator){
-		return new SimpleSection(
-				TermDataSetUnitTest.generateTermDataSet(generator),
-				Long.toHexString(generator.nextLong()),
-				Long.toHexString(generator.nextLong()), 
-				Long.toHexString(generator.nextLong())
-		);
 	}
 
 	/**
