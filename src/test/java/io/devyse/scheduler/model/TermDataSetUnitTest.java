@@ -143,8 +143,16 @@ public class TermDataSetUnitTest {
 	@Test
 	public void confirmEquals(){
 		SoftAssert eq = new SoftAssert();
+
+		//TermDataSet is equal to another if the Terms are equal and the Versions are equal
+		eq.assertSame(d0, d0b, "References to the same instance should be the same");
+		eq.assertEquals(d0, d0b, "References to the same instance should be equal");
+		eq.assertEquals(d0, d0c, "Instances with same uniqueness fields should be equal");
 		
-		//TODO equals tests
+		//TermDataSet is not equal under any other condition
+		eq.assertNotEquals(d0, null, "Non-null instance should not be equal to null");		
+		eq.assertNotEquals(d0, d1, "Instances with varying date time blocks should not be equal");
+		eq.assertNotEquals(d0, d3, "Instances with varying sections should not be equal");
 		
 		eq.assertAll();
 	}
@@ -162,8 +170,22 @@ public class TermDataSetUnitTest {
 	@Test
 	public void confirmHashCode(){
 		SoftAssert hc = new SoftAssert();
-	
-		//TODO hashcode tests
+
+		//hashcode semantics should be consistent with equals()
+		hc.assertEquals(d0.hashCode(), d0b.hashCode(), "References to same instance should have same hashcode");
+		hc.assertEquals(d0.hashCode(), d0c.hashCode(), "Equal instances should have same hashcode");
+		
+		//ensure that our sample dataset, which has variety in its field content,
+		//has some variation in its hashcode. No variation in hash would be bad
+		//this is not sufficient on its own, a good hash should have a uniform, 
+		//non-clustering distribution
+		boolean variety = 
+				d0.hashCode() == d1.hashCode() &&
+				d0.hashCode() == d2.hashCode() &&
+				d0.hashCode() == d3.hashCode() &&
+				d0.hashCode() == d4.hashCode()
+		;
+		hc.assertFalse(variety, "Hashcode should return a variety of values for instance with varying uniqueness fields");
 		
 		hc.assertAll();
 	}
@@ -188,8 +210,31 @@ public class TermDataSetUnitTest {
 	@Test
 	public void confirmCompareTo() {
 		SoftAssert ct = new SoftAssert();
+
+		//compareTo should be consistent with equals
+		ct.assertEquals(d0.compareTo(d0b), 0, "References to same instance should be equal");
+		ct.assertEquals(d0b.compareTo(d0), 0, "References to same instance should be equal, regardless of comparison direction");
+		ct.assertEquals(d0.compareTo(d0c), 0, "Instances with same fields should be equal");
+		ct.assertEquals(d0c.compareTo(d0), 0, "Instances with same fields should be equal, regardless of comparison direction");
 		
-		//TODO compareTo tests
+		//compareTo by Term first and Version second
+		ct.assertEquals(Math.signum(d0.compareTo(d1)), -1.0f, "Negative result expected for instance with greater term");
+		ct.assertEquals(Math.signum(d1.compareTo(d0)), 1.0f, "Positive result expected for instance with lesser term");
+		ct.assertEquals(Math.signum(d0.compareTo(d2)), -1.0f, "Negative result expected for instance with greater term");
+		ct.assertEquals(Math.signum(d2.compareTo(d0)), 1.0f, "Positive result expected for instance with lesser term");
+		
+		ct.assertEquals(Math.signum(d0.compareTo(d3)), -1.0f, "Negative result expected for instance with greater version");
+		ct.assertEquals(Math.signum(d3.compareTo(d0)), 1.0f, "Positive result expected for instance with lesser version");
+		ct.assertEquals(Math.signum(d3.compareTo(d4)), -1.0f, "Negative result expected for instance with greater version");
+		ct.assertEquals(Math.signum(d4.compareTo(d3)), 1.0f, "Positive result expected for instance with lesser version");
+
+		ct.assertEquals(Math.signum(d2.compareTo(d1)), Math.signum(-d1.compareTo(d2)), "CompareTo should reverse sign for reversed direction of comparison of non-equal instances (lesser term)");
+		ct.assertEquals(Math.signum(d0.compareTo(d1)), Math.signum(-d1.compareTo(d0)), "CompareTo should reverse sign for reversed direction of comparison of non-equal instances (greater term)");
+		ct.assertEquals(Math.signum(d4.compareTo(d3)), Math.signum(-d3.compareTo(d4)), "CompareTo should reverse sign for reversed direction of comparison of non-equal instances (lesser version)");
+		ct.assertEquals(Math.signum(d0.compareTo(d3)), Math.signum(-d3.compareTo(d0)), "CompareTo should reverse sign for reversed direction of comparison of non-equal instances (greater version)");
+		
+		ct.assertEquals(Math.signum(d0.compareTo(d1)), Math.signum(d1.compareTo(d2)), "Transitivity expected for instances varying on term");
+		ct.assertEquals(Math.signum(d0.compareTo(d3)), Math.signum(d3.compareTo(d4)), "Transitivity expected for instances varying on version");
 		
 		ct.assertAll();
 	}
