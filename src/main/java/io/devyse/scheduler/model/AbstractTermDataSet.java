@@ -96,7 +96,7 @@ public abstract class AbstractTermDataSet implements TermDataSet {
 	 */
 	@Override
 	public boolean equals(Object other){
-		if(other instanceof TermDataSet){ return this.equals((TermDataSet)other); }
+		if(other instanceof TermDataSet){ return this.isEqual((TermDataSet)other); }
 		else { return super.equals(other); }
 	}
 

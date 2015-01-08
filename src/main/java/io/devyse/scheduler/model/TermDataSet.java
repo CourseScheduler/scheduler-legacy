@@ -59,9 +59,9 @@ public interface TermDataSet extends Comparable<TermDataSet>{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public default boolean equals(TermDataSet other) {
-		return 	this.getTerm().isEqual(other.getTerm()) &&
-				this.getVersion().isEqual(other.getVersion())
+	public default boolean isEqual(TermDataSet other) {
+		return 	this.getTerm().equals(other.getTerm()) &&
+				this.getVersion().equals(other.getVersion())
 		;
 	}
 
