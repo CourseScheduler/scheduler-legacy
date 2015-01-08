@@ -51,6 +51,17 @@ public class StubVersion extends StubClass<Version, StubVersion> implements Vers
 	}
 	
 	/**
+	 * Generate a new stubbed Version instance using the specified uniqueness value
+	 * 
+	 * @param value the instance uniqueness value
+	 * 
+	 * @return a new, stubbed Version
+	 */
+	public static Version newVersion(int value){
+		return new StubVersion(value);
+	}
+	
+	/**
 	 * Construct a new stubbed Version using the specified integer for uniqueness
 	 * 
 	 * @param value the instance uniqueness value

@@ -52,6 +52,17 @@ public class StubTermDataSet extends StubClass<TermDataSet, StubTermDataSet> imp
 	}
 	
 	/**
+	 * Generate a new stubbed TermDataSet instance using the specified uniqueness value
+	 * 
+	 * @param value the instance uniqueness value
+	 * 
+	 * @return a new, stubbed TermDataSet
+	 */
+	public static TermDataSet newTermDataSet(int value){
+		return new StubTermDataSet(value);
+	}
+	
+	/**
 	 * Create a new stubbed TermDataSet using the specified integer value as it's uniqueness
 	 * 
 	 * @param value the instance uniqueness value

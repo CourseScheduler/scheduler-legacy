@@ -53,6 +53,17 @@ public class StubTerm extends StubClass<Term, StubTerm> implements Term {
 	}
 	
 	/**
+	 * Generate a new stubbed Term using the specified uniqueness value
+	 * 
+	 * @param value the instance uniqueness value
+	 * 
+	 * @return a new, stubbed Term
+	 */
+	public static Term newTerm(int value){
+		return new StubTerm(value);
+	}
+	
+	/**
 	 * Construct a new stubbed Term using the specified integer for uniqueness
 	 * 
 	 * @param value the instance uniqueness value
