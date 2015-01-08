@@ -21,7 +21,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package io.devyse.scheduler.model;
+package io.devyse.scheduler.model.simple;
+
+import java.util.Random;
+
+import io.devyse.scheduler.model.AbstractMeeting;
+import io.devyse.scheduler.model.DateTimeBlock;
+import io.devyse.scheduler.model.Meeting;
+import io.devyse.scheduler.model.Section;
+import io.devyse.scheduler.model.stub.StubDateTimeBlock;
+import io.devyse.scheduler.model.stub.StubSection;
 
 /**
  * Simple implementation of Meeting via AbstractMeeting to unit test the base functionality
@@ -33,23 +42,38 @@ package io.devyse.scheduler.model;
  * 
  */
 public class SimpleMeeting extends AbstractMeeting {
+
+	/**
+	 * Generate a Meeting based on the current state of a Random
+	 *
+	 * @param generator a Random for use in building the Meeting
+	 * @return the next Meeting
+	 */
+	public static Meeting newRandomMeeting(Random generator){
+		return new SimpleMeeting(
+				StubSection.newRandomSection(generator), 
+				StubDateTimeBlock.newRandomDateTimeBlock(generator)
+		);
+	}
+	
+	/**
+	 * Generate a new Meeting using the specified Section and DateTimeBlock 
+	 * 
+	 * @param parent the Section which contains the Meeting
+	 * @param dateTimeBlock the dDateTimeBlock for the Meeting
+	 * 
+	 * @return a new simple Meeting
+	 */
+	public static Meeting newMeeting(Section parent, DateTimeBlock dateTimeBlock){
+		return new SimpleMeeting(parent, dateTimeBlock);
+	}
 	
 	/**
 	 * Create a new SimpleMeeting with the specified parent Section and
 	 * DateTimeBlock
 	 *
 	 */
-	public SimpleMeeting(Section parent, DateTimeBlock dateTimeBlock) {
+	protected SimpleMeeting(Section parent, DateTimeBlock dateTimeBlock) {
 		super(parent, dateTimeBlock);
-		
-		//TODO ensure that the AbstractMeeting is fully initialized?
-		/*
-		 * this.setCampus("campus");
-		 * this.setBuilding("building");
-		 * this.setRoom("room");
-		 * this.setMeetingType("meeting type");
-		 * this.setScheduleType("schedule type");
-		 * this.setInstructors(new HashSet<>());
-		 */
 	}	
 }

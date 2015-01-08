@@ -21,10 +21,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package io.devyse.scheduler.model;
+package io.devyse.scheduler.model.simple;
+
+import java.util.Random;
+
+import io.devyse.scheduler.model.AbstractTermDataSet;
+import io.devyse.scheduler.model.Term;
+import io.devyse.scheduler.model.TermDataSet;
+import io.devyse.scheduler.model.Version;
+import io.devyse.scheduler.model.stub.StubTerm;
+import io.devyse.scheduler.model.stub.StubVersion;
 
 /**
  * Basic implementation of a TermDataSet for use in testing base and abstract functionality
+ * for the TermDataSet
  * 
  * @author Mike Reinhold
  * @since 4.12.8
@@ -32,6 +42,33 @@ package io.devyse.scheduler.model;
  */
 public class SimpleTermDataSet extends AbstractTermDataSet {
 
+	/**
+	 * Generate a new simple TermDataSet using the specified {@link java.util.Random}
+	 * as the source for the TermDataSet generation
+	 * 
+	 * @param generator the random source for the TermDataSet
+	 * 
+	 * @return a new, random, simple TermDataSet
+	 */
+	public static TermDataSet newRandomTermDataSet(Random generator){
+		return new SimpleTermDataSet(
+			StubTerm.newRandomTerm(generator),
+			StubVersion.newRandomVersion(generator)
+		);
+	}
+	
+	/**
+	 * Generate a new simple TermDataSet based on the specified Term and Version
+	 * 
+	 * @param term the Term for which this dataset contains course and instructor data
+	 * @param version the version information for the dataset
+	 * 
+	 * @return a new simple TermDataSet
+	 */
+	public static TermDataSet newTermDataSet(Term term, Version version){
+		return new SimpleTermDataSet(term, version);
+	}
+	
 	/**
 	 * Construct a new simple term data set for testing base and abstract functionality
 	 * 

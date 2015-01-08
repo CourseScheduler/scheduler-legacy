@@ -1,5 +1,5 @@
 /**
- * @(#) SimpleUniversity.java
+ * @(#) 
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,24 +21,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package io.devyse.scheduler.model;
-
 /**
- * Simple University implementation for unit testing the basic
- * functionality and default implementation
- *
+ * The Simple data model provides a "no-frills" version of the data model that usually
+ * just leverages the abstract base classes of the core model as an in-memory model. The
+ * simple model is generally functional, though provides no mechanisms for persistence
+ * 
  * @author Mike Reinhold
  * @since 4.12.8
- * 
+ *
  */
-public class SimpleUniversity extends AbstractUniversity {
-	
-	/**
-	 * Create a new SimpleUniversity using the specified name
-	 *
-	 * @param name the university name
-	 */
-	public SimpleUniversity(String name) {
-		super(name);
-	}
-}
+package io.devyse.scheduler.model.simple;
