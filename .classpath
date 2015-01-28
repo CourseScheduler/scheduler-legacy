@@ -10,6 +10,7 @@
 	<classpathentry kind="src" path="src/assembly"/>
 	<classpathentry kind="src" path="src/database/sql"/>
 	<classpathentry kind="src" path="src/database/java"/>
+	<classpathentry kind="src" path="src/generated/java"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

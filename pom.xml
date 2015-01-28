@@ -30,6 +30,23 @@
 
 		<!-- private resource location -->
 		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
+		
+		<!-- Jooq modules version -->
+		<jooq.version>3.5.1</jooq.version>
+		
+		<!-- Derby dependency version -->
+		<derby.version>10.11.1.1</derby.version>
+		
+		<!-- Database settings -->
+		<db.driver>org.apache.derby.jdbc.EmbeddedDriver</db.driver>
+		<derby.jdbc>jdbc:derby:</derby.jdbc>
+		<db.url>${derby.jdbc}${project.build.outputDirectory}/Data/scheduler.derby</db.url>
+		<db.url.setup>create=true;upgrade=true</db.url.setup>
+		<db.user></db.user>
+		<db.password></db.password>
+		<db.generator>org.jooq.util.derby.DerbyDatabase</db.generator>
+		<db.schema>APP</db.schema>
+		<db.versionTable>schema_history</db.versionTable>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -84,6 +101,18 @@
 			<artifactId>testng</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-meta</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-codegen</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -130,13 +159,28 @@
 			<dependency>
 				<groupId>org.apache.derby</groupId>
 				<artifactId>derby</artifactId>
-				<version>10.11.1.1</version>
+				<version>${derby.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.testng</groupId>
 				<artifactId>testng</artifactId>
 				<version>6.8.13</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq</artifactId>
+				<version>${jooq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-meta</artifactId>
+				<version>${jooq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen</artifactId>
+				<version>${jooq.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -357,6 +401,23 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jooq</groupId>
+										<artifactId>
+											jooq-codegen-maven
+										</artifactId>
+										<versionRange>
+											[3.4.1,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -375,7 +436,7 @@
 				<executions>
 					<execution>
 						<id>copy-flyway-resources</id>
-						<phase>generate-sources</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -409,20 +470,21 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<executions>
+				<!-- Can't currently both flyway-migrate and jooq-generate in same process -->
+				<!-- <executions>
 					<execution>
 						<id>sql-migration-derby</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>migrate</goal>
-						</goals>
+						</goals> -->
 						<configuration>
-							<driver>org.apache.derby.jdbc.EmbeddedDriver</driver>
-							<url>jdbc:derby:${project.build.outputDirectory}/Data/scheduler.derby;create=true;upgrade=true</url>
+							<driver>${db.driver}</driver>
+							<url>${db.url};${db.url.setup}</url>
 							<schemas>
-								<schema>APP</schema>
+								<schema>${db.schema}</schema>
 							</schemas>
-							<table>schema_history</table>
+							<table>${db.versionTable}</table>
 							<locations>
 								<location>classpath:io.devyse.scheduler.sql.derby</location>
 								<location>filesystem:${project.build.outputDirectory}/io/devyse/scheduler/sql/derby</location>
@@ -430,8 +492,48 @@
 							<placeholders>
 							</placeholders>
 						</configuration>
+					<!-- </execution>
+				</executions> -->
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.derby</groupId>
+						<artifactId>derby</artifactId>
+						<version>${derby.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-sources</phase>
 					</execution>
 				</executions>
+				<configuration>
+					<jdbc>
+						<driver>${db.driver}</driver>
+						<url>${db.url}</url>
+						<user>${db.user}</user>
+						<password>${db.password}</password>
+					</jdbc>
+					<generator>
+						<name>org.jooq.util.DefaultGenerator</name>
+						<database>
+							<name>${db.generator}</name>
+							<includes>.*</includes>
+							<excludes></excludes>
+							<inputSchema>${db.schema}</inputSchema>
+						</database>
+						<target>
+							<packageName>io.devyse.scheduler.model.jooq</packageName>
+							<directory>src/generated/java</directory>
+						</target>
+					</generator>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
