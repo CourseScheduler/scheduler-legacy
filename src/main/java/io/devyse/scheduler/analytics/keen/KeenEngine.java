@@ -272,11 +272,11 @@ public class KeenEngine {
 	protected void initialize(String config, long timeout){
 		try{
 			//enable logging to better track issues during Keen setup
+			//but disable the default JUL log handler installed by Keen
+			//since this project uses SLF4j with Logback
+			KeenLogging.disableDefaultLogHandler();
 			KeenLogging.enableLogging();
-			
-			//disable the default JUL log handler installed by Keen
-			KeenUtils.disableKeenDefaultLogHandler();
-			
+						
 			configureKeenClient(config);
 			configureShutdownHook(timeout);
 			configureGlobalProperties();

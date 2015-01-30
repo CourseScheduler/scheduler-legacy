@@ -24,15 +24,10 @@
 package io.devyse.scheduler.analytics.keen;
 
 import io.devyse.scheduler.security.Privacy;
-import io.keen.client.java.KeenLogging;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Keen utility methods for building events and mapping data to events
@@ -42,11 +37,6 @@ import org.slf4j.ext.XLoggerFactory;
  */
 class KeenUtils {
 	
-	/**
-	 * Static logger
-	 */
-	private static final XLogger logger = XLoggerFactory.getXLogger(KeenUtils.class);
-
 	/**
 	 * Keen IO internally uses JSON to represent events. The Keen IO Java API requires that a
 	 * nested map, essentially identical in structure to a JSON document, is sent as an event.
@@ -172,31 +162,6 @@ class KeenUtils {
 			map.put(key, Privacy.redactPrivateInformation(value.toString()));
 		}else{
 			map.put(key, value);
-		}
-	}
-	
-	/**
-	 * The method unregisters Keen's default JUL log handler to allow the application to have more control over
-	 * how the KeenClient logs.
-	 * 
-	 * @since 4.12.6
-	 */
-	protected static void disableKeenDefaultLogHandler(){
-		try{
-			Class<KeenLogging> clazz = KeenLogging.class;
-			Field loggerField = clazz.getDeclaredField("LOGGER");
-			Field handlerField = clazz.getDeclaredField("HANDLER");
-			
-			loggerField.setAccessible(true);
-			handlerField.setAccessible(true);
-			
-			java.util.logging.Logger keenLogger = (java.util.logging.Logger)loggerField.get(null);
-			java.util.logging.Handler keenHandler = (java.util.logging.Handler)handlerField.get(null);
-			
-			keenLogger.removeHandler(keenHandler);
-			logger.debug("Removed KeenClient default JUL log handler {} from KeenLogging logger {}", keenHandler, keenLogger);
-		}catch(Exception e){
-			logger.error("Unable to remove KeenClient default JUL log handler from KeenLogging logger", e);
 		}
 	}
 }
