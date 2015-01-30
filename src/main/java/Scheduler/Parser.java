@@ -212,7 +212,7 @@ public enum Parser {
 			}
 			
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
-			logger.info("Finished processing courses from Baner");
+			logger.info("Finished processing courses from Banner");
 			return items;
 		} catch (Exception e) {
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
