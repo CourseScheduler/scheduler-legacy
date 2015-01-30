@@ -502,14 +502,15 @@
 			<plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>
-				<executions>
+<!-- 				Can't currently both flyway-migrate and jooq-generate in same process -->
+				<!-- <executions>
 					<execution>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<phase>generate-sources</phase>
 					</execution>
-				</executions>
+				</executions> -->
 				<configuration>
 					<jdbc>
 						<driver>${db.driver}</driver>
