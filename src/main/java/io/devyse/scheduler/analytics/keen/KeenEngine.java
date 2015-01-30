@@ -245,7 +245,7 @@ public class KeenEngine {
 	/**
 	 * @param initialized set the initialized status of the KeenEngine
 	 */
-	public void setInitialized(boolean initialized) {
+	protected void setInitialized(boolean initialized) {
 		this.initialized = initialized;
 	}
 	
