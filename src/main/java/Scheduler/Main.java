@@ -2,6 +2,7 @@ package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
+import io.devyse.scheduler.logging.LoggingUncaughtExceptionHandler;
 import io.devyse.scheduler.persist.FlywayEngine;
 import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
@@ -121,6 +122,9 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception{	
+		
+		//Register a default uncaught exception handler
+		Thread.setDefaultUncaughtExceptionHandler(new LoggingUncaughtExceptionHandler());
 		
 		//Register a SingleInstanceListener to handle secondary invocation
 		SingleInstanceController.register();
