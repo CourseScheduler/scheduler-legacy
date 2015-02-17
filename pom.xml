@@ -47,6 +47,8 @@
 		<db.generator>org.jooq.util.derby.DerbyDatabase</db.generator>
 		<db.schema>APP</db.schema>
 		<db.versionTable>schema_history</db.versionTable>
+		<db.migration.path.0>io.devyse.scheduler.sql.derby</db.migration.path.0>
+		<db.migration.path>${db.migration.path.0}</db.migration.path>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -460,6 +462,10 @@
 									<directory>src/database/sql</directory>
 									<filtering>true</filtering>
 								</resource>
+								<resource>
+									<directory>src/database/resources</directory>
+									<filtering>true</filtering>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
@@ -499,8 +505,7 @@
 							</schemas>
 							<table>${db.versionTable}</table>
 							<locations>
-								<location>classpath:io.devyse.scheduler.sql.derby</location>
-								<location>filesystem:${project.build.outputDirectory}/io/devyse/scheduler/sql/derby</location>
+								<location>classpath:${db.migration.path.0}</location>
 							</locations>
 							<placeholders>
 							</placeholders>

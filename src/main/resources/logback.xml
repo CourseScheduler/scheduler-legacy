@@ -23,6 +23,10 @@
 
 	<!-- Keen IO SDK -->
 	<logger name="io.keen" level="info"/>
+	
+	<!-- Flyway SDK -->
+	<logger name="org.flywaydb" level="info" />
+	<logger name="io.devyse.scheduler.persist" level="debug" />
 
 	<!-- Oracle & Sun JRE classes -->
 	<logger name="java" level="info"/>

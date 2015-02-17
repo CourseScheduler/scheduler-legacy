@@ -2,6 +2,7 @@ package Scheduler;
 
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
+import io.devyse.scheduler.persist.FlywayEngine;
 import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
 import io.devyse.scheduler.startup.SingleInstanceController;
@@ -11,6 +12,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
+import javax.sql.DataSource;
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -21,6 +23,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.XTabComponent;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -127,6 +131,16 @@ public class Main {
 		
 		//make sure that the required SSL/TLS protocols are enabled for use in HTTPS
 		Encryption.configureHttpsProtocols(parameters.getHttpsProtocols());
+		
+		//initialize the database
+		
+		//TODO change this to jooq initialization which will initialize the data source and flyway in the background
+		EmbeddedDataSource source = new EmbeddedDataSource();
+		source.setDatabaseName("Data/scheduler.derby");
+		source.setCreateDatabase("create");
+		source.setConnectionAttributes("upgrade=true");
+		new FlywayEngine().initializeDataStore(source);
+		
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

@@ -23,9 +23,15 @@
  */
 package io.devyse.scheduler.persist;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.MigrationInfo;
+import org.flywaydb.core.api.MigrationInfoService;
+import org.flywaydb.core.api.MigrationVersion;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -38,6 +44,8 @@ import org.slf4j.ext.XLoggerFactory;
  */
 public class FlywayEngine {
 
+	public static final String DEFAULT_FLYWAY_CONFIGURATION = "config/flyway.properties";
+	
 	/**
 	 * Static logger 
 	 */
@@ -65,19 +73,49 @@ public class FlywayEngine {
 	/**
 	 * 
 	 */
-	protected FlywayEngine() {
+	public FlywayEngine() {
 		super();
 		
 		this.setFlyway(new Flyway());
 	}
 	
-	protected void initializeDataStore(DataSource source){
+	public void initializeDataStore(DataSource source){
+		//TODO custom configuration
+		Properties configuration = new Properties();
+		try {
+			logger.debug("Attempting to load default flyway configuration from {}", DEFAULT_FLYWAY_CONFIGURATION);
+			configuration.load(ClassLoader.getSystemResourceAsStream(DEFAULT_FLYWAY_CONFIGURATION));
+			initializeDataStore(configuration, source);
+		} catch (IOException e) {
+			logger.error("Unable to find default flyway configuration at {}", DEFAULT_FLYWAY_CONFIGURATION);
+			throw new RuntimeException(e);
+		}	
+	}
+	
+	protected void initializeDataStore(Properties configuration, DataSource source){
+		logger.info("Preparing to flyway migrate data source {} using configuration: {}", source, configuration);
+		this.getFlyway().configure(configuration);
 		this.getFlyway().setDataSource(source);
 		
-		//TODO custom configuration
+		//print out the migration statuses if debug is enabled
+		if(logger.isDebugEnabled()){
+			MigrationInfoService info = this.getFlyway().info();
+			for(MigrationInfo migration: info.all()){
+				logger.debug("{} {} {} {} {} {} {} {}", 
+					migration.getVersion(), 
+					migration.getType(),
+					migration.getState(), 
+					migration.getScript(), 
+					migration.getExecutionTime(), 
+					migration.getInstalledOn(), 
+					migration.getChecksum(), 
+					migration.getDescription()
+				);
+			}
+		}
 		
+		logger.info("Executing flyway validation and migration");
 		this.getFlyway().migrate();
 		
-		this.getFlyway().validate();
 	}
 }
