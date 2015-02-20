@@ -369,6 +369,11 @@
 					<artifactId>jooq-codegen-maven</artifactId>
 					<version>3.5.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.3.2</version>
+				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
@@ -438,6 +443,25 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.3.2,)
+										</versionRange>
+										<goals>
+											<goal>exec</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -487,44 +511,59 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-<!-- 				Can't currently both flyway-migrate and jooq-generate in same process -->
-				<!-- <executions>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
 					<execution>
-						<id>sql-migration-derby</id>
+						<id>flyway-migrate-db</id>
 						<phase>generate-sources</phase>
 						<goals>
-							<goal>migrate</goal>
-						</goals> -->
+							<goal>exec</goal>
+						</goals>
+						
 						<configuration>
-							<driver>${db.driver}</driver>
-							<url>${db.url};${db.url.setup}</url>
-							<schemas>
-								<schema>${db.schema}</schema>
-							</schemas>
-							<table>${db.versionTable}</table>
-							<locations>
-								<location>classpath:${db.migration.path.0}</location>
-							</locations>
-							<placeholders>
-							</placeholders>
+							<executable>mvn</executable>
+							<arguments>
+								<argument>flyway:migrate</argument>
+							</arguments>
 						</configuration>
-					<!-- </execution>
-				</executions> -->
+					</execution>
+					<execution>
+						<id>jooq-db-generate</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						
+						<configuration>
+							<executable>mvn</executable>
+							<arguments>
+								<argument>jooq-codegen:generate</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+					<configuration>
+						<driver>${db.driver}</driver>
+						<url>${db.url};${db.url.setup}</url>
+						<schemas>
+							<schema>${db.schema}</schema>
+						</schemas>
+						<table>${db.versionTable}</table>
+						<locations>
+							<location>classpath:${db.migration.path.0}</location>
+						</locations>
+						<placeholders>
+						</placeholders>
+					</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>
-<!-- 				Can't currently both flyway-migrate and jooq-generate in same process -->
-				<!-- <executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<phase>generate-sources</phase>
-					</execution>
-				</executions> -->
 				<configuration>
 					<jdbc>
 						<driver>${db.driver}</driver>
