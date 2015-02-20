@@ -31,7 +31,6 @@ import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationInfo;
 import org.flywaydb.core.api.MigrationInfoService;
-import org.flywaydb.core.api.MigrationVersion;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -57,21 +56,21 @@ public class FlywayEngine {
 	private Flyway flyway;
 	
 	/**
-	 * @return the flyway
+	 * @return the flyway instance
 	 */
 	private Flyway getFlyway() {
 		return flyway;
 	}
 
 	/**
-	 * @param flyway the flyway to set
+	 * @param flyway the flyway instance to set
 	 */
 	private void setFlyway(Flyway flyway) {
 		this.flyway = flyway;
 	}
 
 	/**
-	 * 
+	 * Create a new instance of the FlywayEngine for migrating the database to the latest schema
 	 */
 	public FlywayEngine() {
 		super();
@@ -79,6 +78,14 @@ public class FlywayEngine {
 		this.setFlyway(new Flyway());
 	}
 	
+	/**
+	 * Initialize the data store by flayway migrating it to the correct version of the database schema for
+	 * this version of the application.
+	 * 
+	 * Uses the default configuration specified by {@link #DEFAULT_FLYWAY_CONFIGURATION}
+	 * 
+	 * @param source the DataSource corresponding to the database that should be initialized
+	 */
 	public void initializeDataStore(DataSource source){
 		//TODO custom configuration
 		Properties configuration = new Properties();
@@ -92,6 +99,13 @@ public class FlywayEngine {
 		}	
 	}
 	
+	/**
+	 * Initialize the data store by flayway migrating it to the correct version of the database schema for
+	 * this version of the application.
+	 * 
+	 * @param configuration the configuration for the flyway migration
+	 * @param source the DataSource corresponding to the database that should be initialized
+	 */
 	protected void initializeDataStore(Properties configuration, DataSource source){
 		logger.info("Preparing to flyway migrate data source {} using configuration: {}", source, configuration);
 		this.getFlyway().configure(configuration);
@@ -116,6 +130,5 @@ public class FlywayEngine {
 		
 		logger.info("Executing flyway validation and migration");
 		this.getFlyway().migrate();
-		
 	}
 }
