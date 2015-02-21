@@ -35,7 +35,7 @@ import java.util.Random;
  * Basic implementation of a Version object for use in testing base and abstract functionality
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class SimpleVersion extends AbstractVersion {

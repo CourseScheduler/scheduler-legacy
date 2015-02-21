@@ -41,7 +41,7 @@ public interface Term extends Comparable<Term>{
 	 *
 	 * @return the term identifier
 	 * 
-	 * @since 4.12.8
+	 * @since 4.13.0
 	 */
 	public String getTermId();
 	
@@ -59,7 +59,7 @@ public interface Term extends Comparable<Term>{
 	 *
 	 * @return the university for this term
 	 * 
-	 * @since 4.12.8
+	 * @since 4.13.0
 	 */
 	public University getUniversity();
 	
@@ -68,7 +68,7 @@ public interface Term extends Comparable<Term>{
 	 * 
 	 * @return the collection of available datasets
 	 * 
-	 * @since 4.12.8
+	 * @since 4.13.0
 	 */
 	public Collection<TermDataSet> getDatasets(); 
 		

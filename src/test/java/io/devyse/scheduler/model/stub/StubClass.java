@@ -32,7 +32,7 @@ import java.util.Objects;
  * relying on a tested dependency. This is used to simplify mocking of those test harness classes.
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public abstract class StubClass<T, U extends Valuable> implements Valuable {

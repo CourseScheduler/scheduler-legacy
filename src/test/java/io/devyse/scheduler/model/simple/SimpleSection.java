@@ -35,7 +35,7 @@ import io.devyse.scheduler.model.TermDataSetUnitTest;
  * for testing the base method functionality and semantics
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  * 
  */
 public class SimpleSection extends AbstractSection {

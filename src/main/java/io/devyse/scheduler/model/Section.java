@@ -29,7 +29,7 @@ import java.util.Objects;
  * Represent the registration unit of a given course.
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public interface Section extends Comparable<Section> {

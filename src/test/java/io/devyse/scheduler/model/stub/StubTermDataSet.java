@@ -34,7 +34,7 @@ import io.devyse.scheduler.model.Version;
  * where we don't need to depend on a fully functional TermDataSet.
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class StubTermDataSet extends StubClass<TermDataSet, StubTermDataSet> implements TermDataSet {

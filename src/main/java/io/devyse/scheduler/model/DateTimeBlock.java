@@ -40,7 +40,7 @@ import java.util.Objects;
  * and end date.
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public interface DateTimeBlock extends Comparable<DateTimeBlock>{

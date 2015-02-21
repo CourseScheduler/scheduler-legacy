@@ -33,7 +33,7 @@ import io.devyse.scheduler.model.University;
  * functionality and default implementation
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  * 
  */
 public class SimpleUniversity extends AbstractUniversity {

@@ -27,7 +27,7 @@
  * simple model is generally functional, though provides no mechanisms for persistence
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 package io.devyse.scheduler.model.simple;

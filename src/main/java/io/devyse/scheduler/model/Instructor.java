@@ -29,7 +29,7 @@ import java.util.Objects;
  * Represent an instructor that teaches a course at a university
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public interface Instructor extends Comparable<Instructor> {

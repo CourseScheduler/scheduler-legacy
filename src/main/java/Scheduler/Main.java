@@ -62,7 +62,7 @@ public class Main {
 	********************************************************/
 	protected static final long versionID = 2014122621520L;//object id
 	protected static final long buildNumber = 1582L;//build number
-	protected static final String version = new String("4.12.8");
+	protected static final String version = new String("4.13.0");
 	protected static final int policyVersion = 1;
 	
 	

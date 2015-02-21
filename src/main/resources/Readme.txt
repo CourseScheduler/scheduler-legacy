@@ -19,7 +19,7 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
-4.12.8
+4.13.0
 	-Changed project runtime requirement to JRE8
 	
 4.12.7

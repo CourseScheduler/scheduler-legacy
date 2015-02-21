@@ -31,7 +31,7 @@ package io.devyse.scheduler.model.stub;
  * Valuable provides the uniqueness needed for the StubClass base class
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 interface Valuable {

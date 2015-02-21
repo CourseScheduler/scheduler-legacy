@@ -39,7 +39,7 @@ import org.testng.asserts.SoftAssert;
  * Unit tests for the Section and AbstractSection classes and base functionality
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 @Test(	groups = {"unit","interface","Section.basic"})

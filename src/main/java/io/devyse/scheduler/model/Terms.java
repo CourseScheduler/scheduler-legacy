@@ -31,7 +31,7 @@ import java.util.Collection;
  * 
  * @author Mike Reinhold
  * 
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class Terms {
@@ -55,7 +55,7 @@ public class Terms {
 	 * based on the persistence model
 	 * 
 	 * @author Mike Reinhold
-	 * @since 4.12.8
+	 * @since 4.13.0
 	 *
 	 */
 	private static class TransientTerm extends AbstractTerm{

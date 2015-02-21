@@ -39,7 +39,7 @@ import org.testng.asserts.SoftAssert;
  * semantics
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  * 
  */
 @Test(	groups = {"unit","interface","Term.basic"})

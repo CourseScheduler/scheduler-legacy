@@ -38,7 +38,7 @@ import io.devyse.scheduler.model.stub.StubSection;
  * compareTo, etc)
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  * 
  */
 public class SimpleMeeting extends AbstractMeeting {

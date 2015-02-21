@@ -31,7 +31,7 @@ import org.slf4j.ext.XLoggerFactory;
  * uncaught on a given thread. This handler just logs the uncaught exception
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class LoggingUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler{

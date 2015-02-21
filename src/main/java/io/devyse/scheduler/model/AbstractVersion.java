@@ -27,7 +27,7 @@ import java.time.OffsetDateTime;
 
 /**
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public abstract class AbstractVersion implements Version {

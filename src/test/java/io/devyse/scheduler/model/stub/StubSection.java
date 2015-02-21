@@ -34,7 +34,7 @@ import io.devyse.scheduler.model.TermDataSet;
  * where we don't need to depend on a fully functional Section.
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  */
 public class StubSection extends StubClass<Section, StubSection> implements Section {
 

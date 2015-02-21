@@ -27,7 +27,7 @@ package io.devyse.scheduler.model;
  * Provide the basic and default implementation of the instructor interface
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public abstract class AbstractInstructor implements Instructor {

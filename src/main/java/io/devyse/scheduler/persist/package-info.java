@@ -26,7 +26,7 @@
  * Package containing persistence helpers and utilities
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 package io.devyse.scheduler.persist;

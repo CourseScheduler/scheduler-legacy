@@ -32,7 +32,7 @@ import io.devyse.scheduler.model.University;
  * where we don't need to depend on a fully functional University.
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class StubUniversity extends StubClass<University, StubUniversity> implements University {

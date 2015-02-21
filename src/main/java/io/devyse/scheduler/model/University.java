@@ -30,7 +30,7 @@ import java.util.Objects;
  * downloaded and schedules can be generated. 
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  */
 public interface University extends Comparable<University>{
 

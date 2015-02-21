@@ -27,7 +27,7 @@ package io.devyse.scheduler.model;
  * Utility classes and constructor methods for Universities
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class Universities {
@@ -47,7 +47,7 @@ public class Universities {
 	 * Transient university class which is a placeholder until persistence based classes are available
 	 * 
 	 * @author Mike Reinhold
-	 * @since 4.12.8
+	 * @since 4.13.0
 	 *
 	 */
 	private static class TransientUniversity extends AbstractUniversity{

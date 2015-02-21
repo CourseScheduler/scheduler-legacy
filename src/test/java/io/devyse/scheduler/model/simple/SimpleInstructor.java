@@ -35,7 +35,7 @@ import io.devyse.scheduler.model.stub.StubTermDataSet;
  * functionality.
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public class SimpleInstructor extends AbstractInstructor {

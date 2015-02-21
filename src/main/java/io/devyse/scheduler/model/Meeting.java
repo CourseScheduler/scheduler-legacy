@@ -32,7 +32,7 @@ import java.util.Set;
  * room), the instructor, and the type of meeting (lab vs lecture vs other).
  *
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public interface Meeting extends Comparable<Meeting> {

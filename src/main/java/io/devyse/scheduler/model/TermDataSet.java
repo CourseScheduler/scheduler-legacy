@@ -30,7 +30,7 @@ import java.util.Objects;
  * which is referenced by all of the retrieved data
  * 
  * @author Mike Reinhold
- * @since 4.12.8
+ * @since 4.13.0
  *
  */
 public interface TermDataSet extends Comparable<TermDataSet>{
