@@ -70,7 +70,7 @@ public class Main {
 	protected static final String maintain = new String("Mike Reinhold");
 	protected static final String email = new String("contact@coursescheduler.io");
 	protected static final String contributers = new String(
-		"Aaron Simmons, Phil DeMonaco, Alex Thomson, Ryan Murphy, Vlad Patryshev, Rob MacGrogan");
+		"Aaron Simmons, Phil DeMonaco, Alex Thomson, Ryan Murphy, Garrick Brazil");
 	
 	protected static final String folderName = new String(System.getProperty("user.home") + "/Scheduler");
 	protected static final String dataName = new String("Data");

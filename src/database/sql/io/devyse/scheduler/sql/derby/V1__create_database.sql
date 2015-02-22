@@ -148,3 +148,17 @@ create table instructor_rating (
 	constraint instructor_rating_pkey primary key (id),
 	constraint instructor_rating_fkey_instructor_id foreign key (instructor_id) references instructor(id) on delete cascade
 );
+
+
+/**
+ * TODO schedule persistence data model
+ * 
+ * A schedule request contains the parameters for computing available combinations of courses
+ * 		the type of schedule request - student
+ * 		the list of required courses or sections
+ * 		the list of optional complimentary course or section sets
+ * 		the minimum / maximum number of courses or credit hours
+ * 		
+ * A schedule contains the set of sections that satisfies a schedule request
+ * 
+ */
