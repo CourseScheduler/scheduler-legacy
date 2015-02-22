@@ -24,6 +24,9 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.8
+	-Fixes issue #29, bug preventing download of course data for Summer 2015 due to invalid credit value check
+
 4.12.7
 	-Update dependencies
 	-Build process improvement
