@@ -1,4 +1,11 @@
 /**
+ * V1__create_database.sql
+ * 
+ * Create the database schema for the new relational data model
+ */
+
+
+/**
  * University table describing the university
  * 
  * Primary access methods are primary key and university name
