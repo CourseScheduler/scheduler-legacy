@@ -155,18 +155,23 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 		List<TextNode> creditNodes = longDetailElement.textNodes();
 		for(TextNode creditNode : creditNodes){
 			String text = creditNode.text();
-			if(text.contains("hour")){
-				try(Scanner scanner = new Scanner(text);){
-					scanner.useDelimiter(" ");
-					if(text.contains("TO")){
-						//Some catalog entries use the "X.000 TO Y.000" Credits format for the credit hours
-						//in almost all cases, X is 0, so we take Y as the credit count - skip "X.000" and "TO"
-						scanner.next();
-						scanner.next();
-					} 
-						
+			try(Scanner scanner = new Scanner(text);){
+				scanner.useDelimiter(" ");
+				if(text.contains("TO")){
+					logger.debug("Found credit range entry, will attempt to use max value in range. Range: {}", text);
+					//Some catalog entries use the "X.000 TO Y.000" Credits format for the credit hours
+					//in almost all cases, X is 0, so we take Y as the credit count - skip "X.000" and "TO"
+					scanner.next();
+					scanner.next();
+				} 
+				
+				if(scanner.hasNextDouble()){
 					double value = scanner.nextDouble();
-					values.put("credit."+scanner.next(), Double.toString(value));
+					String component = scanner.next();
+					values.put("credit."+component, Double.toString(value));
+					logger.debug("Found credit hour entry: {}={}", component, value);
+				}else{
+					logger.debug("Expected credit hour text node, found instead: {}", text);
 				}
 			}
 		}
