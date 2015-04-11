@@ -44,6 +44,37 @@ import java.util.Random;
 public class SimpleDateTimeBlock extends AbstractDateTimeBlock{
 
 	/**
+	 * Day of the week for the time block
+	 */
+	private DayOfWeek dayOfWeek;
+	
+	/**
+	 * Start time and timezone for the time block
+	 */
+	private LocalTime startTime;
+	
+	/**
+	 * End time and timezone for the time block
+	 */
+	private LocalTime endTime;
+	
+	/**
+	 * Time zone offset for the time block
+	 */
+	private ZoneOffset zoneOffset;
+	
+	/**
+	 * Start date for the time block
+	 */
+	private LocalDate startDate;
+	
+	/**
+	 * End date for the time block
+	 */
+	private LocalDate endDate;
+	
+	
+	/**
 	 * Generate a DateTimeBlock based on the current state of a Random
 	 *
 	 * @param generator a Random for use in building the DateTimeBlocks
@@ -92,6 +123,69 @@ public class SimpleDateTimeBlock extends AbstractDateTimeBlock{
 	 * @param endDate the end date
 	 */
 	protected SimpleDateTimeBlock(DayOfWeek dow, LocalTime startTime, LocalTime endTime, ZoneOffset zone, LocalDate startDate, LocalDate endDate) {
-		super(dow, startTime, endTime, zone, startDate, endDate);
+		super();
+		this.dayOfWeek = dow;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.zoneOffset = zone;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getDayOfWeek()
+	 */
+	public DayOfWeek getDayOfWeek() {
+		return this.dayOfWeek;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getZoneOffset()
+	 */
+	public ZoneOffset getZoneOffset(){
+		return this.zoneOffset;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getStartDate()
+	 */
+	public LocalDate getStartDate() {
+		return this.startDate;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getEndDate()
+	 */
+	public LocalDate getEndDate() {
+		return this.endDate;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getLocalStartTime()
+	 */
+	public LocalTime getLocalStartTime() {
+		return this.getStartTime();
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.DateTimeBlock#getLocalEndTime()
+	 */
+	public LocalTime getLocalEndTime() {
+		return this.getEndTime();
+	}
+	
+	/**
+	 * @return the local start time
+	 */
+	protected LocalTime getStartTime(){
+		return this.startTime;
+	}
+	
+	/**
+	 * @return the local end time
+	 */
+	protected LocalTime getEndTime(){
+		return this.endTime;
+	}
+	
 }
