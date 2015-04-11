@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.scheduler.model.jooq.tables.records.SectionRecord> implements org.jooq.Record7<java.lang.Integer, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer> {
 
-	private static final long serialVersionUID = -922231285;
+	private static final long serialVersionUID = -1438075381;
 
 	/**
 	 * Setter for <code>APP.SECTION.ID</code>.
@@ -35,14 +35,14 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	/**
 	 * Setter for <code>APP.SECTION.CRN</code>.
 	 */
-	public void setCrn(java.lang.String value) {
+	public void SetCRN(java.lang.String value) {
 		setValue(1, value);
 	}
 
 	/**
 	 * Getter for <code>APP.SECTION.CRN</code>.
 	 */
-	public java.lang.String getCrn() {
+	public java.lang.String GetCRN() {
 		return (java.lang.String) getValue(1);
 	}
 
@@ -217,7 +217,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public java.lang.String value2() {
-		return getCrn();
+		return GetCRN();
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public SectionRecord value2(java.lang.String value) {
-		setCrn(value);
+		SetCRN(value);
 		return this;
 	}
 

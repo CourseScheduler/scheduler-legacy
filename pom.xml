@@ -657,6 +657,18 @@
 									<!-- TODO instructor_rating -->
 									<!-- TODO schedule persistence data model -->
 								</tables>
+								<fields>
+									<!-- Change getter and setter naming for CRN in Section, since it is not standard casing -->
+									<field>
+										<expression>CRN</expression>
+										<fieldSetter>
+											<expression>SetCRN</expression>
+										</fieldSetter>
+										<fieldGetter>
+											<expression>GetCRN</expression>
+										</fieldGetter>
+									</field>
+								</fields>
 							</matchers>
 						</strategy>
 					</generator>

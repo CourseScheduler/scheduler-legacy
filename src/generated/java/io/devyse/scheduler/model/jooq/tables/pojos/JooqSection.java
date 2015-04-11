@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables.pojos;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JooqSection extends io.devyse.scheduler.model.AbstractSection implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1605988835;
+	private static final long serialVersionUID = 1326888419;
 
 	private java.lang.Integer id;
 	private java.lang.String  crn;
@@ -54,11 +54,11 @@ public class JooqSection extends io.devyse.scheduler.model.AbstractSection imple
 		this.id = id;
 	}
 
-	public java.lang.String getCrn() {
+	public java.lang.String GetCRN() {
 		return this.crn;
 	}
 
-	public void setCrn(java.lang.String crn) {
+	public void SetCRN(java.lang.String crn) {
 		this.crn = crn;
 	}
 

@@ -60,13 +60,6 @@ public class TermDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.model.joo
 	}
 
 	/**
-	 * Fetch records that have <code>VERSION_ID IN (values)</code>
-	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqTerm> fetchByVersionId(java.lang.Integer... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.Term.TERM.VERSION_ID, values);
-	}
-
-	/**
 	 * Fetch records that have <code>NAME IN (values)</code>
 	 */
 	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqTerm> fetchByName(java.lang.String... values) {

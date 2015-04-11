@@ -16,11 +16,10 @@ package io.devyse.scheduler.model.jooq.tables.pojos;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JooqTerm extends io.devyse.scheduler.model.AbstractTerm implements java.io.Serializable {
 
-	private static final long serialVersionUID = -325923073;
+	private static final long serialVersionUID = -1096380917;
 
 	private java.lang.Integer id;
 	private java.lang.Integer universityId;
-	private java.lang.Integer versionId;
 	private java.lang.String  name;
 	private java.lang.String  internalIdentifier;
 
@@ -29,13 +28,11 @@ public class JooqTerm extends io.devyse.scheduler.model.AbstractTerm implements 
 	public JooqTerm(
 		java.lang.Integer id,
 		java.lang.Integer universityId,
-		java.lang.Integer versionId,
 		java.lang.String  name,
 		java.lang.String  internalIdentifier
 	) {
 		this.id = id;
 		this.universityId = universityId;
-		this.versionId = versionId;
 		this.name = name;
 		this.internalIdentifier = internalIdentifier;
 	}
@@ -54,14 +51,6 @@ public class JooqTerm extends io.devyse.scheduler.model.AbstractTerm implements 
 
 	public void setUniversityId(java.lang.Integer universityId) {
 		this.universityId = universityId;
-	}
-
-	public java.lang.Integer getVersionId() {
-		return this.versionId;
-	}
-
-	public void setVersionId(java.lang.Integer versionId) {
-		this.versionId = versionId;
 	}
 
 	public java.lang.String getName() {

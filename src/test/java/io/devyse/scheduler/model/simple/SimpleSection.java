@@ -41,6 +41,36 @@ import io.devyse.scheduler.model.TermDataSetUnitTest;
 public class SimpleSection extends AbstractSection {
 
 	/**
+	 * The course request number, registration number
+	 */
+	private String crn;
+	
+	/**
+	 * The course identifier
+	 */
+	private String courseNumber;
+	
+	/**
+	 * The section description (course description)
+	 */
+	private String description;
+	
+	/**
+	 * The common section name
+	 */
+	private String name;
+	
+	/**c
+	 * The unique section identifier
+	 */
+	private String sectionNumber;
+	
+	/**
+	 * The dataset of the registration term for this section
+	 */
+	private TermDataSet termDataSet;
+	
+	/**
 	 * Generate a Section based on the current state of a Random
 	 *
 	 * @param generator a Random for use in building the Section
@@ -79,6 +109,58 @@ public class SimpleSection extends AbstractSection {
 	 * @param sectionId the section identifier
 	 */
 	protected SimpleSection(TermDataSet termDataSet, String crn, String courseId, String sectionId) {
-		super(termDataSet, crn, courseId, sectionId);
-	}	
+		super();
+		this.termDataSet = termDataSet;
+		this.crn = crn;
+		this.courseNumber = courseId;
+		this.sectionNumber = sectionId;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getCRN()
+	 */
+	@Override
+	public String getCRN() {
+		return this.crn;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getCourseId()
+	 */
+	@Override
+	public String getCourseNumber() {
+		return this.courseNumber;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getName()
+	 */
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getSectionId()
+	 */
+	@Override
+	public String getSectionNumber() {
+		return this.sectionNumber;
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Section#getTermDataSet()
+	 */
+	@Override
+	public TermDataSet getTermDataSet() {
+		return this.termDataSet;
+	}
 }

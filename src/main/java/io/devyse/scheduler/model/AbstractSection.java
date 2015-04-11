@@ -32,143 +32,15 @@ package io.devyse.scheduler.model;
  *
  */
 public abstract class AbstractSection implements Section {
-	
-	/**
-	 * The course request number, registration number
-	 */
-	private String crn;
-	
-	/**
-	 * The course identifier
-	 */
-	private String courseNumber;
-	
-	/**
-	 * The section description (course description)
-	 */
-	private String description;
-	
-	/**
-	 * The common section name
-	 */
-	private String name;
-	
-	/**c
-	 * The unique section identifier
-	 */
-	private String sectionNumber;
-	
-	/**
-	 * The dataset of the registration term for this section
-	 */
-	private TermDataSet termDataSet;
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getCRN()
-	 */
-	@Override
-	public String getCRN() {
-		return this.crn;
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getCourseId()
-	 */
-	@Override
-	public String getCourseNumber() {
-		return this.courseNumber;
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getDescription()
-	 */
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getName()
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getSectionId()
-	 */
-	@Override
-	public String getSectionNumber() {
-		return this.sectionNumber;
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getTermDataSet()
-	 */
-	@Override
-	public TermDataSet getTermDataSet() {
-		return this.termDataSet;
-	}
-	
-	/**
-	 * @param crn the crn to set
-	 */
-	protected void setCrn(String crn) {
-		this.crn = crn;
-	}
-
-	/**
-	 * @param courseId the courseId to set
-	 */
-	protected void setCourseNumber(String courseId) {
-		this.courseNumber = courseId;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	protected void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	protected void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @param sectionId the sectionId to set
-	 */
-	protected void setSectionNumber(String sectionId) {
-		this.sectionNumber = sectionId;
-	}
-
-	/**
-	 * @param term the term to set
-	 */
-	protected void setTermDataSet(TermDataSet termDataSet) {
-		this.termDataSet = termDataSet;
-	}
 
 	/**
 	 * Create a new AbstractSection for the specified term using the
 	 * provided course request number
 	 * 
-	 * @param termDataSet the data set for the term in which the section is available
-	 * @param crn the registration number for the course
-	 * @param courseId the course identifier
-	 * @param sectionId the section identifier
+	 * For implementation class use only
 	 */
-	protected AbstractSection(TermDataSet termDataSet, String crn, String courseId, String sectionId){
+	protected AbstractSection(){
 		super();
-		
-		this.setTermDataSet(termDataSet);
-		this.setCrn(crn);
-		this.setCourseNumber(courseId);
-		this.setSectionNumber(sectionId);
 	}
 
 	/* (non-Javadoc)
