@@ -34,32 +34,18 @@ package io.devyse.scheduler.model;
 public abstract class AbstractTerm implements Term {
 	
 	/**
-	 * Term identifier, usually a code defining the year and semester
+	 * String termId: Term identifier, usually a code defining the year and semester
+	 * String name: Term name, usually text declaring the year and semester
+	 * University university: University for which this term is related
 	 */
-	private String termId;
-
-	/**
-	 * Term name, usually text declaring the year and semester
-	 */
-	private String name;
 	
 	/**
-	 * University for which this term is related
+	 * Build a term
+	 * 
+	 * For use by implementation subclasses only
 	 */
-	private University university;
-	
-	/**
-	 * Build an term based on the id and name
-	 *
-	 * @param university the university to which the term is related
-	 * @param internalId the internal name of the term as used by the university
-	 * @param name the external name of the term as used by the university
-	 */
-	protected AbstractTerm(University university, String internalId, String name) {
+	protected AbstractTerm() {
 		super();
-		this.setTermId(internalId);
-		this.setName(name);
-		this.setUniversity(university);
 	}
 
 	/* (non-Javadoc)
@@ -85,50 +71,5 @@ public abstract class AbstractTerm implements Term {
 	@Override
 	public int hashCode() {
 		return this.getHashCode();
-	}
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Term#getId()
-	 */
-	@Override
-	public String getTermId() {
-		return this.termId;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Term#getName()
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Term#getUniversity()
-	 */
-	@Override
-	public University getUniversity() {
-		return university;
-	}
-	
-	/**
-	 * @param id the id to set
-	 */
-	protected void setTermId(String id) {
-		this.termId = id;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	protected void setName(String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * @param university the university to set
-	 */
-	protected void setUniversity(University university){
-		this.university = university;
 	}
 }

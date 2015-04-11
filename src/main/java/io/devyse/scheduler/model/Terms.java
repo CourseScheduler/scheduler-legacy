@@ -60,6 +60,33 @@ public class Terms {
 	 */
 	private static class TransientTerm extends AbstractTerm{
 
+		private University university;
+		
+		private String internalId;
+		
+		private String name;
+		
+		/* (non-Javadoc)
+		 * @see io.devyse.scheduler.model.Term#getUniversity()
+		 */
+		public University getUniversity() {
+			return university;
+		}
+
+		/**
+		 * @return the internal ID of the term
+		 */
+		public String getTermId() {
+			return internalId;
+		}
+
+		/* (non-Javadoc)
+		 * @see io.devyse.scheduler.model.Term#getName()
+		 */
+		public String getName() {
+			return name;
+		}
+
 		/**
 		 * Create new placeholder Term
 		 * 
@@ -68,13 +95,16 @@ public class Terms {
 		 * @param name the external name of the term used by the university
 		 */
 		protected TransientTerm(University university, String internalId, String name) {
-			super(university, internalId, name);
+			super();
+			this.university = university;
+			this.internalId = internalId;
+			this.name = name;
 		}
 
 		@Override
 		public Collection<TermDataSet> getDatasets() {
 			// TODO Auto-generated method stub
 			return new ArrayList<TermDataSet>();	//TODO this is only temporary
-		}		
+		}	
 	}
 }
