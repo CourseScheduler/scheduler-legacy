@@ -33,33 +33,19 @@ package io.devyse.scheduler.model;
 public abstract class AbstractUniversity implements University {
 	
 	/**
-	 * Common name of the university
+	 * Internal fields that must be provided in some manner by the implementation
+	 * 
+	 * String name: Common name of the university
 	 */
-	private String name;
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.University#getName()
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
 
 	/**
-	 * @param name the name to set
-	 */
-	protected void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Create a new AbstractUniversity with the specified name
+	 * Create a new AbstractUniversity
+	 * 
+	 * Only for use by sub-classes
 	 *
 	 */
-	public AbstractUniversity(String name) {
+	protected AbstractUniversity() {
 		super();
-		
-		this.setName(name);
 	}
 
 	/* (non-Javadoc)

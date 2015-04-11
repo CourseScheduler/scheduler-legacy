@@ -39,6 +39,11 @@ import io.devyse.scheduler.model.University;
 public class SimpleUniversity extends AbstractUniversity {
 	
 	/**
+	 * Common name of the university
+	 */
+	private String name;
+	
+	/**
 	 * Generate a new simple University using the specified {@link java.util.Random}
 	 * as the source for generating the University
 	 * 
@@ -69,6 +74,15 @@ public class SimpleUniversity extends AbstractUniversity {
 	 * @param name the name of the university
 	 */
 	protected SimpleUniversity(String name) {
-		super(name);
+		super();
+		this.name = name;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.University#getName()
+	 */
+	@Override
+	public String getName() {
+		return this.name;
 	}
 }

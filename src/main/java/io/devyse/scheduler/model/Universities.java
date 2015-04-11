@@ -51,14 +51,27 @@ public class Universities {
 	 *
 	 */
 	private static class TransientUniversity extends AbstractUniversity{
-
+		
+		/**
+		 * Common name of the university
+		 */
+		private String name;
+		
 		/**
 		 * Create a new placeholder university
 		 * 
 		 * @param name the university name
 		 */
 		public TransientUniversity(String name) {
-			super(name);
+			super();
+		}
+
+		/* (non-Javadoc)
+		 * @see io.devyse.scheduler.model.University#getName()
+		 */
+		@Override
+		public String getName() {
+			return this.name;
 		}
 		
 	}
