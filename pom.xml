@@ -633,7 +633,10 @@
 										<expression>TERM</expression>
 										<pojoExtends>io.devyse.scheduler.model.AbstractTerm</pojoExtends>
 									</table>
-									<!-- TODO term_data_set -->
+									<table>
+										<expression>TERM_DATA_SET</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractTermDataSet</pojoExtends>
+									</table>
 									<table>
 										<expression>SECTION</expression>
 										<pojoExtends>io.devyse.scheduler.model.AbstractSection</pojoExtends>
