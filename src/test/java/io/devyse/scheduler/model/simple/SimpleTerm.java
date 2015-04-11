@@ -43,6 +43,21 @@ import java.util.Random;
 public class SimpleTerm extends AbstractTerm {
 
 	/**
+	 * University for which this term is valid
+	 */
+	private University university;
+	
+	/**
+	 * The university internal code for the term 
+	 */
+	private String internalId;
+	
+	/**
+	 * The common name for the term  
+	 */
+	private String name;
+	
+	/**
 	 * Generate a Term based on the current state of a Random
 	 *
 	 * @param generator a Random for use in building the Term
@@ -79,7 +94,10 @@ public class SimpleTerm extends AbstractTerm {
 	 * @param name the external name of the university
 	 */
 	protected SimpleTerm(University university, String internalId, String name) {
-		super(university, internalId, name);
+		super();
+		this.university = university;
+		this.internalId = internalId;
+		this.name = name;
 	}
 
 	/* (non-Javadoc)
@@ -88,6 +106,27 @@ public class SimpleTerm extends AbstractTerm {
 	@Override
 	public Collection<TermDataSet> getDatasets() {
 		return new ArrayList<TermDataSet>();
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Term#getUniversity()
+	 */
+	public University getUniversity() {
+		return university;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Term#getTermId()
+	 */
+	public String getTermId() {
+		return internalId;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Term#getName()
+	 */
+	public String getName() {
+		return name;
 	}
 
 }

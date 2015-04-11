@@ -41,6 +41,16 @@ import io.devyse.scheduler.model.stub.StubTermDataSet;
 public class SimpleInstructor extends AbstractInstructor {
 
 	/**
+	 * The instructor's name as presented by the university
+	 */
+	private String name;
+	
+	/**
+	 * The dataset of the Term which contains courses that reference the Instructor
+	 */
+	private TermDataSet termDataSet;
+	
+	/**
 	 * Generate a new Instructor randomly using the specified {@link java.util.Random}
 	 * 
 	 * @param generator the random source for the construction of the Instructor
@@ -69,10 +79,27 @@ public class SimpleInstructor extends AbstractInstructor {
 	/**
 	 * Create a new Simple instructor for testing base and abstract functionality
 	 * 
-	 * @param dataset the term dataset containing the instructor
+	 * @param dataSet the term dataset containing the instructor
 	 * @param name the instructor's name
 	 */
-	protected SimpleInstructor(TermDataSet dataset, String name) {
-		super(dataset, name);
+	protected SimpleInstructor(TermDataSet dataSet, String name) {
+		super();
+		
+		this.termDataSet = dataSet;
+		this.name = name;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Instructor#getName()
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Instructor#getTermDataSet()
+	 */
+	public TermDataSet getTermDataSet() {
+		return termDataSet;
 	}
 }

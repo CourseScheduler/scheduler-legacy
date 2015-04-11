@@ -41,6 +41,11 @@ import java.util.Random;
 public class SimpleVersion extends AbstractVersion {
 
 	/**
+	 * Retrieval date and time
+	 */
+	private OffsetDateTime retrievalTime;
+	
+	/**
 	 * Generate a new, random, simple Version using the specifiend {@link java.util.Random}
 	 * as the source for the Version
 	 * 
@@ -84,6 +89,15 @@ public class SimpleVersion extends AbstractVersion {
 	 * @param retrievalTime the date and time of the
 	 */
 	protected SimpleVersion(OffsetDateTime retrievalTime) {
-		super(retrievalTime);
+		super();
+		
+		this.retrievalTime = retrievalTime;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Version#getRetrievalTime()
+	 */
+	public OffsetDateTime getRetrievalTime() {
+		return retrievalTime;
 	}
 }
