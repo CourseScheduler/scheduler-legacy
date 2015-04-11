@@ -3,6 +3,7 @@ package Scheduler;
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
 import io.devyse.scheduler.logging.LoggingUncaughtExceptionHandler;
+import io.devyse.scheduler.model.jooq.tables.daos.UniversityDao;
 import io.devyse.scheduler.persist.FlywayEngine;
 import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
@@ -26,6 +27,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.derby.jdbc.EmbeddedDataSource;
+import org.jooq.Configuration;
+import org.jooq.impl.DefaultConfiguration;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -145,6 +148,13 @@ public class Main {
 		source.setConnectionAttributes("upgrade=true");
 		new FlywayEngine().initializeDataStore(source);
 		
+		//TODO remove this testing stuff
+		Configuration config  = new DefaultConfiguration().derive(source);
+		UniversityDao uniDao = new UniversityDao(config);
+		
+		uniDao.fetchByName("Kettering University");
+		
+		//END TODO
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

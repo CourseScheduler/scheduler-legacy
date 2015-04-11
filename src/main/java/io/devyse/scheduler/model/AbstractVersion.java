@@ -23,8 +23,6 @@
  */
 package io.devyse.scheduler.model;
 
-import java.time.OffsetDateTime;
-
 /**
  * @author Mike Reinhold
  * @since 4.13.0
@@ -36,20 +34,6 @@ public abstract class AbstractVersion implements Version {
 	 * If this version was fully and successfully retrieved
 	 */
 	private boolean complete;
-	
-	/**
-	 * The date and time of the retrieval
-	 */
-	private OffsetDateTime retrievalTime;
-
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Version#getRetrievalTime()
-	 */
-	@Override
-	public OffsetDateTime getRetrievalTime() {
-		return this.retrievalTime;
-	}
 
 	/* (non-Javadoc)
 	 * @see io.devyse.scheduler.model.Version#isSuccess()
@@ -65,21 +49,13 @@ public abstract class AbstractVersion implements Version {
 	protected void setComplete(boolean complete) {
 		this.complete = complete;
 	}
-
-	/**
-	 * @param retrievalTime the retrievalTime to set
-	 */
-	protected void setRetrievalTime(OffsetDateTime retrievalTime) {
-		this.retrievalTime = retrievalTime;
-	}
 	
 	/**
 	 * @param retrievalTime
 	 */
-	protected AbstractVersion(OffsetDateTime retrievalTime) {
+	protected AbstractVersion() {
 		super();
 		
-		this.setRetrievalTime(retrievalTime);
 		this.setComplete(false);
 	}
 	

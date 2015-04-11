@@ -49,6 +49,9 @@
 		<db.versionTable>schema_history</db.versionTable>
 		<db.migration.path.0>io.devyse.scheduler.sql.derby</db.migration.path.0>
 		<db.migration.path>${db.migration.path.0}</db.migration.path>
+		
+		<db.pojo.transform>PASCAL</db.pojo.transform>
+		<db.pojo.expression>Jooq_$0</db.pojo.expression>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -607,14 +610,49 @@
 						<strategy>
 							<matchers>
 								<tables>
+									<!-- for all tables, ensure the POJO is named appropriately -->
+									<table>
+										<pojoClass>
+											<transform>${db.pojo.transform}</transform>
+											<expression>${db.pojo.expression}</expression>
+										</pojoClass>
+									</table>
 									<table>
 										<expression>UNIVERSITY</expression>
-										<pojoClass>
-											<transform>PASCAL</transform>
-											<expression>Jooq_$0</expression>
-										</pojoClass>
 										<pojoExtends>io.devyse.scheduler.model.AbstractUniversity</pojoExtends>
 									</table>
+									<table>
+										<expression>VERSION</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractVersion</pojoExtends>>
+									</table>
+									<table>
+										<expression>DATE_TIME_BLOCK</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractDateTimeBlock</pojoExtends>
+									</table>
+									<table>
+										<expression>TERM</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractTerm</pojoExtends>
+									</table>
+									<!-- TODO term_data_set -->
+									<table>
+										<expression>SECTION</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractSection</pojoExtends>
+									</table>
+									<table>
+										<expression>MEETING</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractMeeting</pojoExtends>
+									</table>
+									<table>
+										<expression>INSTRUCTOR</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractInstructor</pojoExtends>
+									</table>
+									<table>
+										<expression>MEETING</expression>
+										<pojoExtends>io.devyse.scheduler.model.AbstractMeeting</pojoExtends>
+									</table>
+									<!-- TODO meeting_instructor -->
+									<!-- TODO instructor_rating -->
+									<!-- TODO schedule persistence data model -->
 								</tables>
 							</matchers>
 						</strategy>
