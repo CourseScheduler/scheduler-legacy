@@ -24,9 +24,11 @@
 package io.devyse.scheduler.model.simple;
 
 import java.util.Random;
+import java.util.Set;
 
 import io.devyse.scheduler.model.AbstractMeeting;
 import io.devyse.scheduler.model.DateTimeBlock;
+import io.devyse.scheduler.model.Instructor;
 import io.devyse.scheduler.model.Meeting;
 import io.devyse.scheduler.model.Section;
 import io.devyse.scheduler.model.stub.StubDateTimeBlock;
@@ -43,6 +45,46 @@ import io.devyse.scheduler.model.stub.StubSection;
  */
 public class SimpleMeeting extends AbstractMeeting {
 
+	/**
+	 * The date and time information (start and end time, time zone, date range)
+	 */
+	private DateTimeBlock dateTimeBlock;
+
+	/**
+	 * The parent section (registration unit)
+	 */
+	private Section section;
+	
+	/**
+	 * The campus portion of the meeting location
+	 */
+	private String campus;
+	
+	/**
+	 * The building on campus
+	 */
+	private String building;
+	
+	/**
+	 * The room within the building
+	 */
+	private String room;
+	
+	/**
+	 * A description of the type of meeting
+	 */
+	private String meetingType;
+	
+	/**
+	 * Type of meeting for scheduling purposes
+	 */
+	private String scheduleType;
+	
+	/**
+	 * Instructors which participate in the meeting
+	 */
+	private Set<Instructor> instructors;
+	
 	/**
 	 * Generate a Meeting based on the current state of a Random
 	 *
@@ -74,6 +116,69 @@ public class SimpleMeeting extends AbstractMeeting {
 	 *
 	 */
 	protected SimpleMeeting(Section parent, DateTimeBlock dateTimeBlock) {
-		super(parent, dateTimeBlock);
+		super();
+		this.section = parent;
+		this.dateTimeBlock = dateTimeBlock;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.AbstractMeeting#getDateTimeBlock()
+	 */
+	public DateTimeBlock getDateTimeBlock() {
+		return dateTimeBlock;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.AbstractMeeting#getSection()
+	 */
+	public Section getSection() {
+		return section;
 	}	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getCampus()
+	 */
+	@Override
+	public String getCampus() {
+		return this.campus;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getBuilding()
+	 */
+	@Override
+	public String getBuilding() {
+		return this.building;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getRoom()
+	 */
+	@Override
+	public String getRoom() {
+		return this.room;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getMeetingType()
+	 */
+	@Override
+	public String getMeetingType() {
+		return this.meetingType;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getScheduleType()
+	 */
+	@Override
+	public String getScheduleType() {
+		return this.scheduleType;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getInstructors()
+	 */
+	@Override
+	public Set<Instructor> getInstructors() {
+		return this.instructors;
+	}
 }

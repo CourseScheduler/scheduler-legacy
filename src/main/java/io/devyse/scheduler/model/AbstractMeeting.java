@@ -23,8 +23,6 @@
  */
 package io.devyse.scheduler.model;
 
-import java.util.Set;
-
 /**
  * Provide basic functionality for implementations of
  * the Meeting interface
@@ -34,166 +32,6 @@ import java.util.Set;
  *
  */
 public abstract class AbstractMeeting implements Meeting {
-	
-	/**
-	 * The date and time information (start and end time, time zone, date range)
-	 */
-	private DateTimeBlock dateTimeBlock;
-	
-	/**
-	 * The campus portion of the meeting location
-	 */
-	private String campus;
-	
-	/**
-	 * The building on campus
-	 */
-	private String building;
-	
-	/**
-	 * The room within the building
-	 */
-	private String room;
-	
-	/**
-	 * A description of the type of meeting
-	 */
-	private String meetingType;
-	
-	/**
-	 * Type of meeting for scheduling purposes
-	 */
-	private String scheduleType;
-	
-	/**
-	 * Instructors which participate in the meeting
-	 */
-	private Set<Instructor> instructors;
-	
-	/**
-	 * The parent section (registration unit)
-	 */
-	private Section section;
-	
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getDateTimeBlock()
-	 */
-	@Override
-	public DateTimeBlock getDateTimeBlock() {
-		return this.dateTimeBlock;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getCampus()
-	 */
-	@Override
-	public String getCampus() {
-		return this.campus;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getBuilding()
-	 */
-	@Override
-	public String getBuilding() {
-		return this.building;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getRoom()
-	 */
-	@Override
-	public String getRoom() {
-		return this.room;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getMeetingType()
-	 */
-	@Override
-	public String getMeetingType() {
-		return this.meetingType;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getScheduleType()
-	 */
-	@Override
-	public String getScheduleType() {
-		return this.scheduleType;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getInstructors()
-	 */
-	@Override
-	public Set<Instructor> getInstructors() {
-		return this.instructors;
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getSection()
-	 */
-	@Override
-	public Section getSection() {
-		return this.section;
-	}
-
-	/**
-	 * @param dateTimeBlock the timeBlock to set
-	 */
-	protected void setDateTimeBlock(DateTimeBlock dateTimeBlock) {
-		this.dateTimeBlock = dateTimeBlock;
-	}
-
-	/**
-	 * @param campus the campus to set
-	 */
-	protected void setCampus(String campus) {
-		this.campus = campus;
-	}
-
-	/**
-	 * @param building the building to set
-	 */
-	protected void setBuilding(String building) {
-		this.building = building;
-	}
-
-	/**
-	 * @param room the room to set
-	 */
-	protected void setRoom(String room) {
-		this.room = room;
-	}
-
-	/**
-	 * @param meetingType the meetingType to set
-	 */
-	protected void setMeetingType(String meetingType) {
-		this.meetingType = meetingType;
-	}
-
-	/**
-	 * @param scheduleType the scheduleType to set
-	 */
-	protected void setScheduleType(String scheduleType) {
-		this.scheduleType = scheduleType;
-	}
-
-	/**
-	 * @param instructors the instructors to set
-	 */
-	protected void setInstructors(Set<Instructor> instructors) {
-		this.instructors = instructors;
-	}
-
-	/**
-	 * @param section the section to set
-	 */
-	protected void setSection(Section section) {
-		this.section = section;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -224,13 +62,9 @@ public abstract class AbstractMeeting implements Meeting {
 	 * Create a new AbstractMeeting for the specified Section in the 
 	 * specified DateTimeBlock
 	 *
-	 * @param parent the parent Section to which the Meeting belongs
-	 * @param timeBlock the date and time of the Meeting
+	 * For use by implementation classes only
 	 */
-	protected AbstractMeeting(Section parent, DateTimeBlock timeBlock){
+	protected AbstractMeeting(){
 		super();
-		
-		this.setSection(parent);
-		this.setDateTimeBlock(timeBlock);
 	}
 }
