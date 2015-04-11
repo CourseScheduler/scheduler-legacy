@@ -31,60 +31,14 @@ package io.devyse.scheduler.model;
  *
  */
 public abstract class AbstractInstructor implements Instructor {
-
-	/**
-	 * The instructor's name as presented by the university
-	 */
-	private String name;
-	
-	/**
-	 * The dataset of the Term which contains courses that reference the Instructor
-	 */
-	private TermDataSet termDataSet;
 	
 	/**
 	 * Construct a new abstract instructor using the specified name and term data set
 	 * 
-	 * @param termDataSet the dataset for the term containing the instructor
-	 * @param name the instructor's name
+	 * For use by implementation classes only
 	 */
-	protected AbstractInstructor(TermDataSet termDataSet, String name) {
+	protected AbstractInstructor() {
 		super();
-		
-		this.setName(name);
-		this.setTermDataSet(termDataSet);
-	}
-
-	/**
-	 * Set the instructor name
-	 * 
-	 * @param name the name to set
-	 */
-	protected void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Set the TermDataSet which contains this instructor
-	 * 
-	 * @param termDataSet the termDataSet to set
-	 */
-	protected void setTermDataSet(TermDataSet termDataSet) {
-		this.termDataSet = termDataSet;
-	}
-
-	/**
-	 * @return the instructor's name as formatted by the source university
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @return the termDataSet the data set from the term that contains the instructor
-	 */
-	public TermDataSet getTermDataSet() {
-		return termDataSet;
 	}
 
 	/* (non-Javadoc)
