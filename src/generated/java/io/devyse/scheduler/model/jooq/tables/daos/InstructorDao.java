@@ -60,9 +60,9 @@ public class InstructorDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.mod
 	}
 
 	/**
-	 * Fetch records that have <code>TERM_DATASET_ID IN (values)</code>
+	 * Fetch records that have <code>TERM_DATA_SET_ID IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqInstructor> fetchByTermDatasetId(java.lang.Integer... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.Instructor.INSTRUCTOR.TERM_DATASET_ID, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqInstructor> fetchByTermDataSetId(java.lang.Integer... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.Instructor.INSTRUCTOR.TERM_DATA_SET_ID, values);
 	}
 }

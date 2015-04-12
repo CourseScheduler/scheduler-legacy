@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Section extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq.tables.records.SectionRecord> {
 
-	private static final long serialVersionUID = 790300591;
+	private static final long serialVersionUID = -1386500087;
 
 	/**
 	 * The reference instance of <code>APP.SECTION</code>
@@ -62,9 +62,9 @@ public class Section extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.j
 	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, java.lang.String> SECTION_NUMBER = createField("SECTION_NUMBER", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
 
 	/**
-	 * The column <code>APP.SECTION.TERM_DATASET_ID</code>.
+	 * The column <code>APP.SECTION.TERM_DATA_SET_ID</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, java.lang.Integer> TERM_DATASET_ID = createField("TERM_DATASET_ID", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, java.lang.Integer> TERM_DATA_SET_ID = createField("TERM_DATA_SET_ID", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>APP.SECTION</code> table reference
@@ -117,7 +117,7 @@ public class Section extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.j
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, ?>>asList(io.devyse.scheduler.model.jooq.Keys.SECTION_FKEY_TERM_DATASET_ID);
+		return java.util.Arrays.<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.SectionRecord, ?>>asList(io.devyse.scheduler.model.jooq.Keys.SECTION_FKEY_TERM_DATA_SET_ID);
 	}
 
 	/**

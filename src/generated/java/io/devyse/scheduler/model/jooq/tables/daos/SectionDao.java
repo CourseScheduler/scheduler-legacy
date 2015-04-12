@@ -88,9 +88,9 @@ public class SectionDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.model.
 	}
 
 	/**
-	 * Fetch records that have <code>TERM_DATASET_ID IN (values)</code>
+	 * Fetch records that have <code>TERM_DATA_SET_ID IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqSection> fetchByTermDatasetId(java.lang.Integer... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.Section.SECTION.TERM_DATASET_ID, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqSection> fetchByTermDataSetId(java.lang.Integer... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.Section.SECTION.TERM_DATA_SET_ID, values);
 	}
 }

@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord> implements org.jooq.Record3<java.lang.Integer, java.lang.String, java.lang.Integer> {
 
-	private static final long serialVersionUID = -17661288;
+	private static final long serialVersionUID = -1725233653;
 
 	/**
 	 * Setter for <code>APP.INSTRUCTOR.ID</code>.
@@ -47,16 +47,16 @@ public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devys
 	}
 
 	/**
-	 * Setter for <code>APP.INSTRUCTOR.TERM_DATASET_ID</code>.
+	 * Setter for <code>APP.INSTRUCTOR.TERM_DATA_SET_ID</code>.
 	 */
-	public void setTermDatasetId(java.lang.Integer value) {
+	public void setTermDataSetId(java.lang.Integer value) {
 		setValue(2, value);
 	}
 
 	/**
-	 * Getter for <code>APP.INSTRUCTOR.TERM_DATASET_ID</code>.
+	 * Getter for <code>APP.INSTRUCTOR.TERM_DATA_SET_ID</code>.
 	 */
-	public java.lang.Integer getTermDatasetId() {
+	public java.lang.Integer getTermDataSetId() {
 		return (java.lang.Integer) getValue(2);
 	}
 
@@ -113,7 +113,7 @@ public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devys
 	 */
 	@Override
 	public org.jooq.Field<java.lang.Integer> field3() {
-		return io.devyse.scheduler.model.jooq.tables.Instructor.INSTRUCTOR.TERM_DATASET_ID;
+		return io.devyse.scheduler.model.jooq.tables.Instructor.INSTRUCTOR.TERM_DATA_SET_ID;
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devys
 	 */
 	@Override
 	public java.lang.Integer value3() {
-		return getTermDatasetId();
+		return getTermDataSetId();
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devys
 	 */
 	@Override
 	public InstructorRecord value3(java.lang.Integer value) {
-		setTermDatasetId(value);
+		setTermDataSetId(value);
 		return this;
 	}
 
@@ -189,11 +189,11 @@ public class InstructorRecord extends org.jooq.impl.UpdatableRecordImpl<io.devys
 	/**
 	 * Create a detached, initialised InstructorRecord
 	 */
-	public InstructorRecord(java.lang.Integer id, java.lang.String name, java.lang.Integer termDatasetId) {
+	public InstructorRecord(java.lang.Integer id, java.lang.String name, java.lang.Integer termDataSetId) {
 		super(io.devyse.scheduler.model.jooq.tables.Instructor.INSTRUCTOR);
 
 		setValue(0, id);
 		setValue(1, name);
-		setValue(2, termDatasetId);
+		setValue(2, termDataSetId);
 	}
 }

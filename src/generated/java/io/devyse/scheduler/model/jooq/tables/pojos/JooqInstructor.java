@@ -16,22 +16,22 @@ package io.devyse.scheduler.model.jooq.tables.pojos;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class JooqInstructor extends io.devyse.scheduler.model.AbstractInstructor implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1110513517;
+	private static final long serialVersionUID = -1837876371;
 
 	private java.lang.Integer id;
 	private java.lang.String  name;
-	private java.lang.Integer termDatasetId;
+	private java.lang.Integer termDataSetId;
 
 	public JooqInstructor() {}
 
 	public JooqInstructor(
 		java.lang.Integer id,
 		java.lang.String  name,
-		java.lang.Integer termDatasetId
+		java.lang.Integer termDataSetId
 	) {
 		this.id = id;
 		this.name = name;
-		this.termDatasetId = termDatasetId;
+		this.termDataSetId = termDataSetId;
 	}
 
 	public java.lang.Integer getId() {
@@ -50,11 +50,11 @@ public class JooqInstructor extends io.devyse.scheduler.model.AbstractInstructor
 		this.name = name;
 	}
 
-	public java.lang.Integer getTermDatasetId() {
-		return this.termDatasetId;
+	public java.lang.Integer getTermDataSetId() {
+		return this.termDataSetId;
 	}
 
-	public void setTermDatasetId(java.lang.Integer termDatasetId) {
-		this.termDatasetId = termDatasetId;
+	public void setTermDataSetId(java.lang.Integer termDataSetId) {
+		this.termDataSetId = termDataSetId;
 	}
 }

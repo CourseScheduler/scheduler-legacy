@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.scheduler.model.jooq.tables.records.SectionRecord> implements org.jooq.Record7<java.lang.Integer, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer> {
 
-	private static final long serialVersionUID = -1438075381;
+	private static final long serialVersionUID = 1861514934;
 
 	/**
 	 * Setter for <code>APP.SECTION.ID</code>.
@@ -35,14 +35,14 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	/**
 	 * Setter for <code>APP.SECTION.CRN</code>.
 	 */
-	public void SetCRN(java.lang.String value) {
+	public void setCRN(java.lang.String value) {
 		setValue(1, value);
 	}
 
 	/**
 	 * Getter for <code>APP.SECTION.CRN</code>.
 	 */
-	public java.lang.String GetCRN() {
+	public java.lang.String getCRN() {
 		return (java.lang.String) getValue(1);
 	}
 
@@ -103,16 +103,16 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	}
 
 	/**
-	 * Setter for <code>APP.SECTION.TERM_DATASET_ID</code>.
+	 * Setter for <code>APP.SECTION.TERM_DATA_SET_ID</code>.
 	 */
-	public void setTermDatasetId(java.lang.Integer value) {
+	public void setTermDataSetId(java.lang.Integer value) {
 		setValue(6, value);
 	}
 
 	/**
-	 * Getter for <code>APP.SECTION.TERM_DATASET_ID</code>.
+	 * Getter for <code>APP.SECTION.TERM_DATA_SET_ID</code>.
 	 */
-	public java.lang.Integer getTermDatasetId() {
+	public java.lang.Integer getTermDataSetId() {
 		return (java.lang.Integer) getValue(6);
 	}
 
@@ -201,7 +201,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public org.jooq.Field<java.lang.Integer> field7() {
-		return io.devyse.scheduler.model.jooq.tables.Section.SECTION.TERM_DATASET_ID;
+		return io.devyse.scheduler.model.jooq.tables.Section.SECTION.TERM_DATA_SET_ID;
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public java.lang.String value2() {
-		return GetCRN();
+		return getCRN();
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public java.lang.Integer value7() {
-		return getTermDatasetId();
+		return getTermDataSetId();
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public SectionRecord value2(java.lang.String value) {
-		SetCRN(value);
+		setCRN(value);
 		return this;
 	}
 
@@ -319,7 +319,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	 */
 	@Override
 	public SectionRecord value7(java.lang.Integer value) {
-		setTermDatasetId(value);
+		setTermDataSetId(value);
 		return this;
 	}
 
@@ -345,7 +345,7 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 	/**
 	 * Create a detached, initialised SectionRecord
 	 */
-	public SectionRecord(java.lang.Integer id, java.lang.String crn, java.lang.String courseNumber, java.lang.String description, java.lang.String name, java.lang.String sectionNumber, java.lang.Integer termDatasetId) {
+	public SectionRecord(java.lang.Integer id, java.lang.String crn, java.lang.String courseNumber, java.lang.String description, java.lang.String name, java.lang.String sectionNumber, java.lang.Integer termDataSetId) {
 		super(io.devyse.scheduler.model.jooq.tables.Section.SECTION);
 
 		setValue(0, id);
@@ -354,6 +354,6 @@ public class SectionRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.s
 		setValue(3, description);
 		setValue(4, name);
 		setValue(5, sectionNumber);
-		setValue(6, termDatasetId);
+		setValue(6, termDataSetId);
 	}
 }

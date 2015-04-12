@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Instructor extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord> {
 
-	private static final long serialVersionUID = -1978688146;
+	private static final long serialVersionUID = -649683216;
 
 	/**
 	 * The reference instance of <code>APP.INSTRUCTOR</code>
@@ -42,9 +42,9 @@ public class Instructor extends org.jooq.impl.TableImpl<io.devyse.scheduler.mode
 	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, java.lang.String> NAME = createField("NAME", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
 
 	/**
-	 * The column <code>APP.INSTRUCTOR.TERM_DATASET_ID</code>.
+	 * The column <code>APP.INSTRUCTOR.TERM_DATA_SET_ID</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, java.lang.Integer> TERM_DATASET_ID = createField("TERM_DATASET_ID", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, java.lang.Integer> TERM_DATA_SET_ID = createField("TERM_DATA_SET_ID", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>APP.INSTRUCTOR</code> table reference
@@ -97,7 +97,7 @@ public class Instructor extends org.jooq.impl.TableImpl<io.devyse.scheduler.mode
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, ?>>asList(io.devyse.scheduler.model.jooq.Keys.INSTRUCTOR_FKEY_TERM_DATASET_ID);
+		return java.util.Arrays.<org.jooq.ForeignKey<io.devyse.scheduler.model.jooq.tables.records.InstructorRecord, ?>>asList(io.devyse.scheduler.model.jooq.Keys.INSTRUCTOR_FKEY_TERM_DATA_SET_ID);
 	}
 
 	/**

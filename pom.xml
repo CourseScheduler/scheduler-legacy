@@ -639,7 +639,7 @@
 									</table>
 									<table>
 										<expression>SECTION</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractSection</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqSection</pojoExtends>
 									</table>
 									<table>
 										<expression>MEETING</expression>
@@ -658,10 +658,10 @@
 									<field>
 										<expression>CRN</expression>
 										<fieldSetter>
-											<expression>SetCRN</expression>
+											<expression>setCRN</expression>
 										</fieldSetter>
 										<fieldGetter>
-											<expression>GetCRN</expression>
+											<expression>getCRN</expression>
 										</fieldGetter>
 									</field>
 								</fields>
