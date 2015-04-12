@@ -643,15 +643,11 @@
 									</table>
 									<table>
 										<expression>MEETING</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractMeeting</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqMeeting</pojoExtends>
 									</table>
 									<table>
 										<expression>INSTRUCTOR</expression>
 										<pojoExtends>io.devyse.scheduler.model.AbstractInstructor</pojoExtends>
-									</table>
-									<table>
-										<expression>MEETING</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractMeeting</pojoExtends>
 									</table>
 									<!-- TODO meeting_instructor -->
 									<!-- TODO instructor_rating -->
