@@ -37,7 +37,7 @@ import io.devyse.scheduler.model.jooq.tables.daos.SectionDao;
 
 /**
  * Jooq specific AbstractMeeting that provides the necessary logic for following the foreign key
- * relationships between the defferent tables in the database.
+ * relationships between the different tables in the database.
  * 
  * @author Mike Reinhold
  * @since 4.13.0
@@ -49,26 +49,28 @@ public abstract class AbstractJooqMeeting extends AbstractMeeting {
 	 * DAO for accessing the section corresponding to this Meeting via 
 	 * the foreign key relation 
 	 */
-	SectionDao sectionDao = new SectionDao();
+	protected SectionDao sectionDao = new SectionDao();
 	
 	/**
 	 * DAO for accessing the date time block corresponding to this Meeting
 	 * via the foreign key relation
 	 */
-	DateTimeBlockDao dateTimeBlockDao = new DateTimeBlockDao();
+	protected DateTimeBlockDao dateTimeBlockDao = new DateTimeBlockDao();
 	
 	/**
 	 * DAOs for accessing the instructors corresponding to this Meeting
 	 * via the MeetingInstructor mapping table
 	 */
-	MeetingInstructorDao meetingInstructorDao = new MeetingInstructorDao();
-	InstructorDao instructorDao = new InstructorDao();
+	protected MeetingInstructorDao meetingInstructorDao = new MeetingInstructorDao();
+	protected InstructorDao instructorDao = new InstructorDao();
 	
 	/**
 	 * Create a new AbstractJooqMeeting for integrating between the JooqMeeting and the 
-	 * data model
+	 * data model.
+	 * 
+	 * For use by implementation classes only.
 	 */
-	public AbstractJooqMeeting() {
+	protected AbstractJooqMeeting() {
 		super();
 	}
 
