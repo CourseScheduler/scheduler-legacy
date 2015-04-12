@@ -634,7 +634,7 @@
 										<pojoExtends>io.devyse.scheduler.model.AbstractTerm</pojoExtends>
 									</table>
 									<table>
-										<expression>TERM_DATA_SET</expression>
+										<expression>TERM_DATASET</expression>
 										<pojoExtends>io.devyse.scheduler.model.AbstractTermDataSet</pojoExtends>
 									</table>
 									<table>
