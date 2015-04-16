@@ -1,5 +1,5 @@
 /**
- * @(#) PreferencesSelector.java
+ * @(#) AbstractJooqInstructor.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,41 +21,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package Scheduler;
+package io.devyse.scheduler.model.jooq;
 
-import io.devyse.scheduler.retrieval.AbstractTermSelector;
-
-import java.util.Collection;
+import io.devyse.scheduler.model.AbstractInstructor;
+import io.devyse.scheduler.model.TermDataSet;
 
 /**
- * Term selector that uses the currentTerm value in the user Preferences
+ * Jooq specific AbstractInstructor that provides the necessary logic for following the foreign key
+ * relationships between the different tables in the database.
  * 
  * @author Mike Reinhold
+ * @since 4.13.0
  *
  */
-public class PreferencesSelector extends AbstractTermSelector {
+public abstract class AbstractJooqInstructor extends AbstractInstructor implements JooqTermDataSetFK{
 
 	/**
-	 * Build a new PreferencesSelector
+	 * Create a new AbstractJooqInstructor
+	 * 
+	 * Only for use by implementation classes
 	 */
-	public PreferencesSelector() {
+	protected AbstractJooqInstructor() {
 		super();
 	}
 
 	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
+	 * @see io.devyse.scheduler.model.Instructor#getTermDataSet()
 	 */
 	@Override
-	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
-		String termString = Main.prefs.getCurrentTerm();
-		
-		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getTermIdentifier().equals(termString)){
-				setTerm(term);		//set and return current preferences term
-				return getTerm();	
-			}
-		}
-		
-		return getTerm();	//return default value
+	public TermDataSet getTermDataSet() {
+		return this.getTermDataSetByFK();
 	}
 }

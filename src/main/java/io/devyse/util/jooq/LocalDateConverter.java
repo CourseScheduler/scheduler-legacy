@@ -1,5 +1,5 @@
 /**
- * @(#) AbstractTermDataSet.java
+ * @(#) LocalDateConverter.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,48 +21,67 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package io.devyse.scheduler.model;
+package io.devyse.util.jooq;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+import org.jooq.Converter;
 
 /**
- * Provide basic functionality for the TermDataSet
+ * Provide a mechanism to automatically convert between LocalTime for the application
+ * data model to String for the database data model.
  * 
  * @author Mike Reinhold
  * @since 4.13.0
  *
  */
-public abstract class AbstractTermDataSet implements TermDataSet {
+public class LocalDateConverter implements Converter<String, LocalDate> {
 
 	/**
-	 * Create a new AbstractTermDataSet
-	 * 
-	 * For use by implementation classes only
+	 * Serial Version UID
 	 */
-	protected AbstractTermDataSet() {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Create a new LocalDateConverter which converts LocalDate instances to 
+	 * strings for persistence in the database
+	 */
+	public LocalDateConverter() {
 		super();
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * @see org.jooq.Converter#from(java.lang.Object)
 	 */
 	@Override
-	public String toString(){
-		return TermDataSet.toString(this);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object other){
-		if(other instanceof TermDataSet){ return this.isEqual((TermDataSet)other); }
-		else { return super.equals(other); }
+	public LocalDate from(String arg0) {
+		if (arg0 == null) return null;
+		return LocalDate.parse(arg0);
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	 * @see org.jooq.Converter#fromType()
 	 */
 	@Override
-	public int hashCode() {
-		return this.getHashCode();
+	public Class<String> fromType() {
+		return String.class;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.jooq.Converter#to(java.lang.Object)
+	 */
+	@Override
+	public String to(LocalDate arg0) {
+		return Objects.toString(arg0);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jooq.Converter#toType()
+	 */
+	@Override
+	public Class<LocalDate> toType() {
+		return LocalDate.class;
+	}
+
 }

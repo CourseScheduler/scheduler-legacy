@@ -43,6 +43,16 @@ import io.devyse.scheduler.model.stub.StubVersion;
 public class SimpleTermDataSet extends AbstractTermDataSet {
 
 	/**
+	 * The Term for which this TermDataSet aggregates course data and tracks version data
+	 */
+	private Term term;
+	
+	/**
+	 * The version information for this dataset
+	 */
+	private Version version;
+	
+	/**
 	 * Generate a new simple TermDataSet using the specified {@link java.util.Random}
 	 * as the source for the TermDataSet generation
 	 * 
@@ -76,6 +86,26 @@ public class SimpleTermDataSet extends AbstractTermDataSet {
 	 * @param version the version information for the dataset
 	 */
 	protected SimpleTermDataSet(Term term, Version version) {
-		super(term, version);
+		super();
+		
+		this.term = term;
+		this.version = version;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.TermDataSet#getTerm()
+	 */
+	@Override
+	public Term getTerm() {
+		return this.term;
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.TermDataSet#getVersion()
+	 */
+	@Override
+	public Version getVersion() {
+		return this.version;
 	}
 }

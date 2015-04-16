@@ -1,5 +1,5 @@
 /**
- * @(#) PreferencesSelector.java
+ * @(#) JooqPojo.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,41 +21,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package Scheduler;
-
-import io.devyse.scheduler.retrieval.AbstractTermSelector;
-
-import java.util.Collection;
+package io.devyse.scheduler.model.jooq;
 
 /**
- * Term selector that uses the currentTerm value in the user Preferences
+ * Provide common methods and implementation for intermediate, abstract Jooq pojo object
  * 
  * @author Mike Reinhold
+ * @since 4.13.0
  *
  */
-public class PreferencesSelector extends AbstractTermSelector {
+public interface JooqPojo {
 
 	/**
-	 * Build a new PreferencesSelector
+	 * @return the primary key value for this POJO
 	 */
-	public PreferencesSelector() {
-		super();
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
-	 */
-	@Override
-	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
-		String termString = Main.prefs.getCurrentTerm();
-		
-		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getTermIdentifier().equals(termString)){
-				setTerm(term);		//set and return current preferences term
-				return getTerm();	
-			}
-		}
-		
-		return getTerm();	//return default value
-	}
+	public Integer getId();
+	
 }

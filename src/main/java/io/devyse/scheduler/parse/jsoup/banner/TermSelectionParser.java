@@ -106,14 +106,14 @@ public class TermSelectionParser extends FormParser {
 				Term found = Terms.newTerm(/*TODO*/null, code, term.text());
 				termOptions.add(found);
 				
-				logger.debug("{}: {}", found.getTermId(), found.getName());
+				logger.debug("{}: {}", found.getTermIdentifier(), found.getName());
 			} else {
 				logger.debug("Ignored empty entry: {}", code);
 			}
 		}
 		
 		//select the term to download using the term selector and add it to the HTTP connection parameters
-		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getTermId()));
+		data.add(HttpConnection.KeyVal.create(termParameter, selector.selectTerm(termOptions).getTermIdentifier()));
 		
 		return data;
 	}

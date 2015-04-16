@@ -53,44 +53,44 @@ public class DateTimeBlockDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.
 	}
 
 	/**
-	 * Fetch records that have <code>DOW IN (values)</code>
+	 * Fetch records that have <code>DAY_OF_WEEK IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByDow(java.lang.Integer... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.DOW, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByDayOfWeek(java.time.DayOfWeek... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.DAY_OF_WEEK, values);
 	}
 
 	/**
-	 * Fetch records that have <code>START_TIME IN (values)</code>
+	 * Fetch records that have <code>LOCAL_START_TIME IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByStartTime(java.sql.Time... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.START_TIME, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByLocalStartTime(java.time.LocalTime... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.LOCAL_START_TIME, values);
 	}
 
 	/**
-	 * Fetch records that have <code>END_TIME IN (values)</code>
+	 * Fetch records that have <code>LOCAL_END_TIME IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByEndTime(java.sql.Time... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.END_TIME, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByLocalEndTime(java.time.LocalTime... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.LOCAL_END_TIME, values);
 	}
 
 	/**
-	 * Fetch records that have <code>TIME_ZONE IN (values)</code>
+	 * Fetch records that have <code>ZONE_OFFSET IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByTimeZone(java.lang.String... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.TIME_ZONE, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByZoneOffset(java.time.ZoneOffset... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.ZONE_OFFSET, values);
 	}
 
 	/**
 	 * Fetch records that have <code>START_DATE IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByStartDate(java.sql.Date... values) {
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByStartDate(java.time.LocalDate... values) {
 		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.START_DATE, values);
 	}
 
 	/**
 	 * Fetch records that have <code>END_DATE IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByEndDate(java.sql.Date... values) {
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqDateTimeBlock> fetchByEndDate(java.time.LocalDate... values) {
 		return fetch(io.devyse.scheduler.model.jooq.tables.DateTimeBlock.DATE_TIME_BLOCK.END_DATE, values);
 	}
 }

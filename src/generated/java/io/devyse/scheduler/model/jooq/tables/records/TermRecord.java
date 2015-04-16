@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables.records;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.scheduler.model.jooq.tables.records.TermRecord> implements org.jooq.Record4<java.lang.Integer, java.lang.Integer, java.lang.String, java.lang.String> {
 
-	private static final long serialVersionUID = -1444068190;
+	private static final long serialVersionUID = 1754515345;
 
 	/**
 	 * Setter for <code>APP.TERM.ID</code>.
@@ -61,16 +61,16 @@ public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.sche
 	}
 
 	/**
-	 * Setter for <code>APP.TERM.INTERNAL_IDENTIFIER</code>.
+	 * Setter for <code>APP.TERM.TERM_IDENTIFIER</code>.
 	 */
-	public void setInternalIdentifier(java.lang.String value) {
+	public void setTermIdentifier(java.lang.String value) {
 		setValue(3, value);
 	}
 
 	/**
-	 * Getter for <code>APP.TERM.INTERNAL_IDENTIFIER</code>.
+	 * Getter for <code>APP.TERM.TERM_IDENTIFIER</code>.
 	 */
-	public java.lang.String getInternalIdentifier() {
+	public java.lang.String getTermIdentifier() {
 		return (java.lang.String) getValue(3);
 	}
 
@@ -135,7 +135,7 @@ public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.sche
 	 */
 	@Override
 	public org.jooq.Field<java.lang.String> field4() {
-		return io.devyse.scheduler.model.jooq.tables.Term.TERM.INTERNAL_IDENTIFIER;
+		return io.devyse.scheduler.model.jooq.tables.Term.TERM.TERM_IDENTIFIER;
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.sche
 	 */
 	@Override
 	public java.lang.String value4() {
-		return getInternalIdentifier();
+		return getTermIdentifier();
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.sche
 	 */
 	@Override
 	public TermRecord value4(java.lang.String value) {
-		setInternalIdentifier(value);
+		setTermIdentifier(value);
 		return this;
 	}
 
@@ -228,12 +228,12 @@ public class TermRecord extends org.jooq.impl.UpdatableRecordImpl<io.devyse.sche
 	/**
 	 * Create a detached, initialised TermRecord
 	 */
-	public TermRecord(java.lang.Integer id, java.lang.Integer universityId, java.lang.String name, java.lang.String internalIdentifier) {
+	public TermRecord(java.lang.Integer id, java.lang.Integer universityId, java.lang.String name, java.lang.String termIdentifier) {
 		super(io.devyse.scheduler.model.jooq.tables.Term.TERM);
 
 		setValue(0, id);
 		setValue(1, universityId);
 		setValue(2, name);
-		setValue(3, internalIdentifier);
+		setValue(3, termIdentifier);
 	}
 }

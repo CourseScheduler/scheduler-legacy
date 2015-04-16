@@ -55,7 +55,7 @@ public class VersionDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.model.
 	/**
 	 * Fetch records that have <code>RETRIEVAL_TIME IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqVersion> fetchByRetrievalTime(java.sql.Timestamp... values) {
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqVersion> fetchByRetrievalTime(java.time.OffsetDateTime... values) {
 		return fetch(io.devyse.scheduler.model.jooq.tables.Version.VERSION.RETRIEVAL_TIME, values);
 	}
 

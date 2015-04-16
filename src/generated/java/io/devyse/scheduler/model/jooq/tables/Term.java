@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Term extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq.tables.records.TermRecord> {
 
-	private static final long serialVersionUID = 1821572570;
+	private static final long serialVersionUID = 120563499;
 
 	/**
 	 * The reference instance of <code>APP.TERM</code>
@@ -47,9 +47,9 @@ public class Term extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq
 	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.TermRecord, java.lang.String> NAME = createField("NAME", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
 
 	/**
-	 * The column <code>APP.TERM.INTERNAL_IDENTIFIER</code>.
+	 * The column <code>APP.TERM.TERM_IDENTIFIER</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.TermRecord, java.lang.String> INTERNAL_IDENTIFIER = createField("INTERNAL_IDENTIFIER", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.TermRecord, java.lang.String> TERM_IDENTIFIER = createField("TERM_IDENTIFIER", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
 
 	/**
 	 * Create a <code>APP.TERM</code> table reference

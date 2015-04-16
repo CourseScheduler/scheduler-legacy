@@ -599,6 +599,75 @@
 							<includes>.*</includes>
 							<excludes></excludes>
 							<inputSchema>${db.schema}</inputSchema>
+							
+							<customTypes>
+							
+								<!-- Custom type for OffsetDateTime -->
+								<customType>
+									<name>OffsetDateTime</name>
+									<type>java.time.OffsetDateTime</type>
+									<converter>io.devyse.util.jooq.OffsetDateTimeConverter</converter>
+								</customType>
+								
+								<!-- Custom type for LocalDate -->
+								<customType>
+									<name>LocalDate</name>
+									<type>java.time.LocalDate</type>
+									<converter>io.devyse.util.jooq.LocalDateConverter</converter>
+								</customType>
+								
+								<!-- Custom type for LocalTime -->
+								<customType>
+									<name>LocalTime</name>
+									<type>java.time.LocalTime</type>
+									<converter>io.devyse.util.jooq.LocalTimeConverter</converter>
+								</customType>
+								
+								<!-- Custom type for DayOfWeek -->
+								<customType>
+									<name>DayOfWeek</name>
+									<type>java.time.DayOfWeek</type>
+									<converter>io.devyse.util.jooq.DayOfWeekConverter</converter>
+								</customType>
+								
+								<!-- Custom type for ZoneOffset -->
+								<customType>
+									<name>ZoneOffset</name>
+									<type>java.time.ZoneOffset</type>
+									<converter>io.devyse.util.jooq.ZoneOffsetConverter</converter>
+								</customType>
+							</customTypes>
+							<forcedTypes>
+								<!-- Field forcing for OffsetDateTime -->
+								<forcedType>
+									<name>OffsetDateTime</name>
+									<expression>.*VERSION\.RETRIEVAL_TIME</expression>
+								</forcedType>
+								
+								<!-- Field forcing for LocalDate -->
+								<forcedType>
+									<name>LocalDate</name>
+									<expression>.*DATE_TIME_BLOCK\.(START|END)_DATE</expression>
+								</forcedType>
+								
+								<!-- Field forcing for LocalTime -->
+								<forcedType>
+									<name>LocalTime</name>
+									<expression>.*DATE_TIME_BLOCK\.LOCAL_(START|END)_TIME</expression>
+								</forcedType>
+								
+								<!-- Field forcing for DayOfWeek -->
+								<forcedType>
+									<name>DayOfWeek</name>
+									<expression>.*DATE_TIME_BLOCK\.DAY_OF_WEEK</expression>
+								</forcedType>
+								
+								<!-- Filed forcing for ZoneOffset -->
+								<forcedType>
+									<name>ZoneOffset</name>
+									<expression>.*DATE_TIME_BLOCK\.ZONE_OFFSET</expression>
+								</forcedType>
+							</forcedTypes>
 						</database>
 						<target>
 							<packageName>io.devyse.scheduler.model.jooq</packageName>
@@ -619,23 +688,23 @@
 									</table>
 									<table>
 										<expression>UNIVERSITY</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractUniversity</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqUniversity</pojoExtends>
 									</table>
 									<table>
 										<expression>VERSION</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractVersion</pojoExtends>>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqVersion</pojoExtends>>
 									</table>
 									<table>
 										<expression>DATE_TIME_BLOCK</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractDateTimeBlock</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqDateTimeBlock</pojoExtends>
 									</table>
 									<table>
 										<expression>TERM</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractTerm</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqTerm</pojoExtends>
 									</table>
 									<table>
-										<expression>TERM_DATASET</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractTermDataSet</pojoExtends>
+										<expression>TERM_DATA_SET</expression>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqTermDataSet</pojoExtends>
 									</table>
 									<table>
 										<expression>SECTION</expression>
@@ -647,7 +716,7 @@
 									</table>
 									<table>
 										<expression>INSTRUCTOR</expression>
-										<pojoExtends>io.devyse.scheduler.model.AbstractInstructor</pojoExtends>
+										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqInstructor</pojoExtends>
 									</table>
 									<!-- TODO meeting_instructor -->
 									<!-- TODO instructor_rating -->

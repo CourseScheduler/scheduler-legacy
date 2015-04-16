@@ -67,9 +67,9 @@ public class TermDao extends org.jooq.impl.DAOImpl<io.devyse.scheduler.model.joo
 	}
 
 	/**
-	 * Fetch records that have <code>INTERNAL_IDENTIFIER IN (values)</code>
+	 * Fetch records that have <code>TERM_IDENTIFIER IN (values)</code>
 	 */
-	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqTerm> fetchByInternalIdentifier(java.lang.String... values) {
-		return fetch(io.devyse.scheduler.model.jooq.tables.Term.TERM.INTERNAL_IDENTIFIER, values);
+	public java.util.List<io.devyse.scheduler.model.jooq.tables.pojos.JooqTerm> fetchByTermIdentifier(java.lang.String... values) {
+		return fetch(io.devyse.scheduler.model.jooq.tables.Term.TERM.TERM_IDENTIFIER, values);
 	}
 }

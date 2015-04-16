@@ -1,5 +1,5 @@
 /**
- * @(#) PreferencesSelector.java
+ * @(#) AbstractJooqTermDataSet.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,41 +21,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package Scheduler;
+package io.devyse.scheduler.model.jooq;
 
-import io.devyse.scheduler.retrieval.AbstractTermSelector;
-
-import java.util.Collection;
+import io.devyse.scheduler.model.AbstractTermDataSet;
+import io.devyse.scheduler.model.Term;
+import io.devyse.scheduler.model.Version;
 
 /**
- * Term selector that uses the currentTerm value in the user Preferences
+ * Jooq specific AbstractTermDataSet that provides the necessary logic for following the foreign key
+ * relationships between the different tables in the database.
  * 
  * @author Mike Reinhold
+ * @since 4.13.0
  *
  */
-public class PreferencesSelector extends AbstractTermSelector {
-
+public abstract class AbstractJooqTermDataSet extends AbstractTermDataSet implements JooqPojo, JooqVersionFK, JooqTermFK {
+		
 	/**
-	 * Build a new PreferencesSelector
+	 * Construct a new AbstractJooqTermDataSet
+	 * 
+	 * For use by implementation classes only
 	 */
-	public PreferencesSelector() {
+	public AbstractJooqTermDataSet() {
 		super();
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.TermDataSet#getTerm()
+	 */
+	@Override
+	public Term getTerm() {
+		return this.getTermByFK();
 	}
 
 	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
+	 * @see io.devyse.scheduler.model.TermDataSet#getVersion()
 	 */
 	@Override
-	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
-		String termString = Main.prefs.getCurrentTerm();
-		
-		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getTermIdentifier().equals(termString)){
-				setTerm(term);		//set and return current preferences term
-				return getTerm();	
-			}
-		}
-		
-		return getTerm();	//return default value
+	public Version getVersion() {
+		return this.getVersionByFK();
 	}
 }

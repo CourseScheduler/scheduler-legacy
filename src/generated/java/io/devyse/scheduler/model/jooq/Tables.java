@@ -52,9 +52,9 @@ public class Tables {
 	public static final io.devyse.scheduler.model.jooq.tables.Term TERM = io.devyse.scheduler.model.jooq.tables.Term.TERM;
 
 	/**
-	 * The table APP.TERM_DATASET
+	 * The table APP.TERM_DATA_SET
 	 */
-	public static final io.devyse.scheduler.model.jooq.tables.TermDataset TERM_DATASET = io.devyse.scheduler.model.jooq.tables.TermDataset.TERM_DATASET;
+	public static final io.devyse.scheduler.model.jooq.tables.TermDataSet TERM_DATA_SET = io.devyse.scheduler.model.jooq.tables.TermDataSet.TERM_DATA_SET;
 
 	/**
 	 * The table APP.UNIVERSITY

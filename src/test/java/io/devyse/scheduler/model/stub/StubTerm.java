@@ -76,7 +76,7 @@ public class StubTerm extends StubClass<Term, StubTerm> implements Term {
 	 * @see io.devyse.scheduler.model.Term#getTermId()
 	 */
 	@Override
-	public String getTermId() {
+	public String getTermIdentifier() {
 		return null;
 	}
 

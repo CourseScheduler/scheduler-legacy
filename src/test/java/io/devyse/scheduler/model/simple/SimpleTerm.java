@@ -118,7 +118,7 @@ public class SimpleTerm extends AbstractTerm {
 	/* (non-Javadoc)
 	 * @see io.devyse.scheduler.model.Term#getTermId()
 	 */
-	public String getTermId() {
+	public String getTermIdentifier() {
 		return internalId;
 	}
 

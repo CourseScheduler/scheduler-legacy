@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DateTimeBlock extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord> {
 
-	private static final long serialVersionUID = 1680118634;
+	private static final long serialVersionUID = -1777524236;
 
 	/**
 	 * The reference instance of <code>APP.DATE_TIME_BLOCK</code>
@@ -37,34 +37,34 @@ public class DateTimeBlock extends org.jooq.impl.TableImpl<io.devyse.scheduler.m
 	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.lang.Integer> ID = createField("ID", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaulted(true), this, "");
 
 	/**
-	 * The column <code>APP.DATE_TIME_BLOCK.DOW</code>.
+	 * The column <code>APP.DATE_TIME_BLOCK.DAY_OF_WEEK</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.lang.Integer> DOW = createField("DOW", org.jooq.impl.SQLDataType.INTEGER.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.DayOfWeek> DAY_OF_WEEK = createField("DAY_OF_WEEK", org.jooq.impl.SQLDataType.INTEGER.defaulted(true), this, "", new io.devyse.util.jooq.DayOfWeekConverter());
 
 	/**
-	 * The column <code>APP.DATE_TIME_BLOCK.START_TIME</code>.
+	 * The column <code>APP.DATE_TIME_BLOCK.LOCAL_START_TIME</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.sql.Time> START_TIME = createField("START_TIME", org.jooq.impl.SQLDataType.TIME.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.LocalTime> LOCAL_START_TIME = createField("LOCAL_START_TIME", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.LocalTimeConverter());
 
 	/**
-	 * The column <code>APP.DATE_TIME_BLOCK.END_TIME</code>.
+	 * The column <code>APP.DATE_TIME_BLOCK.LOCAL_END_TIME</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.sql.Time> END_TIME = createField("END_TIME", org.jooq.impl.SQLDataType.TIME.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.LocalTime> LOCAL_END_TIME = createField("LOCAL_END_TIME", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.LocalTimeConverter());
 
 	/**
-	 * The column <code>APP.DATE_TIME_BLOCK.TIME_ZONE</code>.
+	 * The column <code>APP.DATE_TIME_BLOCK.ZONE_OFFSET</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.lang.String> TIME_ZONE = createField("TIME_ZONE", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.ZoneOffset> ZONE_OFFSET = createField("ZONE_OFFSET", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.ZoneOffsetConverter());
 
 	/**
 	 * The column <code>APP.DATE_TIME_BLOCK.START_DATE</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.sql.Date> START_DATE = createField("START_DATE", org.jooq.impl.SQLDataType.DATE.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.LocalDate> START_DATE = createField("START_DATE", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.LocalDateConverter());
 
 	/**
 	 * The column <code>APP.DATE_TIME_BLOCK.END_DATE</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.sql.Date> END_DATE = createField("END_DATE", org.jooq.impl.SQLDataType.DATE.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.DateTimeBlockRecord, java.time.LocalDate> END_DATE = createField("END_DATE", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.LocalDateConverter());
 
 	/**
 	 * Create a <code>APP.DATE_TIME_BLOCK</code> table reference

@@ -76,7 +76,7 @@ public class Terms {
 		/**
 		 * @return the internal ID of the term
 		 */
-		public String getTermId() {
+		public String getTermIdentifier() {
 			return internalId;
 		}
 

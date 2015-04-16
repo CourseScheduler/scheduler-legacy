@@ -59,7 +59,7 @@ public class JsoupParserTest {
 			TermSelector selector = new StaticSelector("201501");
 			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(startURL).method(Method.GET).execute().parse(), selector);
 			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
-			latest.setTerm(selector.getTerm().getTermId());
+			latest.setTerm(selector.getTerm().getTermIdentifier());
 			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(latest));
 			
 			pool.invoke(courseParse);

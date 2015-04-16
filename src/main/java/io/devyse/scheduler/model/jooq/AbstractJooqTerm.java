@@ -1,5 +1,5 @@
 /**
- * @(#) AbstractJooqSection.java
+ * @(#) AbstractJooqTerm.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -23,33 +23,51 @@
  */
 package io.devyse.scheduler.model.jooq;
 
-import io.devyse.scheduler.model.AbstractSection;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import io.devyse.scheduler.model.AbstractTerm;
 import io.devyse.scheduler.model.TermDataSet;
+import io.devyse.scheduler.model.University;
+import io.devyse.scheduler.model.jooq.tables.daos.TermDataSetDao;
 
 /**
- * Jooq specific AbstractSection that provides the necessary logic for following the foreign key
+ * Jooq specific AbstractTerm that provides the necessary logic for following the foreign key
  * relationships between the different tables in the database.
  * 
  * @author Mike Reinhold
  * @since 4.13.0
  *
  */
-public abstract class AbstractJooqSection extends AbstractSection implements JooqPojo, JooqTermDataSetFK {
+public abstract class AbstractJooqTerm extends AbstractTerm implements JooqPojo, JooqUniversityFK {
 	
 	/**
-	 * Create a new AbstractJooqSection for performing foreign key lookups
+	 * DAO for accessing TermDataSets associated with this Term 
+	 */
+	protected TermDataSetDao termDataSetDao = new TermDataSetDao();
+	
+	/**
+	 * Construct a new AbstractJooqTerm 
 	 * 
 	 * For use by implementation classes only
 	 */
-	protected AbstractJooqSection() {
+	protected AbstractJooqTerm() {
 		super();
+	}
+	
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Term#getUniversity()
+	 */
+	@Override
+	public University getUniversity(){
+		return this.getUniversityByFK();
 	}
 
 	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Section#getTermDataSet()
+	 * @see io.devyse.scheduler.model.Term#getDatasets()
 	 */
 	@Override
-	public TermDataSet getTermDataSet() {
-		return this.getTermDataSetByFK();
+	public Collection<TermDataSet> getDatasets() {		
+		return new ArrayList<TermDataSet>(termDataSetDao.fetchByTermId(this.getId())); 
 	}
 }

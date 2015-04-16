@@ -30,10 +30,8 @@ import io.devyse.scheduler.model.AbstractMeeting;
 import io.devyse.scheduler.model.DateTimeBlock;
 import io.devyse.scheduler.model.Instructor;
 import io.devyse.scheduler.model.Section;
-import io.devyse.scheduler.model.jooq.tables.daos.DateTimeBlockDao;
 import io.devyse.scheduler.model.jooq.tables.daos.InstructorDao;
 import io.devyse.scheduler.model.jooq.tables.daos.MeetingInstructorDao;
-import io.devyse.scheduler.model.jooq.tables.daos.SectionDao;
 
 /**
  * Jooq specific AbstractMeeting that provides the necessary logic for following the foreign key
@@ -43,20 +41,8 @@ import io.devyse.scheduler.model.jooq.tables.daos.SectionDao;
  * @since 4.13.0
  *
  */
-public abstract class AbstractJooqMeeting extends AbstractMeeting {
+public abstract class AbstractJooqMeeting extends AbstractMeeting implements JooqPojo, JooqSectionFK, JooqDateTimeBlockFK {
 
-	/**
-	 * DAO for accessing the section corresponding to this Meeting via 
-	 * the foreign key relation 
-	 */
-	protected SectionDao sectionDao = new SectionDao();
-	
-	/**
-	 * DAO for accessing the date time block corresponding to this Meeting
-	 * via the foreign key relation
-	 */
-	protected DateTimeBlockDao dateTimeBlockDao = new DateTimeBlockDao();
-	
 	/**
 	 * DAOs for accessing the instructors corresponding to this Meeting
 	 * via the MeetingInstructor mapping table
@@ -79,7 +65,15 @@ public abstract class AbstractJooqMeeting extends AbstractMeeting {
 	 */
 	@Override
 	public DateTimeBlock getDateTimeBlock() {
-		return dateTimeBlockDao.fetchOneById(this.getDateTimeBlockId());
+		return this.getDateTimeBlockByFK();
+	}
+
+	/* (non-Javadoc)
+	 * @see io.devyse.scheduler.model.Meeting#getSection()
+	 */
+	@Override
+	public Section getSection() {
+		return this.getSectionByFK();
 	}
 
 	/* (non-Javadoc)
@@ -99,28 +93,4 @@ public abstract class AbstractJooqMeeting extends AbstractMeeting {
 		//get the specific instructors from the list of ids
 		return new HashSet<>(instructorDao.fetchById(instructorIds));
 	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.model.Meeting#getSection()
-	 */
-	@Override
-	public Section getSection() {
-		return sectionDao.fetchOneById(this.getSectionId());
-	}
-
-	/**
-	 * @return the foreign key value that connects this Meeting to a Section
-	 */
-	public abstract Integer getSectionId();
-	
-	/**
-	 * @return the foreign key value that connects this Meeting to a DateTimeBlock
-	 */
-	public abstract Integer getDateTimeBlockId();
-	
-	/**
-	 * @return the primary key value for this Meeting
-	 */
-	public abstract Integer getId();
-
 }

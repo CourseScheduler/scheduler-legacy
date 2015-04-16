@@ -1,5 +1,5 @@
 /**
- * @(#) PreferencesSelector.java
+ * @(#) JooqTermDataSetFK.java
  *
  * This file is part of the Course Scheduler, an open source, cross platform
  * course scheduling tool, configurable for most universities.
@@ -21,41 +21,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package Scheduler;
+package io.devyse.scheduler.model.jooq;
 
-import io.devyse.scheduler.retrieval.AbstractTermSelector;
-
-import java.util.Collection;
+import io.devyse.scheduler.model.TermDataSet;
+import io.devyse.scheduler.model.jooq.tables.daos.TermDataSetDao;
 
 /**
- * Term selector that uses the currentTerm value in the user Preferences
+ * Interface to define standard foreign key access to the TermDataSet table
+ * from any other table that has a foreign key for TermDataSet
  * 
  * @author Mike Reinhold
+ * @since 4.13.0
  *
  */
-public class PreferencesSelector extends AbstractTermSelector {
+public interface JooqTermDataSetFK {
+	
+	/**
+	 * @return the foreign key value for the TermDataSet corresponding to this object
+	 */
+	public Integer getTermDataSetId();
 
 	/**
-	 * Build a new PreferencesSelector
+	 * Find the TermDataSet associated with this Jooq object by accessing the TermDataSet
+	 * table using the foreign key from this Jooq object
+	 * 
+	 * @return the associated TermDataSet instance via foreign key relationship
 	 */
-	public PreferencesSelector() {
-		super();
-	}
-
-	/* (non-Javadoc)
-	 * @see io.devyse.scheduler.retrieval.TermSelector#selectTerm(java.util.Collection)
-	 */
-	@Override
-	public io.devyse.scheduler.model.Term selectTerm(Collection<io.devyse.scheduler.model.Term> options) {
-		String termString = Main.prefs.getCurrentTerm();
-		
-		for(io.devyse.scheduler.model.Term term: options){
-			if(term.getTermIdentifier().equals(termString)){
-				setTerm(term);		//set and return current preferences term
-				return getTerm();	
-			}
-		}
-		
-		return getTerm();	//return default value
+	public default TermDataSet getTermDataSetByFK() {
+		return  new TermDataSetDao().fetchOneById(this.getTermDataSetId());
 	}
 }

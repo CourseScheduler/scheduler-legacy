@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class App extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = -2012661710;
+	private static final long serialVersionUID = 24131647;
 
 	/**
 	 * The reference instance of <code>APP</code>
@@ -46,7 +46,7 @@ public class App extends org.jooq.impl.SchemaImpl {
 			io.devyse.scheduler.model.jooq.tables.MeetingInstructor.MEETING_INSTRUCTOR,
 			io.devyse.scheduler.model.jooq.tables.Section.SECTION,
 			io.devyse.scheduler.model.jooq.tables.Term.TERM,
-			io.devyse.scheduler.model.jooq.tables.TermDataset.TERM_DATASET,
+			io.devyse.scheduler.model.jooq.tables.TermDataSet.TERM_DATA_SET,
 			io.devyse.scheduler.model.jooq.tables.University.UNIVERSITY,
 			io.devyse.scheduler.model.jooq.tables.Version.VERSION,
 			io.devyse.scheduler.model.jooq.tables.SchemaHistory.SCHEMA_HISTORY);

@@ -16,7 +16,7 @@ package io.devyse.scheduler.model.jooq.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Version extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.jooq.tables.records.VersionRecord> {
 
-	private static final long serialVersionUID = 241666192;
+	private static final long serialVersionUID = 880731231;
 
 	/**
 	 * The reference instance of <code>APP.VERSION</code>
@@ -39,7 +39,7 @@ public class Version extends org.jooq.impl.TableImpl<io.devyse.scheduler.model.j
 	/**
 	 * The column <code>APP.VERSION.RETRIEVAL_TIME</code>.
 	 */
-	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.VersionRecord, java.sql.Timestamp> RETRIEVAL_TIME = createField("RETRIEVAL_TIME", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "");
+	public final org.jooq.TableField<io.devyse.scheduler.model.jooq.tables.records.VersionRecord, java.time.OffsetDateTime> RETRIEVAL_TIME = createField("RETRIEVAL_TIME", org.jooq.impl.SQLDataType.VARCHAR.length(255).defaulted(true), this, "", new io.devyse.util.jooq.OffsetDateTimeConverter());
 
 	/**
 	 * The column <code>APP.VERSION.COMPLETE</code>.
