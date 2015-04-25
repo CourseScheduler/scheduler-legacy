@@ -73,6 +73,7 @@ public class LocalTimeConverter implements Converter<String, LocalTime> {
 	 */
 	@Override
 	public String to(LocalTime arg0) {
+		if(arg0 == null) return null;
 		return Objects.toString(arg0);
 	}
 
