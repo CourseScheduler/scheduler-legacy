@@ -76,6 +76,7 @@ public class OffsetDateTimeConverter implements Converter<String, OffsetDateTime
 	 */
 	@Override
 	public String to(OffsetDateTime arg0) {
+		if(arg0 == null) return null;
 		return Objects.toString(arg0, null);
 	}
 
