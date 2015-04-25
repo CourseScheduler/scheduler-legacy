@@ -73,6 +73,7 @@ public class LocalDateConverter implements Converter<String, LocalDate> {
 	 */
 	@Override
 	public String to(LocalDate arg0) {
+		if(arg0 == null) return null;
 		return Objects.toString(arg0);
 	}
 
