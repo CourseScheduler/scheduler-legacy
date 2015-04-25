@@ -77,7 +77,7 @@ public class LocalDateConverterTest {
 	
 	/**
 	 * Validate that the LocalDateConverter properly converts from the String class to the LocalDate 
-	 * calss used for the application data model
+	 * class used for the application data model
 	 * 
 	 * @param source the source String value for the conversion
 	 * @param expected the expected LocalDate value as a result of the LocalDate conversion

@@ -77,7 +77,7 @@ public class LocalTimeConverterTest {
 	
 	/**
 	 * Validate that the LocalTimeConverter properly converts from the String class to the LocalTime 
-	 * calss used for the application data model
+	 * class used for the application data model
 	 * 
 	 * @param source the source String value for the conversion
 	 * @param expected the expected LocalTime value as a result of the LocalTime conversion
