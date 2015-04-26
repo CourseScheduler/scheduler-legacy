@@ -672,11 +672,12 @@
 						</target>
 						<generate>
 							<daos>true</daos>
+							<pojos>true</pojos>
 						</generate>
 						<strategy>
 							<matchers>
 								<tables>
-									<!-- for all tables, ensure the POJO is named appropriately -->
+									<!-- for all tables, ensure the POJOs and DAOs are named appropriately -->
 									<table>
 										<pojoClass>
 											<transform>PASCAL</transform>
@@ -690,34 +691,42 @@
 									<table>
 										<expression>UNIVERSITY</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqUniversity</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.UniversityDao</daoImplements>
 									</table>
 									<table>
 										<expression>VERSION</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqVersion</pojoExtends>>
+										<daoImplements>io.devyse.scheduler.model.VersionDao</daoImplements>
 									</table>
 									<table>
 										<expression>DATE_TIME_BLOCK</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqDateTimeBlock</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.DateTimeBlockDao</daoImplements>
 									</table>
 									<table>
 										<expression>TERM</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqTerm</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.TermDao</daoImplements>
 									</table>
 									<table>
 										<expression>TERM_DATA_SET</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqTermDataSet</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.TermDataSetDao</daoImplements>
 									</table>
 									<table>
 										<expression>SECTION</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqSection</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.SectionDao</daoImplements>
 									</table>
 									<table>
 										<expression>MEETING</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqMeeting</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.MeetingDao</daoImplements>
 									</table>
 									<table>
 										<expression>INSTRUCTOR</expression>
 										<pojoExtends>io.devyse.scheduler.model.jooq.AbstractJooqInstructor</pojoExtends>
+										<daoImplements>io.devyse.scheduler.model.InstructorDao</daoImplements>
 									</table>
 									<!-- TODO meeting_instructor -->
 									<!-- TODO instructor_rating -->
