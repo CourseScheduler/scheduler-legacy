@@ -49,9 +49,6 @@
 		<db.versionTable>schema_history</db.versionTable>
 		<db.migration.path.0>io.devyse.scheduler.sql.derby</db.migration.path.0>
 		<db.migration.path>${db.migration.path.0}</db.migration.path>
-		
-		<db.pojo.transform>PASCAL</db.pojo.transform>
-		<db.pojo.expression>Jooq_$0</db.pojo.expression>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -682,9 +679,13 @@
 									<!-- for all tables, ensure the POJO is named appropriately -->
 									<table>
 										<pojoClass>
-											<transform>${db.pojo.transform}</transform>
-											<expression>${db.pojo.expression}</expression>
+											<transform>PASCAL</transform>
+											<expression>Jooq_$0</expression>
 										</pojoClass>
+										<daoClass>
+											<transform>PASCAL</transform>
+											<expression>Jooq_$0_Dao</expression>
+										</daoClass>
 									</table>
 									<table>
 										<expression>UNIVERSITY</expression>

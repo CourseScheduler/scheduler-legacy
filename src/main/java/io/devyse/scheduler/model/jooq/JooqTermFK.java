@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.Term;
-import io.devyse.scheduler.model.jooq.tables.daos.TermDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqTermDao;
 
 /**
  * Interface to define standard foreign key access to the Term table
@@ -48,6 +48,6 @@ public interface JooqTermFK {
 	 * @return the associated Term instance via foreign key relationship
 	 */
 	public default Term getTermByFK() {
-		return  new TermDao().fetchOneById(this.getTermId());
+		return  new JooqTermDao().fetchOneById(this.getTermId());
 	}
 }

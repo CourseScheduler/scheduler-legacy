@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.Section;
-import io.devyse.scheduler.model.jooq.tables.daos.SectionDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqSectionDao;
 
 /**
  * Interface to define standard foreign key access to the section table
@@ -48,6 +48,6 @@ public interface JooqSectionFK {
 	 * @return the associated Section instance via foreign key relationship
 	 */
 	public default Section getSectionByFK() {
-		return  new SectionDao().fetchOneById(this.getSectionId());
+		return new JooqSectionDao().fetchOneById(this.getSectionId());
 	}
 }

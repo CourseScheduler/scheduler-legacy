@@ -3,7 +3,7 @@ package Scheduler;
 import io.devyse.scheduler.analytics.keen.KeenEngine;
 import io.devyse.scheduler.logging.Logging;
 import io.devyse.scheduler.logging.LoggingUncaughtExceptionHandler;
-import io.devyse.scheduler.model.jooq.tables.daos.UniversityDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqUniversityDao;
 import io.devyse.scheduler.persist.FlywayEngine;
 import io.devyse.scheduler.security.Encryption;
 import io.devyse.scheduler.startup.Parameters;
@@ -150,7 +150,7 @@ public class Main {
 		
 		//TODO remove this testing stuff
 		Configuration config  = new DefaultConfiguration().derive(source);
-		UniversityDao uniDao = new UniversityDao(config);
+		JooqUniversityDao uniDao = new JooqUniversityDao(config);
 		
 		uniDao.fetchByName("Kettering University");
 		

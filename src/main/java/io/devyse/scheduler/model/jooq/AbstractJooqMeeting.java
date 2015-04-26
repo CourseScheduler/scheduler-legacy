@@ -30,8 +30,8 @@ import io.devyse.scheduler.model.AbstractMeeting;
 import io.devyse.scheduler.model.DateTimeBlock;
 import io.devyse.scheduler.model.Instructor;
 import io.devyse.scheduler.model.Section;
-import io.devyse.scheduler.model.jooq.tables.daos.InstructorDao;
-import io.devyse.scheduler.model.jooq.tables.daos.MeetingInstructorDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqInstructorDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqMeetingInstructorDao;
 
 /**
  * Jooq specific AbstractMeeting that provides the necessary logic for following the foreign key
@@ -47,8 +47,8 @@ public abstract class AbstractJooqMeeting extends AbstractMeeting implements Joo
 	 * DAOs for accessing the instructors corresponding to this Meeting
 	 * via the MeetingInstructor mapping table
 	 */
-	protected MeetingInstructorDao meetingInstructorDao = new MeetingInstructorDao();
-	protected InstructorDao instructorDao = new InstructorDao();
+	protected JooqMeetingInstructorDao meetingInstructorDao = new JooqMeetingInstructorDao();
+	protected JooqInstructorDao instructorDao = new JooqInstructorDao();
 	
 	/**
 	 * Create a new AbstractJooqMeeting for integrating between the JooqMeeting and the 

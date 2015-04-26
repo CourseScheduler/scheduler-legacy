@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.University;
-import io.devyse.scheduler.model.jooq.tables.daos.UniversityDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqUniversityDao;
 
 /**
  * Interface to define standard foreign key access to the University table
@@ -48,6 +48,6 @@ public interface JooqUniversityFK {
 	 * @return the associated University instance via foreign key relationship
 	 */
 	public default University getUniversityByFK() {
-		return  new UniversityDao().fetchOneById(this.getUniversityId());
+		return  new JooqUniversityDao().fetchOneById(this.getUniversityId());
 	}
 }

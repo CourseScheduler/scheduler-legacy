@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.Version;
-import io.devyse.scheduler.model.jooq.tables.daos.VersionDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqVersionDao;
 
 /**
  * Interface to define standard foreign key access to the version table
@@ -48,6 +48,6 @@ public interface JooqVersionFK {
 	 * @return the associated Version instance via foreign key relationship
 	 */
 	public default Version getVersionByFK() {
-		return  new VersionDao().fetchOneById(this.getVersionId());
+		return  new JooqVersionDao().fetchOneById(this.getVersionId());
 	}
 }

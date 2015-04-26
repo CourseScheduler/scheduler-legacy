@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.TermDataSet;
-import io.devyse.scheduler.model.jooq.tables.daos.TermDataSetDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqTermDataSetDao;
 
 /**
  * Interface to define standard foreign key access to the TermDataSet table
@@ -48,6 +48,6 @@ public interface JooqTermDataSetFK {
 	 * @return the associated TermDataSet instance via foreign key relationship
 	 */
 	public default TermDataSet getTermDataSetByFK() {
-		return  new TermDataSetDao().fetchOneById(this.getTermDataSetId());
+		return new JooqTermDataSetDao().fetchOneById(this.getTermDataSetId());
 	}
 }

@@ -24,7 +24,7 @@
 package io.devyse.scheduler.model.jooq;
 
 import io.devyse.scheduler.model.DateTimeBlock;
-import io.devyse.scheduler.model.jooq.tables.daos.DateTimeBlockDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqDateTimeBlockDao;
 
 /**
  * Interface to define standard foreign key access to the DateTimeBlock table
@@ -48,6 +48,6 @@ public interface JooqDateTimeBlockFK {
 	 * @return the associated DateTimeBlock instance via foreign key relationship
 	 */
 	public default DateTimeBlock getDateTimeBlockByFK() {
-		return  new DateTimeBlockDao().fetchOneById(this.getDateTimeBlockId());
+		return new JooqDateTimeBlockDao().fetchOneById(this.getDateTimeBlockId());
 	}
 }

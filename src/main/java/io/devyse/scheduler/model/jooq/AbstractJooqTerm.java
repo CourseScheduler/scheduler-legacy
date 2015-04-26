@@ -29,7 +29,7 @@ import java.util.Collection;
 import io.devyse.scheduler.model.AbstractTerm;
 import io.devyse.scheduler.model.TermDataSet;
 import io.devyse.scheduler.model.University;
-import io.devyse.scheduler.model.jooq.tables.daos.TermDataSetDao;
+import io.devyse.scheduler.model.jooq.tables.daos.JooqTermDataSetDao;
 
 /**
  * Jooq specific AbstractTerm that provides the necessary logic for following the foreign key
@@ -44,7 +44,7 @@ public abstract class AbstractJooqTerm extends AbstractTerm implements JooqPojo,
 	/**
 	 * DAO for accessing TermDataSets associated with this Term 
 	 */
-	protected TermDataSetDao termDataSetDao = new TermDataSetDao();
+	protected JooqTermDataSetDao termDataSetDao = new JooqTermDataSetDao();
 	
 	/**
 	 * Construct a new AbstractJooqTerm 
