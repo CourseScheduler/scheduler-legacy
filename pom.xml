@@ -32,7 +32,7 @@
 		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
 		
 		<!-- Jooq modules version -->
-		<jooq.version>3.5.1</jooq.version>
+		<jooq.version>3.6.0</jooq.version>
 		
 		<!-- Derby dependency version -->
 		<derby.version>10.11.1.1</derby.version>
