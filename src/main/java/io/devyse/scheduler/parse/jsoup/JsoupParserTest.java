@@ -55,12 +55,14 @@ public class JsoupParserTest {
 		ForkJoinPool pool = new ForkJoinPool();
 		Database latest = new Database(true);
 		
+		int timeout = 10000;
+		
 		try {
 			TermSelector selector = new StaticSelector("201501");
-			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(startURL).method(Method.GET).execute().parse(), selector);
-			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(startURL).method(Method.GET).execute().parse(), timeout, selector);
+			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect), timeout);
 			latest.setTerm(selector.getTerm().getId());
-			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(latest));
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), timeout, new LegacyDataModelPersister(latest));
 			
 			pool.invoke(courseParse);
 			

@@ -157,12 +157,13 @@ public enum Parser {
 	
 	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
 		ForkJoinPool pool = new ForkJoinPool();
-				
+		int timeout = 60000;  //TODO retrieve from config	
+		
 		try {
 			TermSelector selector = new StaticSelector(term);
 			sync.updateWatch("Checking available terms in Banner", sync.finished++);
 			logger.info("Checking available terms in Banner");
-			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), timeout, selector);
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");
@@ -170,7 +171,7 @@ public enum Parser {
 				return null;
 			}
 			
-			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
+			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect), timeout);
 			items.setTerm(selector.getTerm().getId());
 
 			if(sync.isCanceled()){
@@ -181,7 +182,7 @@ public enum Parser {
 			
 			sync.updateWatch("Querying course data from Banner", sync.finished++);
 			logger.info("Querying course data from Banner");
-			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), timeout, new LegacyDataModelPersister(items));;
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");

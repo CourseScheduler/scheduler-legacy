@@ -73,10 +73,11 @@ public class TermSelectionParser extends FormParser {
 	 * in the TermSelection form.
 	 * 
 	 * @param document the term selection document which contains the available terms
+	 * @param timeout the socket connection timeout to use during term selection
 	 * @param selector the term selection mechanism for deciding among available terms
 	 */
-	public TermSelectionParser(Document document, TermSelector selector) {
-		super(document);
+	public TermSelectionParser(Document document, int timeout, TermSelector selector) {
+		super(document, timeout);
 		
 		this.selector = selector;
 	}

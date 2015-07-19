@@ -60,10 +60,14 @@ public class CourseSearchParser extends AbstractParser<Void> {
 	private CoursePersister persister;
 	
 	/**
-	 * @param document
+	 * Course Search results page parser for retrieving Course Data
+	 * 
+	 * @param document the document containing the course search results
+	 * @param timeout the socket connection timeout for the course search
+	 * @param CoursePersister the course persister callback which saves the data
 	 */
-	public CourseSearchParser(Document document, CoursePersister persister){
-		super(document);
+	public CourseSearchParser(Document document, int timeout, CoursePersister persister){
+		super(document, timeout);
 		
 		this.persister = persister;
 	}
@@ -88,7 +92,7 @@ public class CourseSearchParser extends AbstractParser<Void> {
 			sectionDocument.appendChild(section);
 			sectionDocument.appendChild(sectionDetail);
 			
-			CourseParser courseParser = new CourseParser(sectionDocument);
+			CourseParser courseParser = new CourseParser(sectionDocument, this.getTimeout());
 			courseParsers.add(courseParser);
 			courseParser.fork();
 		}

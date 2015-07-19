@@ -62,14 +62,22 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 	private V result;
 
 	/**
+	 * The connection timeout which should be used for any connections
+	 * created or consumed by this AbstractParser
+	 */
+	private int timeout;
+	
+	/**
 	 * Create a new AbstractParser to parse the specified document.
 	 * 
 	 * @param document the document which will be parsed by the AbstractParser
+	 * @param timeout the connection timeout
 	 */
-	public AbstractParser(Document document){
+	public AbstractParser(Document document, int timeout){
 		super();
 		
 		this.setSource(document);
+		this.setTimeout(timeout);
 	}
 	
 	/* (non-Javadoc)
@@ -100,6 +108,22 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 	 */
 	private void setSource(Document source) {
 		this.source = source;
+	}
+	
+	/**
+	 * Change the socket connection timeout for the form submission
+	 * 
+	 * @param timeout the desired socket timeout for the connection to the form target
+	 */
+	protected void setTimeout(int timeout){
+		this.timeout = timeout;
+	}
+	
+	/**
+	 * @return the current connection timeout in milliseconds
+	 */
+	protected int getTimeout(){
+		return this.timeout;
 	}
 	
 	/* (non-Javadoc)

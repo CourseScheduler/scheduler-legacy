@@ -67,9 +67,10 @@ public abstract class FormParser extends AbstractParser<Document> {
 	 * form fields and response parameters.
 	 * 
 	 * @param document the document which contains the form that will be parsed
+	 * @param timeout the connection timeout in milliseconds which will be applied to the target of the form submission
 	 */
-	public FormParser(Document document) {
-		super(document);
+	public FormParser(Document document, int timeout) {
+		super(document, timeout);
 	}
 	
 	/* (non-Javadoc)
@@ -98,6 +99,7 @@ public abstract class FormParser extends AbstractParser<Document> {
 		
 		//prepare a connection from the form
 		Connection connection = prepareForm(form);
+		connection.timeout(this.getTimeout());
 		
 		//build the form parameters
 		Collection<KeyVal> data = buildFormParameters(form, connection);
