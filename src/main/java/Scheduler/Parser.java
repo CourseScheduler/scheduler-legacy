@@ -127,6 +127,7 @@ public enum Parser {
 	private static Database parseKUCourses(String term, String url, ThreadSynch sync)
 			throws IOException{
 		boolean downloadRatings = Main.prefs.isRateMyProfessorEnabled() && Main.prefs.isRatingsEnabled();
+		int timeout = Main.prefs.getConnectionTimeout();
 		Database items = new Database(downloadRatings);//create new database
 				
 		if (downloadRatings){		//check if using rate my professor ratings
@@ -139,7 +140,7 @@ public enum Parser {
 		}
 		
 		long start = System.currentTimeMillis();
-		jsoupParse(items, sync, url, term);
+		jsoupParse(items, sync, url, term, timeout);
 		long end = System.currentTimeMillis();		
 		
 		if(sync.isCanceled()){
@@ -155,9 +156,8 @@ public enum Parser {
 		return items;									//return database
 	}
 	
-	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
-		ForkJoinPool pool = new ForkJoinPool();
-		int timeout = 60000;  //TODO retrieve from config	
+	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term, int timeout){
+		ForkJoinPool pool = new ForkJoinPool();	
 		
 		try {
 			TermSelector selector = new StaticSelector(term);
