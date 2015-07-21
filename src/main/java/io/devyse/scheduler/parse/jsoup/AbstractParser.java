@@ -136,7 +136,7 @@ public abstract class AbstractParser<V> extends ForkJoinTask<V> {
 			return true;
 		} catch (Exception e) {
 			logger.error("Unable to parse the source document: {}", source, e);
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 	

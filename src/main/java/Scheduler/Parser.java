@@ -57,6 +57,7 @@ import java.util.Scanner;						//import scanner
 import java.util.concurrent.ForkJoinPool;
 
 import javax.swing.JOptionPane;					//Import message pane
+import javax.swing.SwingUtilities;
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
@@ -215,8 +216,21 @@ public enum Parser {
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
 			logger.info("Finished processing courses from Baner");
 			return items;
-		} catch (Exception e) {
+		} catch (final Exception e) {
+			sync.updateWatch("Error retrieving or parsing course dataset from Banner",sync.finished);
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
+			
+			SwingUtilities.invokeLater(new Runnable(){
+				public void  run(){
+					JOptionPane.showMessageDialog(
+						Main.master, 
+						"Please file an issue on GitHub and attach the logs from "+ Main.folderName + ".\n"+e.getMessage(),
+						"Error retrieving or parsing course dataset from Banner",
+						JOptionPane.ERROR_MESSAGE
+					);
+				}
+			});
+			
 			return null;
 		}
 	}
