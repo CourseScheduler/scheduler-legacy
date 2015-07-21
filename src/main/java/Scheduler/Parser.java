@@ -163,7 +163,7 @@ public enum Parser {
 			TermSelector selector = new StaticSelector(term);
 			sync.updateWatch("Checking available terms in Banner", sync.finished++);
 			logger.info("Checking available terms in Banner");
-			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), timeout, selector);
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).timeout(timeout).execute().parse(), timeout, selector);
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");
