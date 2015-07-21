@@ -57,6 +57,7 @@ import java.util.Scanner;						//import scanner
 import java.util.concurrent.ForkJoinPool;
 
 import javax.swing.JOptionPane;					//Import message pane
+import javax.swing.SwingUtilities;
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
@@ -127,6 +128,7 @@ public enum Parser {
 	private static Database parseKUCourses(String term, String url, ThreadSynch sync)
 			throws IOException{
 		boolean downloadRatings = Main.prefs.isRateMyProfessorEnabled() && Main.prefs.isRatingsEnabled();
+		int timeout = Main.prefs.getConnectionTimeout();
 		Database items = new Database(downloadRatings);//create new database
 				
 		if (downloadRatings){		//check if using rate my professor ratings
@@ -139,7 +141,7 @@ public enum Parser {
 		}
 		
 		long start = System.currentTimeMillis();
-		jsoupParse(items, sync, url, term);
+		jsoupParse(items, sync, url, term, timeout);
 		long end = System.currentTimeMillis();		
 		
 		if(sync.isCanceled()){
@@ -155,14 +157,14 @@ public enum Parser {
 		return items;									//return database
 	}
 	
-	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term){
-		ForkJoinPool pool = new ForkJoinPool();
-				
+	private static Database jsoupParse(Database items, ThreadSynch sync, String url, String term, int timeout){
+		ForkJoinPool pool = new ForkJoinPool();	
+		
 		try {
 			TermSelector selector = new StaticSelector(term);
 			sync.updateWatch("Checking available terms in Banner", sync.finished++);
 			logger.info("Checking available terms in Banner");
-			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).execute().parse(), selector);
+			TermSelectionParser termSelect = new TermSelectionParser(Jsoup.connect(url).method(Method.GET).timeout(timeout).execute().parse(), timeout, selector);
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");
@@ -170,7 +172,7 @@ public enum Parser {
 				return null;
 			}
 			
-			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect));
+			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect), timeout);
 			items.setTerm(selector.getTerm().getId());
 
 			if(sync.isCanceled()){
@@ -181,7 +183,7 @@ public enum Parser {
 			
 			sync.updateWatch("Querying course data from Banner", sync.finished++);
 			logger.info("Querying course data from Banner");
-			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), new LegacyDataModelPersister(items));;
+			CourseSearchParser courseParse = new CourseSearchParser(pool.invoke(courseSelect), timeout, new LegacyDataModelPersister(items));;
 
 			if(sync.isCanceled()){
 				logger.info("Download cancelled. Shutting down executor pool");
@@ -214,8 +216,21 @@ public enum Parser {
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
 			logger.info("Finished processing courses from Baner");
 			return items;
-		} catch (Exception e) {
+		} catch (final Exception e) {
+			sync.updateWatch("Error retrieving or parsing course dataset from Banner",sync.finished);
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
+			
+			SwingUtilities.invokeLater(new Runnable(){
+				public void  run(){
+					JOptionPane.showMessageDialog(
+						Main.master, 
+						"Please file an issue on GitHub and attach the logs from "+ Main.folderName + ".\n"+e.getMessage(),
+						"Error retrieving or parsing course dataset from Banner",
+						JOptionPane.ERROR_MESSAGE
+					);
+				}
+			});
+			
 			return null;
 		}
 	}

@@ -66,9 +66,10 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 	 * from the main course search results page
 	 * 
 	 * @param document the course document
+	 * @param timeout the socket connection timeout for any created connections
 	 */
-	public CourseParser(Document document){
-		super(document);
+	public CourseParser(Document document, int timeout){
+		super(document, timeout);
 	}
 
 	/* (non-Javadoc)
@@ -111,8 +112,8 @@ public class CourseParser extends AbstractParser<Map<String, String>>{
 		String catalogEntryURL = catalogEntryElement.absUrl("href");
 		values.put("catalog", catalogEntryURL);
 		
-		parseCourseDetail(Jsoup.connect(sectionDetailURL).get(), values);
-		parseCatalogEntry(Jsoup.connect(catalogEntryURL).get(), values);
+		parseCourseDetail(Jsoup.connect(sectionDetailURL).timeout(this.getTimeout()).get(), values);
+		parseCatalogEntry(Jsoup.connect(catalogEntryURL).timeout(this.getTimeout()).get(), values);
 	
 		Elements meetingHeaderElements = document.select("table.datadisplaytable:has(caption:containsOwn(Scheduled Meeting Times)) th.ddheader");
 		Elements meetingRowElements = document.select("table.datadisplaytable:has(caption:containsOwn(Scheduled Meeting Times)) tr:has(td.dddefault)");

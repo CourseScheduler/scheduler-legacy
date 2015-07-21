@@ -7,18 +7,20 @@
 	<!-- Default configuration properties -->
 	<property name="DEFAULT_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
 
-	
-	<!-- Standard out console appender -->
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+	<!-- Application directory log file appender -->
+	<appender name="STDLOG" class="ch.qos.logback.core.FileAppender">
+		<append>false</append>
 		<encoder>
 			<pattern>${DEFAULT_PATTERN}</pattern>
 		</encoder>
+		<file>${user.home}/Scheduler/Logs/scheduler.log</file>
 	</appender>
 	
-
+	
 	<!-- Root logger -->
 	<root level="warn">
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="STDLOG" />
 	</root>
 
 	<!-- Keen IO SDK -->
@@ -38,7 +40,7 @@
 	<logger name="io.devyse" level="info"/>
 
 
-	<!-- ContextListener that ensures JUL logging is as efficient as possible by propogating log levels to JUL -->
+	<!-- ContextListener that ensures JUL logging is as efficient as possible by propagating log levels to JUL -->
 	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
 
 	

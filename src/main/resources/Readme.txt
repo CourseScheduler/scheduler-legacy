@@ -1,5 +1,5 @@
 Course Scheduler
-Open Sourcescheduler-legacy-4.12.7-SNAPSHOT/
+Open Source
 
 Source is available on request via email to licensing@coursescheduler.io
 Redistribution in source and binary forms, with or without modification
@@ -19,9 +19,16 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
-4.12.8
-	-Changed project runtime requirement to JRE8
+4.12.9
+	-Fixes issue #32, bug preventing course download due to high latency server responses (>30 seconds) by adding a socket connection timeout configuration
+	-Added UI option for configuring the socket timeout
+	-Increased default timeout from JRE default of 3s to 45s per statistical testing against jweb.kettering.edu
+	-Added better error transparency during course data retrieval tto better allow for the user to identify the problem
+	-Changed from console logging to a single, non-rolling, overwritten log file for better error reporting and ease of use   
 	
+4.12.8
+	-Fixes issue #29, bug preventing download of course data for Summer 2015 due to invalid credit value check
+
 4.12.7
 	-Update dependencies
 	-Build process improvement

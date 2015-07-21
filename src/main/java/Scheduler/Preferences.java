@@ -45,6 +45,10 @@ import java.util.UUID;
  * 
  * @see Serializable
 ********************************************************/
+/**
+ * @author mreinhold
+ *
+ */
 public class Preferences implements Serializable {
 	
 	
@@ -92,6 +96,9 @@ public class Preferences implements Serializable {
 	private boolean analyticsOptOut;			//opt out flag for analytics
 	
 	private int policyVersion;					//policy version accepted
+	
+	private int connectionTimeout = 45000;		//socket connection timeout, default is 45000
+
 
 	/*********************************************************
 	 * (Constructor)
@@ -711,5 +718,19 @@ public class Preferences implements Serializable {
 	 */
 	public void setPolicyVersion(int policyVersion) {
 		this.policyVersion = policyVersion;
+	}
+
+	/**
+	 * @return the connection timeout
+	 */
+	public int getConnectionTimeout() {
+		return connectionTimeout;
+	}
+
+	/**
+	 * @param connectionTimeout the connection timeout to set
+	 */
+	public void setConnectionTimeout(int connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
 	}
 }

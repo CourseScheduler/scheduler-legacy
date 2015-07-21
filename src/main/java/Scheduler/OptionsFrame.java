@@ -61,6 +61,8 @@ import javax.swing.JOptionPane;					//used for pop-up error messages
 import javax.swing.text.NumberFormatter;		//used for number filtering
 
 import java.text.DecimalFormat;					//used for number filtering
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;						//used to parse strings
@@ -119,7 +121,8 @@ public class OptionsFrame extends JFrame {
 	protected JTextField newCampus;			//to input new on campus course download url
 	protected JTextField newDist;			//to input new distance course download url
 	protected JCheckBox analyticsOptOut;	//to option out of the analytics reporting
-	
+	protected JLabel connectionTimeoutLabel;//label for the connection timeout text field 
+	protected JTextField connectionTimeout; //for configuration of the socket connection timeout
 	
 	/*********************************************************
 	 * The following are the protected fields for the button portion
@@ -250,6 +253,13 @@ public class OptionsFrame extends JFrame {
 		analyticsOptOut.addActionListener(chkBox);
 		analyticsOptOut.setMnemonic('a');
 		analyticsOptOut.setToolTipText("Do not perform anonymous data collection");
+
+		connectionTimeout = new JFormattedTextField(NumberFormat.getIntegerInstance()); 
+		connectionTimeout.setToolTipText("The amount of time in milliseconds the network socket should be allowed to stay open while waiting for a connection or read response.");
+		connectionTimeout.setVisible(true);
+		connectionTimeoutLabel = new JLabel("Socket connection timeout (ms) for slow servers");
+		connectionTimeoutLabel.setDisplayedMnemonic('S');
+		connectionTimeoutLabel.setLabelFor(connectionTimeout);
 		
 		newURL = new JTextField(20);			//create the text field with min size
 		newSID = new JTextField(20);			//create the text field with min size
@@ -307,6 +317,13 @@ public class OptionsFrame extends JFrame {
 			)
 			.addGroup(generalTabLayout.createSequentialGroup()
 				.addGap(2 * horizSpace)
+				.addComponent(connectionTimeoutLabel)
+				.addGap(horizSpace)
+				.addComponent(connectionTimeout)
+				.addGap(2 * horizSpace)
+			)
+			.addGroup(generalTabLayout.createSequentialGroup()
+				.addGap(2 * horizSpace)
 				.addComponent(analyticsOptOut)
 				.addGap(2*horizSpace)
 			)
@@ -346,6 +363,12 @@ public class OptionsFrame extends JFrame {
 			.addGroup(generalTabLayout.createParallelGroup()//add a row of items
 				.addComponent(overrideURL)//add the override url check box
 				.addComponent(newURL)//add the url input field
+			)
+			.addGap(horizSpace)
+			.addGroup(generalTabLayout.createParallelGroup()
+				.addComponent(connectionTimeoutLabel)
+				.addComponent(connectionTimeout)
+					
 			)
 			.addGap(2 * horizSpace)
 			.addComponent(analyticsOptOut)
@@ -434,6 +457,8 @@ public class OptionsFrame extends JFrame {
 		overrideSID.setSelected(prefs.isOverRideSID());//set the checkbox value
 		newSID.setText(prefs.getSID());			//set the sid text
 		newSID.setEnabled(prefs.isOverRideSID());//set if the sid field is enabled
+		
+		connectionTimeout.setText(NumberFormat.getIntegerInstance().format(prefs.getConnectionTimeout()));
 		
 		enableCampusGrad.setSelected(prefs.isDownloadGrad());//set if on campus grad courses are downloaded
 		enableDistGrad.setSelected(prefs.isDownloadGradDist());//set if off campus grad courses are downloaded
@@ -809,6 +834,7 @@ public class OptionsFrame extends JFrame {
 		public void actionPerformed(ActionEvent event){
 			Object source = event.getSource();	//get the source of teh event
 			boolean updateRMP = false;	//boolean for downloading rmp
+			Number timeout;
 			
 			if(source.equals(apply)){			//check if the source is the apply button
 				Preferences prefs = Main.prefs;	//get the main form preferences
@@ -817,6 +843,13 @@ public class OptionsFrame extends JFrame {
 				double max = 0;					//create and initialize a double for the max gap
 				boolean cont = true;			//create and initialise a boolean for error checking
 				Period preferred = new Period();//create a new preferred period
+				
+				
+				try {
+					timeout = NumberFormat.getIntegerInstance().parse(connectionTimeout.getText());
+				} catch (ParseException e) {
+					timeout = 45000;
+				}
 				
 				if (enableRatings.isSelected()){
 					try{							//try to catch exceptions
@@ -936,6 +969,8 @@ public class OptionsFrame extends JFrame {
 					prefs.setDownloadUGrad(enableUGrad.isSelected());//set the download undergrad
 					prefs.setOverRideURL(overrideURL.isSelected());//set the url override
 					prefs.setURL(newURL.getText());	//set the url override value
+					
+					prefs.setConnectionTimeout(timeout.intValue());
 					
 					prefs.setOverRideSID(overrideSID.isSelected());//set the sid override
 					prefs.setSID(newSID.getText());	//set the sid override value

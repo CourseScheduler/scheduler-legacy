@@ -61,9 +61,12 @@ public class CourseSelectionParser extends FormParser {
 	/**
 	 * Create a new CourseSelectionParser based on the specified document,
 	 * which should contain a form from Banner for selecting course data.
+	 * 
+	 * @param document the document from which to parse course selections
+	 * @param timeout the socket connection timeout which should be used 
 	 */
-	public CourseSelectionParser(Document document) {
-		super(document);
+	public CourseSelectionParser(Document document, int timeout) {
+		super(document, timeout);
 	}
 
 	/* (non-Javadoc)
