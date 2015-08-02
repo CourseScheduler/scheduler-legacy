@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.devyse.scheduler-legacy</groupId>
 	<artifactId>scheduler-legacy</artifactId>
-	<version>4.12.9</version>
+	<version>4.12.9-SNAPSHOT</version>
 	<name>Kettering Course Scheduler</name>
 	<url>http://coursescheduler.io</url>
 	<description>Kettering Course Scheduler is an operating system independent schedule designer for Kettering University. Courses are selected from a list of available courses based on the registration term and possible schedules are generated.</description>
@@ -26,8 +26,17 @@
 		<!-- Runnable JAR and JNLP Main Class -->
 		<Scheduler.mainClass>Scheduler.Main</Scheduler.mainClass>
 		<!-- JNLP root codebase -->
-		<Scheduler.jnlp.server.base>http://deploy.coursescheduler.io</Scheduler.jnlp.server.base>
-		<Scheduler.jnlp.path></Scheduler.jnlp.path>
+		<Scheduler.s3.bucket>deploy.coursescheduler.io</Scheduler.s3.bucket>
+		<Scheduler.path.release>desktop/release</Scheduler.path.release>
+		<Scheduler.path.snapshot>desktop/snapshot</Scheduler.path.snapshot>
+		<Scheduler.s3.bucket.release>${Scheduler.s3.bucket}/${Scheduler.path.release}</Scheduler.s3.bucket.release>
+		<Scheduler.s3.bucket.snapshot>${Scheduler.s3.bucket}/${Scheduler.path.snapshot}</Scheduler.s3.bucket.snapshot>
+		<Scheduler.jnlp.server.base>http://${Scheduler.s3.bucket}</Scheduler.jnlp.server.base>
+		<Scheduler.jnlp.branch></Scheduler.jnlp.branch>
+
+		<!-- Configuration locations -->
+		<Scheduler.config.production>config/production</Scheduler.config.production>
+		<Scheduler.config.development>config/development</Scheduler.config.development>
 
 		<!-- private resource location -->
 		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
@@ -43,6 +52,18 @@
 		<url>https://github.com/CourseScheduler/scheduler-legacy/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
+	<distributionManagement>
+	    <repository>
+	      	<id>aws-release</id>
+	      	<name>AWS Release Repository</name>
+	      	<url>s3://${Scheduler.s3.bucket.release}</url>
+	    </repository>
+	    <snapshotRepository>
+	      	<id>aws-snapshot</id>
+	      	<name>AWS Snapshot Repository</name>
+	    	<url>s3://${Scheduler.s3.bucket.snapshot}</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>javax.jnlp</groupId>
@@ -133,7 +154,7 @@
 				</property>
 			</activation>
 			<properties>
-				<Scheduler.jnlp.path>/${GIT_BRANCH}</Scheduler.jnlp.path>
+				<Scheduler.jnlp.branch>-${GIT_BRANCH}</Scheduler.jnlp.branch>
 			</properties>
 		</profile>
 		<profile>
@@ -345,6 +366,14 @@
 			</plugins>
 		</pluginManagement>
 
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build</groupId>
+				<artifactId>aws-maven</artifactId>
+				<version>5.0.0.RELEASE</version>
+			</extension>
+		</extensions>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -379,10 +408,10 @@
 				</executions>
 				<configuration>
 					<templateFileName>template.jnlp</templateFileName>
-					<mavenStyleResourceLinks>false</mavenStyleResourceLinks>
+					<mavenStyleResourceLinks>true</mavenStyleResourceLinks>
 					<attach>true</attach>
 					<generateJavaFxJnlp>false</generateJavaFxJnlp>
-					<targetFileName>Scheduler.jnlp</targetFileName>
+					<targetFileName>Scheduler${Scheduler.jnlp.branch}.jnlp</targetFileName>
 
 					<codebase>${Scheduler.jnlp.codebase}</codebase>
 					<source>${maven.compiler.source}</source>
@@ -450,11 +479,11 @@
 							<source>
 								// Adjust properties based on whether SNAPSHOT or release build
 								if(project.properties['rawVersion'].endsWith("SNAPSHOT")){
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}/snapshot${Scheduler.jnlp.path}";
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/config/development";
+									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}/${Scheduler.path.snapshot}";
+									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
 								} else {
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}/release/${project.version}";
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/config/production";
+									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}/${Scheduler.path.release}";
+									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
 								}
 							</source>
 						</configuration>
