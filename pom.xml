@@ -32,7 +32,8 @@
 		<Scheduler.jnlp.server.protocol>http://</Scheduler.jnlp.server.protocol>
 		<Scheduler.jnlp.branch></Scheduler.jnlp.branch>
 		<Scheduler.deploy.target.type>zip</Scheduler.deploy.target.type>
-		<Scheduler.deploy.target>${project.artifactId}-${project.version}-deploy</Scheduler.deploy.target>
+		<Scheduler.deploy.name>${project.artifactId}-${project.version}</Scheduler.deploy.name>
+		<Scheduler.deploy.target>${Scheduler.deploy.name}-deploy</Scheduler.deploy.target>
 		<Scheduler.deploy.file>${Scheduler.deploy.target}.${Scheduler.deploy.target.type}</Scheduler.deploy.file>
 
 		<!-- Configuration locations -->
@@ -546,7 +547,7 @@
 							<goal>filter-sources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>target/</outputDirectory>
+							<outputDirectory>target/generated-sources/sh</outputDirectory>
 							<sourceDirectory>src/assembly/sh/</sourceDirectory>
 						</configuration>
 					</execution>
