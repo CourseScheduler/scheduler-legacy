@@ -363,6 +363,25 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.gmavenplus
+										</groupId>
+										<artifactId>
+											gmavenplus-plugin
+										</artifactId>
+										<versionRange>
+											[1.5,)
+										</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -472,7 +491,7 @@
 							<scripts>
 								<script><![CDATA[
 									// Adjust properties based on whether SNAPSHOT or release build
-									if("${project.version}.endsWith("SNAPSHOT")){
+									if("${project.version}".endsWith("SNAPSHOT")){
 										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${Scheduler.jnlp.branch}";
 										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
