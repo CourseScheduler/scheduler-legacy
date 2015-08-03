@@ -189,6 +189,13 @@
 	</profiles>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/assembly/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	
 		<pluginManagement>
 			<plugins>
 				<plugin>
