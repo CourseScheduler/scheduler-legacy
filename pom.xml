@@ -140,7 +140,8 @@
 				</property>
 			</activation>
 			<properties>
-				<Scheduler.jnlp.branch>-${GIT_BRANCH}</Scheduler.jnlp.branch>
+				<Scheduler.jnlp.branch>${GIT_BRANCH}</Scheduler.jnlp.branch>
+				<Scheduler.jnlp.qualifier>-${GIT_BRANCH}</Scheduler.jnlp.qualifier>
 			</properties>
 		</profile>
 		<profile>
@@ -314,9 +315,19 @@
 					<version>1.3.1</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.groovy.maven</groupId>
-					<artifactId>gmaven-plugin</artifactId>
-					<version>1.0</version>
+			        <groupId>org.codehaus.gmavenplus</groupId>
+			        <artifactId>gmavenplus-plugin</artifactId>
+					<version>1.5</version>
+					
+				    <dependencies>
+				    	<dependency>
+				        	<groupId>org.codehaus.groovy</groupId>
+							<artifactId>groovy-all</artifactId>
+							<!-- any version of Groovy \>= 1.5.0 should work here -->
+							<version>2.4.4</version>
+							<scope>runtime</scope>
+				        </dependency>
+				      </dependencies>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
@@ -396,7 +407,7 @@
 					<mavenStyleResourceLinks>false</mavenStyleResourceLinks>
 					<attach>true</attach>
 					<generateJavaFxJnlp>false</generateJavaFxJnlp>
-					<targetFileName>Scheduler${Scheduler.jnlp.branch}.jnlp</targetFileName>
+					<targetFileName>Scheduler${Scheduler.jnlp.qualifier}.jnlp</targetFileName>
 
 					<codebase>${Scheduler.jnlp.codebase}</codebase>
 					<source>${maven.compiler.source}</source>
@@ -448,8 +459,8 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.groovy.maven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
+		        <groupId>org.codehaus.gmavenplus</groupId>
+		        <artifactId>gmavenplus-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>update-properties</id>
@@ -458,21 +469,20 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<properties>
-								<rawVersion>${project.version}</rawVersion>
-							</properties>
-							<source>
-								// Adjust properties based on whether SNAPSHOT or release build
-								if(project.properties['rawVersion'].endsWith("SNAPSHOT")){
-									project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}${Scheduler.jnlp.branch}";
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
-								} else {
-									project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}";
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
-								}
-							</source>
+							<scripts>
+								<script><![CDATA[
+									// Adjust properties based on whether SNAPSHOT or release build
+									if("${project.version}.endsWith("SNAPSHOT")){
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${Scheduler.jnlp.branch}";
+										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
+										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
+									} else {
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}";
+										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
+										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
+									}
+								]]></script>
+							</scripts>
 						</configuration>
 					</execution>
 				</executions>
