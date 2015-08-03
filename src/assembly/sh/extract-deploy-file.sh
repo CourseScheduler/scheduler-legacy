@@ -1,3 +1,3 @@
 #!/bin/sh
 
-unzip ${Scheduler.deploy.file}
+unzip target/${Scheduler.deploy.file}
