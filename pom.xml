@@ -332,6 +332,12 @@
 				        </dependency>
 				      </dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>templating-maven-plugin</artifactId>
+					<version>1.0-alpha-3</version>
+				</plugin>
+								
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -379,6 +385,25 @@
 										</versionRange>
 										<goals>
 											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											templating-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0-alpha-3,)
+										</versionRange>
+										<goals>
+											<goal>filter-sources</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -506,6 +531,23 @@
 									}
 								]]></script>
 							</scripts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>templating-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-sh-src</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>filter-sources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/</outputDirectory>
+							<sourceDirectory>src/assembly/sh/</sourceDirectory>
 						</configuration>
 					</execution>
 				</executions>
