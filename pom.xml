@@ -31,6 +31,9 @@
 		<Scheduler.path.snapshot>desktop/snapshot</Scheduler.path.snapshot>
 		<Scheduler.jnlp.server.protocol>http://</Scheduler.jnlp.server.protocol>
 		<Scheduler.jnlp.branch></Scheduler.jnlp.branch>
+		<Scheduler.deploy.target.type>zip</Scheduler.deploy.target.type>
+		<Scheduler.deploy.target>${project.artifactId}-${project.version}-deploy</Scheduler.deploy.target>
+		<Scheduler.deploy.file>${Scheduler.deploy.target}.${Scheduler.deploy.target.type}</Scheduler.deploy.file>
 
 		<!-- Configuration locations -->
 		<Scheduler.config.production>config/production</Scheduler.config.production>
@@ -470,6 +473,7 @@
 						</goals>
 
 						<configuration>
+							<finalName>${Scheduler.deploy.target.dir}</finalName> <!-- automatically appends the extension -->
 							<descriptors>
 								<descriptor>src/assembly/resources/deploy.xml</descriptor>
 							</descriptors>
