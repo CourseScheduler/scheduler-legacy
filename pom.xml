@@ -434,7 +434,7 @@
 
 						<configuration>
 							<descriptors>
-								<descriptor>src/assembly/deploy.xml</descriptor>
+								<descriptor>src/assembly/resources/deploy.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
