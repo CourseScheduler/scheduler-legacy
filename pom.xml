@@ -465,11 +465,11 @@
 								// Adjust properties based on whether SNAPSHOT or release build
 								if(project.properties['rawVersion'].endsWith("SNAPSHOT")){
 									project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}${Scheduler.jnlp.branch}";
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}${Scheduler.jnlp.s3.bucket}";
+									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
 								} else {
 									project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}";
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}${Scheduler.jnlp.s3.bucket}";
+									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
 								}
 							</source>
