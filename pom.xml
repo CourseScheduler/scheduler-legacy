@@ -558,6 +558,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<executions>
 					<execution>
+						<id>private-resources</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -568,6 +569,21 @@
 								<resource>
 									<directory>${Scheduler.resources.dir}</directory>
 									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>standard-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/resources</directory>
 								</resource>
 							</resources>
 						</configuration>
