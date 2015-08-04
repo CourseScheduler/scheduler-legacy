@@ -36,5 +36,15 @@
 				<include>*.jnlp</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${basedir}/target/classes</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>Privacy.html</include>
+				<include>Readme.txt</include>
+				<include>deploy.properties</include>
+				<include>deploy.xml</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
