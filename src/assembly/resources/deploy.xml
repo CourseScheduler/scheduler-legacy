@@ -46,5 +46,12 @@
 				<include>deploy.xml</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${basedir}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>jenkins.env</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
