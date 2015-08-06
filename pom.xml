@@ -144,7 +144,7 @@
 				</property>
 			</activation>
 			<properties>
-				<Scheduler.jnlp.build>${BUILD_NUMBER}</Scheduler.jnlp.build>
+				<Scheduler.jnlp.build>${BUILD_TAG}</Scheduler.jnlp.build>
 				<Scheduler.jnlp.qualifier>-${BUILD_NUMBER}</Scheduler.jnlp.qualifier>
 			</properties>
 		</profile>
