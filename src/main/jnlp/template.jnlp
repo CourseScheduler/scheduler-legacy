@@ -33,5 +33,8 @@
 		${dependencies}
 	</resources>
 	
-	<application-desc main-class="${mainClass}" />
+	<application-desc 
+		name="${project.name}"
+		main-class="${mainClass}">
+	</application-desc>
 </jnlp>
