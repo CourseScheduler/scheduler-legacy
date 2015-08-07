@@ -193,14 +193,7 @@
 		</profile>
 	</profiles>
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/assembly/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	
+	<build>	
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -424,7 +417,6 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<!-- <index>true</index> -->
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -492,8 +484,7 @@
 				<executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>install</phase> <!-- bind to the install phase - may not happen early enough if in package 
-							phase -->
+						<phase>install</phase> <!-- bind to the install phase - may not happen early enough if in package phase -->
 						<goals>
 							<goal>single</goal>
 						</goals>
@@ -584,6 +575,25 @@
 							<resources>
 								<resource>
 									<directory>${basedir}/src/main/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>deployment-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/config</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/assembly/resources</directory>
+									<filtering>true</filtering>
+									<excludes>
+										<exclude>deploy.xml</exclude>
+									</excludes>
 								</resource>
 							</resources>
 						</configuration>

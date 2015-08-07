@@ -23,6 +23,7 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
+		<!-- Images needed for JNLP deployment -->
 		<fileSet>
 			<directory>${basedir}/target/classes/Images/</directory>
 			<outputDirectory>/</outputDirectory>
@@ -31,6 +32,7 @@
 				<include>banner.gif</include>
 			</includes>
 		</fileSet>
+		<!-- JNLP deployment files -->
 		<fileSet>
 			<directory>${basedir}/target/jnlp/</directory>
 			<outputDirectory>/</outputDirectory>
@@ -38,6 +40,7 @@
 				<include>*.jnlp</include>
 			</includes>
 		</fileSet>
+		<!-- Relevant deployment configuration and information -->
 		<fileSet>
 			<directory>${basedir}/target/classes</directory>
 			<outputDirectory>/</outputDirectory>
@@ -48,6 +51,7 @@
 				<include>deploy.xml</include>
 			</includes>
 		</fileSet>
+		<!-- Build environment -->
 		<fileSet>
 			<directory>${basedir}</directory>
 			<outputDirectory>/</outputDirectory>
