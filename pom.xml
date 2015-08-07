@@ -513,11 +513,11 @@
 								<script><![CDATA[
 									// Adjust properties based on whether SNAPSHOT or release build
 									if("${project.version}".endsWith("SNAPSHOT")){
-										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${project.version}/${Scheduler.jnlp.build}";
 										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
 									} else {
-										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}/${project.version}/${Scheduler.jnlp.build}";
 										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
 									}
