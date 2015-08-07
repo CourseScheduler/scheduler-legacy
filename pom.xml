@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.devyse.scheduler-legacy</groupId>
 	<artifactId>scheduler-legacy</artifactId>
-	<version>4.12.9</version>
+	<version>4.12.9-SNAPSHOT</version>
 	<name>Kettering Course Scheduler</name>
 	<url>http://coursescheduler.io</url>
 	<description>Kettering Course Scheduler is an operating system independent schedule designer for Kettering University. Courses are selected from a list of available courses based on the registration term and possible schedules are generated.</description>
@@ -26,10 +26,25 @@
 		<!-- Runnable JAR and JNLP Main Class -->
 		<Scheduler.mainClass>Scheduler.Main</Scheduler.mainClass>
 		<!-- JNLP root codebase -->
-		<Scheduler.jnlp.server.base>http://coursescheduler.sourceforge.net</Scheduler.jnlp.server.base>
+		<Scheduler.s3.bucket>deploy.coursescheduler.io</Scheduler.s3.bucket>
+		<Scheduler.path.release>desktop/release</Scheduler.path.release>
+		<Scheduler.path.snapshot>desktop/snapshot</Scheduler.path.snapshot>
+		<Scheduler.jnlp.server.protocol>http://</Scheduler.jnlp.server.protocol>
+		<Scheduler.jnlp.build></Scheduler.jnlp.build>
+		<Scheduler.deploy.target.type>zip</Scheduler.deploy.target.type>
+		<Scheduler.deploy.name>${project.artifactId}-${project.version}</Scheduler.deploy.name>
+		<Scheduler.deploy.target>${Scheduler.deploy.name}-deploy</Scheduler.deploy.target>
+		<Scheduler.deploy.file>${Scheduler.deploy.target}.${Scheduler.deploy.target.type}</Scheduler.deploy.file>
+
+		<!-- Configuration locations -->
+		<Scheduler.config.production>config/production</Scheduler.config.production>
+		<Scheduler.config.development>config/development</Scheduler.config.development>
 
 		<!-- private resource location -->
 		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
+		
+		<!-- private keystore resource -->
+		<Scheduler.resources.keystore>${Scheduler.resources.base}/ssl/scheduler.jks</Scheduler.resources.keystore>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -122,7 +137,24 @@
 
 	<profiles>
 		<profile>
-			<id>sign</id>
+			<id>jenkins-build</id>
+			<activation>
+				<property>
+					<name>env.BUILD_TAG</name>
+				</property>
+			</activation>
+			<properties>
+				<Scheduler.jnlp.build>${BUILD_TAG}</Scheduler.jnlp.build>
+				<Scheduler.jnlp.qualifier>-${BUILD_NUMBER}</Scheduler.jnlp.qualifier>
+			</properties>
+		</profile>
+		<profile>
+			<id>jenkins-sign</id>
+			<activation>
+				<file>
+					<exists>${Scheduler.resources.keystore}</exists>
+				</file>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -146,7 +178,7 @@
 
 						<configuration>
 							<archiveDirectory>${project.build.directory}</archiveDirectory>
-							<keystore>${Scheduler.resources.base}/ssl/scheduler.jks</keystore>
+							<keystore>${Scheduler.resources.keystore}</keystore>
 							<alias>coursescheduler</alias>
 							<storepass>{4tXMw/HEX+wH1omHNdWTTipAbgi+1NBtAUj6A//HoIGalRabWjR3mSgeDl5q8B5fFGwql1Q6EB/NQVL/JUJTpDEVGbo7x1wxoMIzeMHqk+IsX7afE8hbuq3DOxDidoP7}</storepass>
 							<keypass>{CeV7SACXJBAHDVMQHVbfeeTG8mwmUgRNaUx0ccF90Iew1FKd8vlCN6g/7fffUUWxfXm/VDPUzObbGgXVzCKGcd2e4SMpa32BpxA7MVkf07tUsRyNs54muAtsPVW1Cwcw}</keypass>
@@ -161,7 +193,7 @@
 		</profile>
 	</profiles>
 
-	<build>
+	<build>	
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -280,10 +312,26 @@
 					<version>1.3.1</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.groovy.maven</groupId>
-					<artifactId>gmaven-plugin</artifactId>
-					<version>1.0</version>
+			        <groupId>org.codehaus.gmavenplus</groupId>
+			        <artifactId>gmavenplus-plugin</artifactId>
+					<version>1.5</version>
+					
+				    <dependencies>
+				    	<dependency>
+				        	<groupId>org.codehaus.groovy</groupId>
+							<artifactId>groovy-all</artifactId>
+							<!-- any version of Groovy \>= 1.5.0 should work here -->
+							<version>2.4.4</version>
+							<scope>runtime</scope>
+				        </dependency>
+				      </dependencies>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>templating-maven-plugin</artifactId>
+					<version>1.0-alpha-3</version>
+				</plugin>
+								
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -318,6 +366,44 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.gmavenplus
+										</groupId>
+										<artifactId>
+											gmavenplus-plugin
+										</artifactId>
+										<versionRange>
+											[1.5,)
+										</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											templating-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0-alpha-3,)
+										</versionRange>
+										<goals>
+											<goal>filter-sources</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -331,7 +417,6 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<!-- <index>true</index> -->
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -362,7 +447,7 @@
 					<mavenStyleResourceLinks>false</mavenStyleResourceLinks>
 					<attach>true</attach>
 					<generateJavaFxJnlp>false</generateJavaFxJnlp>
-					<targetFileName>Scheduler.jnlp</targetFileName>
+					<targetFileName>Scheduler${Scheduler.jnlp.qualifier}.jnlp</targetFileName>
 
 					<codebase>${Scheduler.jnlp.codebase}</codebase>
 					<source>${maven.compiler.source}</source>
@@ -399,23 +484,23 @@
 				<executions>
 					<execution>
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>install</phase> <!-- bind to the install phase - may not happen early enough if in package 
-							phase -->
+						<phase>install</phase> <!-- bind to the install phase - may not happen early enough if in package phase -->
 						<goals>
 							<goal>single</goal>
 						</goals>
 
 						<configuration>
+							<finalName>${Scheduler.deploy.target.dir}</finalName> <!-- automatically appends the extension -->
 							<descriptors>
-								<descriptor>src/assembly/deploy.xml</descriptor>
+								<descriptor>src/assembly/resources/deploy.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.groovy.maven</groupId>
-				<artifactId>gmaven-plugin</artifactId>
+		        <groupId>org.codehaus.gmavenplus</groupId>
+		        <artifactId>gmavenplus-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>update-properties</id>
@@ -424,19 +509,37 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<properties>
-								<rawVersion>${project.version}</rawVersion>
-							</properties>
-							<source>
-								// Adjust properties based on whether SNAPSHOT or release build
-								if(project.properties['rawVersion'].endsWith("SNAPSHOT")){
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}/snapshots";
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/config/development";
-								} else {
-									project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.base}";
-									project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/config/production";
-								}
-							</source>
+							<scripts>
+								<script><![CDATA[
+									// Adjust properties based on whether SNAPSHOT or release build
+									if("${project.version}".endsWith("SNAPSHOT")){
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
+										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
+									} else {
+										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
+										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
+									}
+								]]></script>
+							</scripts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>templating-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-sh-src</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>filter-sources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/sh</outputDirectory>
+							<sourceDirectory>src/assembly/sh/</sourceDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -446,6 +549,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<executions>
 					<execution>
+						<id>private-resources</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -456,6 +560,40 @@
 								<resource>
 									<directory>${Scheduler.resources.dir}</directory>
 									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>standard-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>deployment-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/config</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/assembly/resources</directory>
+									<filtering>true</filtering>
+									<excludes>
+										<exclude>deploy.xml</exclude>
+									</excludes>
 								</resource>
 							</resources>
 						</configuration>

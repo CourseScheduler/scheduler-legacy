@@ -2,7 +2,7 @@
 <jnlp spec="${j2seVersion}" codebase="${codebase}" href="${targetFileName}" version="${appVersion}">
 
 	<information>
-		<title>${project.Name}</title>
+		<title>${project.name}</title>
 		<vendor>${project.Organization.Name}</vendor>
 		<description>${project.Description}</description>
 		<homepage href="${project.Url}" />
@@ -33,5 +33,7 @@
 		${dependencies}
 	</resources>
 	
-	<application-desc main-class="${mainClass}" />
+	<application-desc
+		main-class="${mainClass}">
+	</application-desc>
 </jnlp>
