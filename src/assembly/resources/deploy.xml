@@ -4,9 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 	<id>deploy</id>
 	<formats>
-		<format>zip</format>
+		<format>${Scheduler.deploy.target.type}</format>
 	</formats>
 	<fileSets>
+		<!-- Project output JAR -->
 		<fileSet>
 			<directory>${basedir}/target/</directory>
 			<outputDirectory>/</outputDirectory>
@@ -14,6 +15,7 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
+		<!-- Dependency JARs -->
 		<fileSet>
 			<directory>${basedir}/target/lib/</directory>
 			<outputDirectory>/</outputDirectory>
@@ -21,6 +23,7 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
+		<!-- Images needed for JNLP deployment -->
 		<fileSet>
 			<directory>${basedir}/target/classes/Images/</directory>
 			<outputDirectory>/</outputDirectory>
@@ -29,11 +32,31 @@
 				<include>banner.gif</include>
 			</includes>
 		</fileSet>
+		<!-- JNLP deployment files -->
 		<fileSet>
 			<directory>${basedir}/target/jnlp/</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.jnlp</include>
+			</includes>
+		</fileSet>
+		<!-- Relevant deployment configuration and information -->
+		<fileSet>
+			<directory>${basedir}/target/classes</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>Privacy.html</include>
+				<include>Readme.txt</include>
+				<include>deploy.properties</include>
+				<include>deploy.xml</include>
+			</includes>
+		</fileSet>
+		<!-- Build environment -->
+		<fileSet>
+			<directory>${basedir}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>jenkins.env</include>
 			</includes>
 		</fileSet>
 	</fileSets>
