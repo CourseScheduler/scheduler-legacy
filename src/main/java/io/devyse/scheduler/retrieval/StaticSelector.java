@@ -26,6 +26,7 @@ package io.devyse.scheduler.retrieval;
 import io.devyse.scheduler.model.Term;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 /**
  * Selects from the list of available terms statically based on the provided termId during
@@ -81,7 +82,7 @@ public class StaticSelector extends AbstractTermSelector {
 			}
 		}
 		
-		return getTerm();			//return default term
+		throw new NoSuchElementException("Term " + getTermId() + " is not available for download");
 	}
 
 }

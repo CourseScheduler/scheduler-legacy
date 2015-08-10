@@ -32,7 +32,7 @@ package Scheduler;								//define as member of Scheduler package
 
 
 /********************************************************
- * Import IOException class for handleing the exceptions
+ * Import IOException class for handling the exceptions
  * 		possibly thrown by the input stream
  * Import InputStream class for interfacing with the 
  * 		ClientHttpRequest class
@@ -43,6 +43,7 @@ package Scheduler;								//define as member of Scheduler package
  * Import JOption Pane for gui messages
 *********************************************************/
 import io.devyse.scheduler.analytics.keen.KeenEngine;
+import io.devyse.scheduler.exception.TermNotFoundException;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSearchParser;
 import io.devyse.scheduler.parse.jsoup.banner.CourseSelectionParser;
 import io.devyse.scheduler.parse.jsoup.banner.TermSelectionParser;
@@ -172,7 +173,13 @@ public enum Parser {
 				return null;
 			}
 			
-			CourseSelectionParser courseSelect = new CourseSelectionParser(pool.invoke(termSelect), timeout);
+			CourseSelectionParser courseSelect;
+			try{
+				courseSelect = new CourseSelectionParser(pool.invoke(termSelect), timeout);
+			} catch(RuntimeException e){
+				
+				throw new TermNotFoundException(e.getCause());
+			}
 			items.setTerm(selector.getTerm().getId());
 
 			if(sync.isCanceled()){
@@ -216,6 +223,22 @@ public enum Parser {
 			sync.updateWatch("Finished processing courses from Banner", sync.finished++);
 			logger.info("Finished processing courses from Baner");
 			return items;
+		} catch (final TermNotFoundException e){
+			sync.updateWatch("Unable to find term for download on Banner", sync.finished);
+			logger.error("Unable to find term for download on Baner", e);
+			
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					JOptionPane.showMessageDialog(
+						Main.master,
+						"Unable to find term for download on Banner. Please verify the term is listed in the dynamic course search and submit an issue on GitHub.\n\n" + e.getMessage(),
+						"Term not available on Banner",
+						JOptionPane.ERROR_MESSAGE
+					);
+				}
+			});
+			
+			return null;
 		} catch (final Exception e) {
 			sync.updateWatch("Error retrieving or parsing course dataset from Banner",sync.finished);
 			logger.error("Error retrieving or parsing course dataset from Banner", e);
@@ -224,7 +247,7 @@ public enum Parser {
 				public void  run(){
 					JOptionPane.showMessageDialog(
 						Main.master, 
-						"Please file an issue on GitHub and attach the logs from "+ Main.folderName + ".\n"+e.getMessage(),
+						"Please file an issue on GitHub and attach the logs from "+ Main.folderName + ".\n\n"+e.getMessage(),
 						"Error retrieving or parsing course dataset from Banner",
 						JOptionPane.ERROR_MESSAGE
 					);

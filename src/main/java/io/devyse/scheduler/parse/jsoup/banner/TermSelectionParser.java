@@ -86,7 +86,7 @@ public class TermSelectionParser extends FormParser {
 	 * @see io.devyse.scheduler.parse.jsoup.FormParser#buildFormParameters(org.jsoup.nodes.FormElement, org.jsoup.Connection)
 	 */
 	@Override
-	protected Collection<KeyVal> buildFormParameters(FormElement form, Connection connection){
+	protected Collection<KeyVal> buildFormParameters(FormElement form, Connection connection) throws Exception {
 		Collection<KeyVal> data = new ArrayList<>();
 				
 		//TODO handle other form inputs?

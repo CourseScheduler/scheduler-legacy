@@ -93,7 +93,7 @@ public abstract class FormParser extends AbstractParser<Document> {
 	 * @see io.devyse.scheduler.parse.jsoup.AbstractParser#parse(org.jsoup.nodes.Document)
 	 */
 	@Override
-	protected void parse(Document document) throws IOException {
+	protected void parse(Document document) throws Exception {
 		//parse the form from the document
 		FormElement form = parseForm(document);
 		
@@ -160,8 +160,9 @@ public abstract class FormParser extends AbstractParser<Document> {
 	 * @param form the form element which the parameters should be built from and for
 	 * @param connection the prepared connection for the form
 	 * @return the collection of key-value pairs which are input into the form
+	 * @throws Exception when the form cannot be built properly
 	 */
-	protected abstract Collection<KeyVal> buildFormParameters(FormElement form, Connection connection);
+	protected abstract Collection<KeyVal> buildFormParameters(FormElement form, Connection connection) throws Exception;
 	
 	/**
 	 * Submit the form using the connection previously prepared from the form along
