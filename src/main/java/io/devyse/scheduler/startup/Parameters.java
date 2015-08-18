@@ -57,6 +57,25 @@ public class Parameters {
 	 */
 	@Parameter(names = "-https.protocols", description = "Comma separated list of the enabled HTTPS protocols")
 	private String httpsProtocols = "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello";
+	
+	/**
+	 * Multiple valued parameter specifying cipher suites which should be forcefully enabled
+	 * (to ensure that the cipher suites is available in the Java runtime, even if the JRE
+	 * default enabled cipher suite list does not include it).
+	 * 
+	 * See the {@link SSLParameters#getCipherSuites}
+	 * 
+	 * Value: Varies
+	 */
+	@Parameter(names  = "-ssl.cipherSuite", 
+			description = "Enable one or more cipher suites in addition to the JRE default cipher suites",
+			variableArity = true)
+	private List<String>  cipherSuites;
+	// provide the default list of additional cipher suites
+	{
+		cipherSuites = new ArrayList<String>();
+		cipherSuites.add("SSL_RSA_WITH_RC4_128_MD5");
+	}
 
 	/**
 	 * @return the openFiles the files that should be opened during startup
@@ -70,5 +89,12 @@ public class Parameters {
 	 */
 	public String getHttpsProtocols(){
 		return httpsProtocols;
+	}
+	
+	/**
+	 * @return the cipherSuites that should be forcefully enabled via the default SSLContext SSLParameters
+	 */
+	public String[] getCipherSuites(){
+		return cipherSuites.toArray(new String[cipherSuites.size()]);
 	}
 }
