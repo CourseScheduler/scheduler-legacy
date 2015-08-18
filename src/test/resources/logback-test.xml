@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+	
+	<!-- Allow JMX Management of Logback -->
+	<jmxConfigurator />
+	
+	<!-- Default configuration properties -->
+	<property name="DEFAULT_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+
+
+	<!-- Application directory log file appender -->
+	<appender name="STDLOG" class="ch.qos.logback.core.FileAppender">
+		<append>false</append>
+		<encoder>
+			<pattern>${DEFAULT_PATTERN}</pattern>
+		</encoder>
+		<file>${user.home}/Scheduler/Logs/scheduler.log</file>
+	</appender>
+	
+	<!-- Standard out console appender -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${DEFAULT_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+	
+	<!-- Root logger -->
+	<root level="warn">
+		<appender-ref ref="STDLOG" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+	<!-- Keen IO SDK -->
+	<logger name="io.keen" level="info"/>
+
+	<!-- Oracle & Sun JRE classes -->
+	<logger name="java" level="info"/>
+	<logger name="javax" level="info"/>
+	<logger name="sun" level="info"/>
+	<logger name="sunw" level="info"/>
+	<logger name="com.sun" level="info"/>
+
+	<!-- Legacy Scheduler classes -->
+	<logger name="Scheduler" level="debug"/>
+	
+	<!-- Devyse IO Course Scheduler -->
+	<logger name="io.devyse" level="debug"/>
+
+
+	<!-- ContextListener that ensures JUL logging is as efficient as possible by propagating log levels to JUL -->
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
+
+	
+</configuration>
