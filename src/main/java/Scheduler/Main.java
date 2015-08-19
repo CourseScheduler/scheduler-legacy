@@ -123,7 +123,9 @@ public class Main {
 		
 		//process the command line arguments
 		Parameters parameters = new Parameters();
-		new JCommander(parameters, args);
+		JCommander parser = new JCommander(parameters);
+		parser.setAcceptUnknownOptions(true);
+		parser.parse(args);
 		
 		//disable startup debug logging at this point unless the -debug flag was specified
 		if(!parameters.getDebugEnabled()){
