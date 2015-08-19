@@ -125,6 +125,11 @@ public class Main {
 		Parameters parameters = new Parameters();
 		new JCommander(parameters, args);
 		
+		//disable startup debug logging at this point unless the -debug flag was specified
+		if(!parameters.getDebugEnabled()){
+			Logging.disableStartupDebugLogging();
+		}
+		
 		//make sure that the required SSL/TLS protocols are enabled for use in HTTPS
 		Encryption.configureHttpsProtocols(parameters.getHttpsProtocols());
 		Encryption.configureCipherSuites(parameters.getCipherSuites());

@@ -34,10 +34,10 @@
 	<logger name="com.sun" level="info"/>
 
 	<!-- Legacy Scheduler classes -->
-	<logger name="Scheduler" level="info"/>
+	<logger name="Scheduler" level="debug"/>
 	
 	<!-- Devyse IO Course Scheduler -->
-	<logger name="io.devyse" level="info"/>
+	<logger name="io.devyse" level="debug"/>
 
 
 	<!-- ContextListener that ensures JUL logging is as efficient as possible by propagating log levels to JUL -->
