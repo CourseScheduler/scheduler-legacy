@@ -134,7 +134,8 @@ public class Main {
 		
 		//make sure that the required SSL/TLS protocols are enabled for use in HTTPS
 		Encryption.configureHttpsProtocols(parameters.getHttpsProtocols());
-		Encryption.configureCipherSuites(parameters.getCipherSuites());
+		Encryption.configureCipherSuites(parameters.getAdditionalCipherSuites());
+		Encryption.enableLegacyAlgorithms(parameters.getAdditionalAlgorithms());
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

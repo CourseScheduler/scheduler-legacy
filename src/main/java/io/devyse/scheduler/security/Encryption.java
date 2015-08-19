@@ -24,6 +24,9 @@
 package io.devyse.scheduler.security;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
@@ -53,6 +56,14 @@ public class Encryption {
 	public static final String HTTPS_PROTOCOLS_PROPERTY = "https.protocols";
 	
 	/**
+	 * The Java Security property that controls the TLS algorithms that are
+	 * enabled in the JVM
+	 * 
+	 * {@link Security#getProperty(String)}
+	 */
+	public static final String TLS_DISABLED_ALGORITHMS_PROPERTY = "jdk.tls.disabledAlgorithms";
+	
+	/**
 	 * Configure the enabled HTTPS protocols for controlling
 	 * 
 	 * @param protocols a comma separated list of HTTPS protocols
@@ -61,6 +72,52 @@ public class Encryption {
 		String originalProtocols = System.getProperty(HTTPS_PROTOCOLS_PROPERTY);
 		logger.debug("Updating enabled HTTPS protocols from {} to {}", originalProtocols, protocols);
 		System.setProperty(HTTPS_PROTOCOLS_PROPERTY, protocols);
+	}
+	
+	public static void enableLegacyAlgorithms(String[] algorithms){
+		String original = Security.getProperty(TLS_DISABLED_ALGORITHMS_PROPERTY);
+		logger.debug("Default disabled algorithms in {}: {}", TLS_DISABLED_ALGORITHMS_PROPERTY, original);
+		
+		/*
+		 * The disabledAlgorithms property is a comma separated list that may contain
+		 * whitespace before or after the comma. Additionally, constraints may be placed
+		 * on the algorithm's key size
+		 * 
+		 * Example: jdk.tls.disabledAlgorithms=RSA, DSA, HDE, EC keySize < 256
+		 */
+		List<String> disabledAlgorithms = Arrays.asList(original.split("\\s*,\\s*"));
+		
+		for(String algorithm: algorithms){
+			if(original.contains(algorithm)){
+				logger.debug("Removing {} from default disabled algorithms", algorithm);
+				
+				disabledAlgorithms.remove(algorithm);
+			} else {
+				logger.debug("Algorithm {} not disabled by default in this runtime", algorithm);
+			}
+		}
+		
+		/*
+		 * We need to rebuild the updated property using the same format as the original
+		 */
+		StringBuilder builder = new StringBuilder();
+		for(String algorithm:  disabledAlgorithms){
+			if(builder.length()>0){
+				builder.append(", ");
+			}
+			builder.append(algorithm);
+		}
+		String updated = builder.toString();
+		
+		try{
+			Security.setProperty(TLS_DISABLED_ALGORITHMS_PROPERTY, updated);
+			logger.debug("Disabled algorithms list updated from {} to {}", original, updated);
+		} catch(SecurityException e){
+			logger.error("Unabled to update security property {} from {} to {} due to SecurityManager settings", new Object[]{
+					TLS_DISABLED_ALGORITHMS_PROPERTY,
+					original, updated
+			});
+		}
 	}
 	
 	/**
@@ -93,7 +150,5 @@ public class Encryption {
 		} catch (IllegalArgumentException e){
 			logger.error("One or more cipher suites could not be enabled because it is not supported by this runtime.", e);
 		}
-		
-		
 	}
 }

@@ -63,6 +63,8 @@ public class Parameters {
 	 * (to ensure that the cipher suites is available in the Java runtime, even if the JRE
 	 * default enabled cipher suite list does not include it).
 	 * 
+	 * Note: the corresponding algorithm may also need to be enabled via -tls.algorithms
+	 * 
 	 * See the {@link SSLParameters#getCipherSuites}
 	 * 
 	 * Value: Varies
@@ -75,6 +77,24 @@ public class Parameters {
 	{
 		cipherSuites = new ArrayList<String>();
 		cipherSuites.add("SSL_RSA_WITH_RC4_128_MD5");
+	}
+	
+	/**
+	 * Multiple valued parameter specifying the algorithms which should be removed from the 
+	 * {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property in order to enable the algorithm.
+	 * 
+	 * Note: specific cipher suite combinations may still need to be enabled via -ssl.cipherSuites
+	 * 
+	 * Value: Varies
+	 */
+	@Parameter(names = "-tls.algorithms", description = "Enable one or more algorithms by removing them from " + 
+			"the default disabled algorithms security property.",
+			variableArity = true)
+	private List<String> algorithms;
+	// provide the default list of additional algorithms
+	{
+		algorithms = new ArrayList<String>();
+		algorithms.add("RC4");
 	}
 
 	/**
@@ -100,7 +120,7 @@ public class Parameters {
 	}
 	
 	/**
-	 * @return the httpsProtocols that should be enabled as defined in the https.protocols system property
+	 * @return the httpsProtocols that should be enabled as defined in the {@value io.devyse.scheduler.security.Encryption#HTTPS_PROTOCOLS_PROPERTY} system property
 	 */
 	public String getHttpsProtocols(){
 		return httpsProtocols;
@@ -109,8 +129,15 @@ public class Parameters {
 	/**
 	 * @return the cipherSuites that should be forcefully enabled via the default SSLContext SSLParameters
 	 */
-	public String[] getCipherSuites(){
+	public String[] getAdditionalCipherSuites(){
 		return cipherSuites.toArray(new String[cipherSuites.size()]);
+	}
+	
+	/**
+	 * @return the algorithms which should be enabled via the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY}
+	 */
+	public String[] getAdditionalAlgorithms(){
+		return algorithms.toArray(new String[algorithms.size()]);
 	}
 	
 	/**
