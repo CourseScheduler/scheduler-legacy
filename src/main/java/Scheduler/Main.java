@@ -117,15 +117,17 @@ public class Main {
 	
 	
 	public static void main(String[] args) throws Exception{	
-		
-		//Register a SingleInstanceListener to handle secondary invocation
-		SingleInstanceController.register();
-		
+				
 		//process the command line arguments
+		logger.debug("Application invoked with command line parameters: <{}>", (Object)args);
 		Parameters parameters = new Parameters();
 		JCommander parser = new JCommander(parameters);
 		parser.setAcceptUnknownOptions(true);
 		parser.parse(args);
+		
+		//Register a SingleInstanceListener to handle secondary invocation
+		logger.info("Registering SingleInstanceController");
+		SingleInstanceController.register();
 		
 		//disable startup debug logging at this point unless the -debug flag was specified
 		if(!parameters.getDebugEnabled()){
