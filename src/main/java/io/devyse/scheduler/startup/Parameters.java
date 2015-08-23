@@ -48,20 +48,38 @@ public class Parameters {
 	private List<String> openFiles = new ArrayList<>();
 	
 	/**
-	 * Comma separated list of enabled HTTPS protocols.
+	 * Multiple valued parameter specifying the HTTPS protocols which should be enabled
 	 * 
 	 * See the https.protocols property accessible via {@link System#getProperty(String)}
 	 * for more information.
 	 * 
 	 * Value: {@value}
 	 */
-	@Parameter(names = "-https.protocols", description = "Comma separated list of the enabled HTTPS protocols")
-	private String httpsProtocols = "TLSv1.2,TLSv1.1,TLSv1,SSLv3,SSLv2Hello";
+	@Parameter(names = "+https.protocols", description = "Enable one or more HTTPS protocols in addition to the JRE default",
+			variableArity = true)
+	private List<String> enableProtocols;
+	{
+		enableProtocols = new ArrayList<>();
+		enableProtocols.add("SSLv2Hello");
+	}
 	
 	/**
-	 * Multiple valued parameter specifying cipher suites which should be forcefully enabled
-	 * (to ensure that the cipher suites is available in the Java runtime, even if the JRE
-	 * default enabled cipher suite list does not include it).
+	 * Multiple valued parameter specifying the HTTPS protocols which should be disabled
+	 * 
+	 * See the https.protocols property accessible via {@link System#getProperty(String)}
+	 * for more information.
+	 * 
+	 * Value: {@value}
+	 */
+	@Parameter(names = "-https.protocols", description = "Disable one or more HTTPS protocols from the JRE default",
+			variableArity = true)
+	private List<String> disableProtocols;
+	{
+		disableProtocols = new ArrayList<>();
+	}
+	
+	/**
+	 * Multiple valued parameter specifying cipher suites which should be enabled in the SSLEngine
 	 * 
 	 * Note: the corresponding algorithm may also need to be enabled via -tls.algorithms
 	 * 
@@ -69,32 +87,55 @@ public class Parameters {
 	 * 
 	 * Value: Varies
 	 */
-	@Parameter(names = "-ssl.cipherSuite", 
-			description = "Enable one or more cipher suites in addition to the JRE default cipher suites",
+	@Parameter(names = "+ssl.cipherSuite", 
+			description = "Enable one or more SSL/TLS cipher suites in addition to the JRE default cipher suites",
 			variableArity = true)
-	private List<String>  cipherSuites;
+	private List<String>  activateCipherSuites;
 	// provide the default list of additional cipher suites
 	{
-		cipherSuites = new ArrayList<String>();
-		cipherSuites.add("SSL_RSA_WITH_RC4_128_MD5");
+		activateCipherSuites = new ArrayList<>();
+		activateCipherSuites.add("SSL_RSA_WITH_RC4_128_MD5");
 	}
 	
 	/**
-	 * Multiple valued parameter specifying the algorithms which should be removed from the 
-	 * {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property in order to enable the algorithm.
+	 * Multiple valued parameter specifying cipher suites which should be disabled in the SSLEngine
+	 * in order to prevent its use.
 	 * 
-	 * Note: specific cipher suite combinations may still need to be enabled via -ssl.cipherSuites
+	 * Value: varies
+	 */
+	@Parameter(names = "-ssl.cipherSuite",
+			description = "Disable one or more SSL/TLS cipher suites from the JRE default cipher suite list",
+			variableArity = true)
+	private List<String> disableCipherSuites;
+	{
+		disableCipherSuites = new ArrayList<>();
+	}
+	
+	/**
+	 * Multiple valued parameter specifying the algorithms which should be enabled by removing them from the 
+	 * {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property.
+	 * 
+	 * Note: specific cipher suite combinations may still need to be enabled via +ssl.cipherSuites
 	 * 
 	 * Value: Varies
 	 */
-	@Parameter(names = "-tls.algorithms", description = "Enable one or more algorithms by removing them from " + 
-			"the default disabled algorithms security property.",
-			variableArity = true)
-	private List<String> algorithms;
-	// provide the default list of additional algorithms
+	@Parameter(names = "+tls.algorithms", description = "Enable one or more TLS algorithms.", variableArity = true)
+	private List<String> activateAlgorithms;
 	{
-		algorithms = new ArrayList<String>();
-		algorithms.add("RC4");
+		activateAlgorithms = new ArrayList<>();
+		activateAlgorithms.add("DH < 768");
+	}
+	
+	/**
+	 * Multiple valued parameter specifying the algorithms which should be disabled by adding them
+	 * to the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property.
+	 * 
+	 * Value: Varies
+	 */
+	@Parameter(names = "-tls.algorithms", description = "Disable one or more TLS algorithms", variableArity = true)
+	private  List<String> disableAlgorithms;
+	{
+		disableAlgorithms = new ArrayList<>();
 	}
 
 	/**
@@ -122,22 +163,43 @@ public class Parameters {
 	/**
 	 * @return the httpsProtocols that should be enabled as defined in the {@value io.devyse.scheduler.security.Encryption#HTTPS_PROTOCOLS_PROPERTY} system property
 	 */
-	public String getHttpsProtocols(){
-		return httpsProtocols;
+	public List<String> getEnableProtocols(){
+		return enableProtocols;
 	}
 	
 	/**
-	 * @return the cipherSuites that should be forcefully enabled via the default SSLContext SSLParameters
+	 * @return the https protocols that should be disabled as defined in the {@value io.devyse.scheduler.security.Encryption#HTTPS_PROTOCOLS_PROPERTY} system property
 	 */
-	public String[] getAdditionalCipherSuites(){
-		return cipherSuites.toArray(new String[cipherSuites.size()]);
+	public List<String> getDisableProtocols(){
+		return disableProtocols;
+	}
+	
+	/**
+	 * @return the cipher suites that should be enabled via the default SSLContext SSLParameters
+	 */
+	public List<String> getEnableCipherSuites(){
+		return activateCipherSuites;
+	}
+	
+	/**
+	 * @return the cipher suites that should be disabled via the default SSLContext SSLParameters
+	 */
+	public List<String> getDisableCipherSuites(){
+		return disableCipherSuites;
 	}
 	
 	/**
 	 * @return the algorithms which should be enabled via the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY}
 	 */
-	public String[] getAdditionalAlgorithms(){
-		return algorithms.toArray(new String[algorithms.size()]);
+	public List<String> getEnableAlgorithms(){
+		return activateAlgorithms;
+	}
+	
+	/**
+	 * @return the algorithms which should be disabled via the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY}
+	 */
+	public List<String> getDisableAlgorithms(){
+		return disableAlgorithms;
 	}
 	
 	/**

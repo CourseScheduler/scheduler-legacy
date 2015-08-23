@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -135,9 +137,12 @@ public class Main {
 		}
 		
 		//make sure that the required SSL/TLS protocols are enabled for use in HTTPS
-		Encryption.configureHttpsProtocols(parameters.getHttpsProtocols());
-		Encryption.configureCipherSuites(parameters.getAdditionalCipherSuites());
-		Encryption.enableLegacyAlgorithms(parameters.getAdditionalAlgorithms());
+		Encryption.configureProtocols(parameters.getEnableProtocols(), parameters.getDisableProtocols());
+		Encryption.configureAlgorithms(parameters.getEnableAlgorithms(), parameters.getDisableAlgorithms());
+		Encryption.configureCipherSuites(parameters.getEnableCipherSuites(), parameters.getDisableCipherSuites());
+		
+		SSLContext context = SSLContext.getDefault();
+	
 		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
