@@ -48,96 +48,83 @@ public class Parameters {
 	private List<String> openFiles = new ArrayList<>();
 	
 	/**
-	 * Multiple valued parameter specifying the HTTPS protocols which should be enabled
+	 * Parameter specifying the HTTPS protocols which should be enabled. This parameter is 
+	 * used to set the corresponding System property for cases where it cannot be set 
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * See the https.protocols property accessible via {@link System#getProperty(String)}
+	 * @see the https.protocols property on the <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">JSSE Reference Guide</a>
 	 * for more information.
 	 * 
 	 * Value: {@value}
 	 */
-	@Parameter(names = "+https.protocols", description = "Enable one or more HTTPS protocols in addition to the JRE default",
-			variableArity = true)
-	private List<String> enableProtocols;
-	{
-		enableProtocols = new ArrayList<>();
-		enableProtocols.add("SSLv2Hello");
-	}
+	@Parameter(names = "-https.protocols", description = "Specify the HTTPS protocols which should be enabled")
+	private String httpsProtocols = "TLSv1,TLSv1.1,TLSv1.2,SSLv2Hello";
 	
 	/**
-	 * Multiple valued parameter specifying the HTTPS protocols which should be disabled
+	 * Parameter specifying the TLS client protocols which should be enabled (JDK8+). This property
+	 * is used to set the corresponding System property for cases where it cannot be set
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * See the https.protocols property accessible via {@link System#getProperty(String)}
+	 * @see the jdk.tls.client.protocols property on the <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">JSSE Reference Guide</a>
 	 * for more information.
 	 * 
 	 * Value: {@value}
 	 */
-	@Parameter(names = "-https.protocols", description = "Disable one or more HTTPS protocols from the JRE default",
-			variableArity = true)
-	private List<String> disableProtocols;
-	{
-		disableProtocols = new ArrayList<>();
-	}
+	@Parameter(names = "-jdk.tls.client.protocols", description = "Specify the TLS client protocols which should be enabled")
+	private String tlsClientProtocols;
 	
 	/**
-	 * Multiple valued parameter specifying cipher suites which should be enabled in the SSLEngine
+	 * Parameter specifying the TLS algorithms which should be considered legacy (JDK8u51+). This property
+	 * is used to set the corresponding System property for cases where it cannot be set
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * Note: the corresponding algorithm may also need to be enabled via -tls.algorithms
+	 * @see the jdk.tls.legacyAlgorithms property on the <a href="@see <a href="http://www.oracle.com/technetwork/java/javase/8u51-relnotes-2587590.html">JDK 8u51 Release Notes</a>">Java 8u51 Release Notes</a>
+	 * for more information.
 	 * 
-	 * See the {@link SSLParameters#getCipherSuites}
-	 * 
-	 * Value: Varies
+	 * Value: {@value}
 	 */
-	@Parameter(names = "+ssl.cipherSuite", 
-			description = "Enable one or more SSL/TLS cipher suites in addition to the JRE default cipher suites",
-			variableArity = true)
-	private List<String>  activateCipherSuites;
-	// provide the default list of additional cipher suites
-	{
-		activateCipherSuites = new ArrayList<>();
-		activateCipherSuites.add("SSL_RSA_WITH_RC4_128_MD5");
-	}
+	@Parameter(names = "-jdk.tls.legacyAlgorithms", description = "Specify the TLS algorithms which should be considered legacy")
+	private String tlsLegacyAlgorithms;
 	
 	/**
-	 * Multiple valued parameter specifying cipher suites which should be disabled in the SSLEngine
-	 * in order to prevent its use.
+	 * Parameter specifying the TLS algorithms which should be disabled. This property
+	 * is used to set the corresponding System property for cases where it cannot be set
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * Value: varies
+	 * @see the jdk.tls.disabledAlgorithms property on the <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">JSSE Reference Guide</a>
+	 * for more information.
+	 * 
+	 * Value: {@value}
 	 */
-	@Parameter(names = "-ssl.cipherSuite",
-			description = "Disable one or more SSL/TLS cipher suites from the JRE default cipher suite list",
-			variableArity = true)
-	private List<String> disableCipherSuites;
-	{
-		disableCipherSuites = new ArrayList<>();
-	}
+	@Parameter(names = "-jdk.tls.disabledAlgorithms", description = "Specify the TLS algorithms which should be disabled")
+	private String tlsDisabledAlgorithms = "SSLv3, DH keySize < 768";
 	
 	/**
-	 * Multiple valued parameter specifying the algorithms which should be enabled by removing them from the 
-	 * {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property.
+	 * Parameter specifying the TLS certifivate verification algorithms which should be disabled. This property
+	 * is used to set the corresponding System property for cases where it cannot be set
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * Note: specific cipher suite combinations may still need to be enabled via +ssl.cipherSuites
+	 * @see the jdk.certpath.disabledAlgorithms property on the <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">JSSE Reference Guide</a>
+	 * for more information.
 	 * 
-	 * Value: Varies
+	 * Value: {@value}
 	 */
-	@Parameter(names = "+tls.algorithms", description = "Enable one or more TLS algorithms.", variableArity = true)
-	private List<String> activateAlgorithms;
-	{
-		activateAlgorithms = new ArrayList<>();
-		activateAlgorithms.add("DH < 768");
-	}
+	@Parameter(names = "-jdk.certpath.disabledAlgorithms", description = "Specify the certificate path algorithms which should be disabled")
+	private String certpathDisabledAlgorithms;
 	
 	/**
-	 * Multiple valued parameter specifying the algorithms which should be disabled by adding them
-	 * to the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY} security property.
+	 * Parameter specifying the HTTPS cipher suites which should be enabled. This property
+	 * is used to set the corresponding System property for cases where it cannot be set
+	 * during application invocation (for instance via Java WebStart).
 	 * 
-	 * Value: Varies
+	 * @see the https.cipherSuites property on the <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">JSSE Reference Guide</a>
+	 * for more information.
+	 * 
+	 * Value: {@value}
 	 */
-	@Parameter(names = "-tls.algorithms", description = "Disable one or more TLS algorithms", variableArity = true)
-	private  List<String> disableAlgorithms;
-	{
-		disableAlgorithms = new ArrayList<>();
-	}
-
+	@Parameter(names = "-https.cipherSuites", description = "Specify the HTTPS cipher suites which should be enabled")
+	private String httpsCipherSuites = "SSL_RSA_WITH_RC4_128_MD5";
+	
 	/**
 	 * Flag to enable debug logging for the duration of the application execution.
 	 * 
@@ -161,47 +148,47 @@ public class Parameters {
 	}
 	
 	/**
-	 * @return the httpsProtocols that should be enabled as defined in the {@value io.devyse.scheduler.security.Encryption#HTTPS_PROTOCOLS_PROPERTY} system property
+	 * @return the HTTPS protocols which should be enabled via the https.protocols property
 	 */
-	public List<String> getEnableProtocols(){
-		return enableProtocols;
+	public String getHttpsProtocols() {
+		return httpsProtocols;
 	}
-	
+
 	/**
-	 * @return the https protocols that should be disabled as defined in the {@value io.devyse.scheduler.security.Encryption#HTTPS_PROTOCOLS_PROPERTY} system property
+	 * @return the TLS client protocols which should be enabled via the jdk.tls.client.protocols property
 	 */
-	public List<String> getDisableProtocols(){
-		return disableProtocols;
+	public String getTlsClientProtocols() {
+		return tlsClientProtocols;
 	}
-	
+
 	/**
-	 * @return the cipher suites that should be enabled via the default SSLContext SSLParameters
+	 * @return the TLS algorithms which should be considered legacy via the jdk.tls.legacyAlgorithms property
 	 */
-	public List<String> getEnableCipherSuites(){
-		return activateCipherSuites;
+	public String getTlsLegacyAlgorithms() {
+		return tlsLegacyAlgorithms;
 	}
-	
+
 	/**
-	 * @return the cipher suites that should be disabled via the default SSLContext SSLParameters
+	 * @return the TLS algorithms which should be disabled via the jdk.tls.disabledAlgorithms property
 	 */
-	public List<String> getDisableCipherSuites(){
-		return disableCipherSuites;
+	public String getTlsDisabledAlgorithms() {
+		return tlsDisabledAlgorithms;
 	}
-	
+
 	/**
-	 * @return the algorithms which should be enabled via the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY}
+	 * @return the TLS certification path algorithms which should be disabled via the jdk.certpath.disabledAlgorithms property
 	 */
-	public List<String> getEnableAlgorithms(){
-		return activateAlgorithms;
+	public String getCertpathDisabledAlgorithms() {
+		return certpathDisabledAlgorithms;
 	}
-	
+
 	/**
-	 * @return the algorithms which should be disabled via the {@value io.devyse.scheduler.security.Encryption#TLS_DISABLED_ALGORITHMS_PROPERTY}
+	 * @return the HTTPS cipher suites which should be enabled via the https.cipherSuites property
 	 */
-	public List<String> getDisableAlgorithms(){
-		return disableAlgorithms;
+	public String getHttpsCipherSuites() {
+		return httpsCipherSuites;
 	}
-	
+
 	/**
 	 * @return if debug logging should remain enabled
 	 */
