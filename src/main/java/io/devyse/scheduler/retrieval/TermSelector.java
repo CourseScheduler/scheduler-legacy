@@ -26,6 +26,7 @@ package io.devyse.scheduler.retrieval;
 import io.devyse.scheduler.model.Term;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 /**
  * Interface for classes that perform term selection during data retrieval
@@ -44,8 +45,9 @@ public interface TermSelector {
 	 * 
 	 * @param options list of term codes to term names
 	 * @return the selected term
+	 * @throws NoSuchElementException if the requested term is not found
 	 */
-	public Term selectTerm(Collection<Term> options);
+	public Term selectTerm(Collection<Term> options) throws NoSuchElementException;
 	
 	/**
 	 * Return the term previously selected by the {@link #selectTerm(Collection)} method. If the
