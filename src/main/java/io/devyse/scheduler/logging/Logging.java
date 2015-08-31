@@ -23,9 +23,14 @@
  */
 package io.devyse.scheduler.logging;
 
+import org.slf4j.LoggerFactory;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+
 
 /**
  * Manages the initialization and configuration of the application logging subsystem
@@ -35,6 +40,26 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  */
 public class Logging {
 
+	/**
+	 * Array of logger names which should be reset to "INFO" from "DEBUG"
+	 * once startup initialization is complete (unless the -debug flag is
+	 * set in the command line parameters as documented in {@link Parameters#debugEnabled}
+	 * 
+	 * Value: {@value}
+	 */
+	private static String[] LOGGERS_TO_RESET = {
+		"Scheduler",
+		"io.devyse"
+	};
+	
+	/**
+	 * The Logger Level to which the startup debug loggers should be set once startup 
+	 * initialization is complete.
+	 * 
+	 * Value: {@value}
+	 */
+	private static Level LOGGER_RESET_LEVEL = Level.INFO;
+	
 	/**
 	 * Static logger
 	 */
@@ -48,5 +73,22 @@ public class Logging {
 		SLF4JBridgeHandler.install();
 		
 		logger.info("JUL to SLF4J bridge initialized");
+	}
+	
+	/**
+	 * Disable the startup debug logging.
+	 * 
+	 * Some loggers are set to log at DEBUG level during initialization in
+	 * order to aid in troubleshooting application startup. Once initialization
+	 * is complete, these loggers can be set back to INFO level for normal
+	 * logging volume and overhead.
+	 */
+	public static void disableStartupDebugLogging(){
+		for(String loggerName: LOGGERS_TO_RESET){
+			Logger logger = (Logger)LoggerFactory.getLogger(loggerName);
+			logger.debug("Switching logger from startup level {} to regular runtime level {}",
+					logger.getLevel(), LOGGER_RESET_LEVEL);
+			logger.setLevel(LOGGER_RESET_LEVEL);
+		}
 	}
 }
