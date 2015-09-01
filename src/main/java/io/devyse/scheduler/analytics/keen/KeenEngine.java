@@ -70,6 +70,30 @@ public class KeenEngine {
 	protected static final String KEEN_DEFAULT_CONFIG_FILE = "config/keen.properties";
 	
 	/**
+	 * Keen deployment properties file containing the deployment properties as determined at
+	 * time of application build.
+	 * 
+	 * Value: {@value}
+	 */
+	protected static final String KEEN_DEFAULT_DEPLOYMENT_PROPERTIES_FILE = "config/deploy.properties";
+	
+	/**
+	 * Application deployment URL property in the Keen deployment properties file (
+	 * {@link #KEEN_DEFAULT_DEPLOYMENT_PROPERTIES_FILE}.
+	 * 
+	 * Value: {@value}
+	 */
+	protected static final String KEEN_DEPLOYMENT_URL = "Scheduler.jnlp.codebase";
+	
+	/**
+	 * Keen IO attribute which will hold the contents of the {@link #KEEN_DEPLOYMENT_URL} deployment
+	 * property from the {@link #KEEN_DEFAULT_CONFIG_FILE}
+	 * 
+	 * Value: {@value}
+	 */
+	protected static final String KEEN_CODEBASE_ATTRIBUTE = "scheduler.codebase";
+	
+	/**
 	 * Keen configuration file property that contains the project ID to which analytic events
 	 * should be written.
 	 * 
@@ -381,6 +405,26 @@ public class KeenEngine {
 	protected static void addGlobalApplicationProperties(Map<String, Object> global){
 		global.put(KEEN_GLOBAL_APP_VERSION, Main.getApplicationVersion());
 		global.put(KEEN_GLOBAL_APP_DIR, Main.getApplicationDirectory());
+		
+		addGlobalApplicationDeploymentProperties(global);
+	}
+	
+	/**
+	 * Add the Application deployment properties to the map of global properties
+	 * 
+	 * @param global the flat map of global properties
+	 */
+	protected static void addGlobalApplicationDeploymentProperties(Map<String, Object> global){
+		try {
+			ClassLoader loader = KeenEngine.class.getClassLoader();
+		
+			Properties deployment = new  Properties();
+			deployment.load(loader.getResourceAsStream(KEEN_DEFAULT_DEPLOYMENT_PROPERTIES_FILE));
+			
+			global.put(KEEN_CODEBASE_ATTRIBUTE, deployment.get(KEEN_DEPLOYMENT_URL));
+		} catch (IOException e) {
+			logger.error("Unable to load application deployment properties from {} into Keen global properties", KEEN_DEFAULT_DEPLOYMENT_PROPERTIES_FILE);
+		}
 	}
 	
 	/**

@@ -41,7 +41,7 @@
 		<Scheduler.config.development>config/development</Scheduler.config.development>
 
 		<!-- private resource location -->
-		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
+		<Scheduler.resources.base>${user.home}/webdav/cs-priv</Scheduler.resources.base>
 		
 		<!-- private keystore resource -->
 		<Scheduler.resources.keystore>${Scheduler.resources.base}/ssl/scheduler.jks</Scheduler.resources.keystore>
@@ -144,8 +144,12 @@
 				</property>
 			</activation>
 			<properties>
+				<!-- build information -->
 				<Scheduler.jnlp.build>${BUILD_TAG}</Scheduler.jnlp.build>
 				<Scheduler.jnlp.qualifier>-${BUILD_NUMBER}</Scheduler.jnlp.qualifier>
+				
+				<!-- private resource location -->
+		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
 			</properties>
 		</profile>
 		<profile>

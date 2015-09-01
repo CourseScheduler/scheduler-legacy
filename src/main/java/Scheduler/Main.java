@@ -67,7 +67,7 @@ public class Main {
 	protected static final String contributers = new String(
 		"Aaron Simmons, Phil DeMonaco, Alex Thomson, Ryan Murphy, Garrick Brazil");
 	
-	protected static final String folderName = new String(System.getProperty("user.home") + "/Scheduler");
+	protected static final String folderName = new String(System.getProperty("user.home") + System.getProperty("file.separator") + "Scheduler");
 	protected static final String dataName = new String("Data");
 	protected static final String dataPath = new String(folderName + "/" + dataName);
 	protected static final String dataFolder = new String(dataPath + "/");
