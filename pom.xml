@@ -26,7 +26,9 @@
 		<!-- Runnable JAR and JNLP Main Class -->
 		<Scheduler.mainClass>Scheduler.Main</Scheduler.mainClass>
 		<!-- JNLP root codebase -->
-		<Scheduler.s3.bucket>deploy.coursescheduler.io</Scheduler.s3.bucket>
+		<Scheduler.s3.prod.bucket>deploy.coursescheduler.io</Scheduler.s3.prod.bucket>
+		<Scheduler.s3.dev.bucket>deploy-dev.coursescheduler.io</Scheduler.s3.dev.bucket>
+		<Scheduler.s3.bucket></Scheduler.s3.bucket>
 		<Scheduler.path.release>desktop/release</Scheduler.path.release>
 		<Scheduler.path.snapshot>desktop/snapshot</Scheduler.path.snapshot>
 		<Scheduler.jnlp.server.protocol>http://</Scheduler.jnlp.server.protocol>
@@ -517,11 +519,13 @@
 								<script><![CDATA[
 									// Adjust properties based on whether SNAPSHOT or release build
 									if("${project.version}".endsWith("SNAPSHOT")){
-										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.snapshot}/${project.version}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.s3.bucket'] = "${Scheduler.s3.dev.bucket}";
+										project.properties['Scheduler.jnlp.s3.bucket'] = project.properties['Scheduler.s3.bucket']+"/${Scheduler.path.snapshot}/${project.version}/${Scheduler.jnlp.build}";
 										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.development}";
 									} else {
-										project.properties['Scheduler.jnlp.s3.bucket'] = "${Scheduler.s3.bucket}/${Scheduler.path.release}/${project.version}/${Scheduler.jnlp.build}";
+										project.properties['Scheduler.s3.bucket'] = "${Scheduler.s3.prod.bucket}";
+										project.properties['Scheduler.jnlp.s3.bucket'] = project.properties['Scheduler.s3.bucket']+"/${Scheduler.path.release}/${project.version}/${Scheduler.jnlp.build}";
 										project.properties['Scheduler.jnlp.codebase'] = "${Scheduler.jnlp.server.protocol}"+project.properties['Scheduler.jnlp.s3.bucket'];
 										project.properties['Scheduler.resources.dir'] =	"${Scheduler.resources.base}/${Scheduler.config.production}";
 									}
