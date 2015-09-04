@@ -43,10 +43,15 @@
 		<Scheduler.config.development>config/development</Scheduler.config.development>
 
 		<!-- private resource location -->
-		<Scheduler.resources.base>${user.home}/webdav/cs-priv</Scheduler.resources.base>
+		<Scheduler.resources.base.jenkins>/private/coursescheduler</Scheduler.resources.base.jenkins>
+		<Scheduler.resources.base.local>${user.home}/webdav/cs-priv</Scheduler.resources.base.local>
+		<Scheduler.resources.base></Scheduler.resources.base>
 		
 		<!-- private keystore resource -->
 		<Scheduler.resources.keystore>${Scheduler.resources.base}/ssl/scheduler.jks</Scheduler.resources.keystore>
+		
+		<!-- Default plugin skips -->
+		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 	<scm>
 		<url>https://github.com/CourseScheduler/scheduler-legacy</url>
@@ -149,53 +154,31 @@
 				<!-- build information -->
 				<Scheduler.jnlp.build>${BUILD_TAG}</Scheduler.jnlp.build>
 				<Scheduler.jnlp.qualifier>-${BUILD_NUMBER}</Scheduler.jnlp.qualifier>
-				
-				<!-- private resource location -->
-		<Scheduler.resources.base>/private/coursescheduler</Scheduler.resources.base>
+			</properties>
+		</profile>
+		<profile>
+			<id>local-sign</id>
+			<activation>
+				<file>
+					<exists>${Scheduler.resources.base.local}</exists>
+				</file>
+			</activation>
+			<properties>
+				<Scheduler.resources.base>${Scheduler.resources.base.local}</Scheduler.resources.base>
+				<jarsigner.skip>false</jarsigner.skip>
 			</properties>
 		</profile>
 		<profile>
 			<id>jenkins-sign</id>
 			<activation>
 				<file>
-					<exists>${Scheduler.resources.keystore}</exists>
+					<exists>${Scheduler.resources.base.jenkins}</exists>
 				</file>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jarsigner-plugin</artifactId>
-
-						<executions>
-							<execution>
-								<id>sign</id>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>verify</id>
-								<goals>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-
-						<configuration>
-							<archiveDirectory>${project.build.directory}</archiveDirectory>
-							<keystore>${Scheduler.resources.keystore}</keystore>
-							<alias>coursescheduler</alias>
-							<storepass>{4tXMw/HEX+wH1omHNdWTTipAbgi+1NBtAUj6A//HoIGalRabWjR3mSgeDl5q8B5fFGwql1Q6EB/NQVL/JUJTpDEVGbo7x1wxoMIzeMHqk+IsX7afE8hbuq3DOxDidoP7}</storepass>
-							<keypass>{CeV7SACXJBAHDVMQHVbfeeTG8mwmUgRNaUx0ccF90Iew1FKd8vlCN6g/7fffUUWxfXm/VDPUzObbGgXVzCKGcd2e4SMpa32BpxA7MVkf07tUsRyNs54muAtsPVW1Cwcw}</keypass>
-							<arguments>
-								<argument>-tsa</argument>
-								<argument>https://timestamp.geotrust.com/tsa</argument>
-							</arguments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<Scheduler.resources.base>${Scheduler.resources.base.jenkins}</Scheduler.resources.base>
+				<jarsigner.skip>false</jarsigner.skip>
+			</properties>
 		</profile>
 	</profiles>
 
@@ -437,6 +420,37 @@
 							<Application-Name>${project.name}</Application-Name>
 						</manifestEntries>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<archiveDirectory>${project.build.directory}</archiveDirectory>
+					<keystore>${Scheduler.resources.keystore}</keystore>
+					<alias>coursescheduler</alias>
+					<storepass>{4tXMw/HEX+wH1omHNdWTTipAbgi+1NBtAUj6A//HoIGalRabWjR3mSgeDl5q8B5fFGwql1Q6EB/NQVL/JUJTpDEVGbo7x1wxoMIzeMHqk+IsX7afE8hbuq3DOxDidoP7}</storepass>
+					<keypass>{CeV7SACXJBAHDVMQHVbfeeTG8mwmUgRNaUx0ccF90Iew1FKd8vlCN6g/7fffUUWxfXm/VDPUzObbGgXVzCKGcd2e4SMpa32BpxA7MVkf07tUsRyNs54muAtsPVW1Cwcw}</keypass>
+					<arguments>
+						<argument>-tsa</argument>
+						<argument>https://timestamp.geotrust.com/tsa</argument>
+					</arguments>
 				</configuration>
 			</plugin>
 			<plugin>
