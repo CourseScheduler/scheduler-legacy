@@ -19,6 +19,14 @@ in future releases.
  	This will allow you to uninstall, reinstall, or completely remove the Scheduler from your computer.
 
 ChangeLog
+4.12.10
+	-Fixes issue #34, improper cipher suite selection, on newer JVMs by reenabling the cipher suite
+	-Fixes issue #38, null pointer exception when retrieving term that is not yet posted on BannerWeb
+	-Fixed issue preventing Linux from opening the scheduler via a .desktop shortcut
+	-Fixed slight delay in UI unlocking after course data download
+	-Fixed hard coded Unix path separator to OS agnostic
+	-Added -debug command line option for improved debugging support
+	-Fixed WebStart app application name displayed in security prompts
 4.12.9
 	-Fixes issue #32, bug preventing course download due to high latency server responses (>30 seconds) by adding a socket connection timeout configuration
 	-Added UI option for configuring the socket timeout
