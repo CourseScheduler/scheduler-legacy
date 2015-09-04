@@ -48,7 +48,8 @@
 		<Scheduler.resources.base></Scheduler.resources.base>
 		
 		<!-- private keystore resource -->
-		<Scheduler.resources.keystore>${Scheduler.resources.base}/ssl/scheduler.jks</Scheduler.resources.keystore>
+		<Scheduler.resources.keystore.dir>ssl</Scheduler.resources.keystore.dir>
+		<Scheduler.resources.keystore>${Scheduler.resources.base}/${Scheduler.resources.keystore.dir}/scheduler.jks</Scheduler.resources.keystore>
 		
 		<!-- Default plugin skips -->
 		<jarsigner.skip>true</jarsigner.skip>
@@ -112,7 +113,7 @@
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
-				<version>1.8.3</version>
+				<version>1.8.1</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
@@ -160,7 +161,7 @@
 			<id>local-sign</id>
 			<activation>
 				<file>
-					<exists>${Scheduler.resources.base.local}</exists>
+					<exists>${Scheduler.resources.base.local}/${Scheduler.resources.keystore.dir}</exists>
 				</file>
 			</activation>
 			<properties>
@@ -172,7 +173,7 @@
 			<id>jenkins-sign</id>
 			<activation>
 				<file>
-					<exists>${Scheduler.resources.base.jenkins}</exists>
+					<exists>${Scheduler.resources.base.jenkins}/${Scheduler.resources.keystore.dir}</exists>
 				</file>
 			</activation>
 			<properties>
