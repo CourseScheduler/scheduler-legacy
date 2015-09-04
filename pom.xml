@@ -434,6 +434,7 @@
 							<Url>${project.url}</Url>
 							<SplashScreen-Image>Images/splash.png</SplashScreen-Image>
 							<Permissions>all-permissions</Permissions>
+							<Application-Name>${project.name}</Application-Name>
 						</manifestEntries>
 					</archive>
 				</configuration>
